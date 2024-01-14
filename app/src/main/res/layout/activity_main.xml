@@ -25,6 +25,7 @@
             android:textSize="22sp" />
 
         <Button
+            android:id="@+id/search_button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             android:layout_margin="@dimen/button_margin"
