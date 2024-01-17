@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -11,20 +12,19 @@ class MainActivity : AppCompatActivity(), OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val searchButton = findViewById<Button>(R.id.search_button)
-        val buttonClickListener: View.OnClickListener = object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                Toast.makeText(this@MainActivity, "Нажали на кнопку поиска!", Toast.LENGTH_SHORT).show()
-            }
+        searchButton.setOnClickListener{
+            val displayIntent = Intent(this, SearchActivity::class.java)
+            startActivity(displayIntent)
         }
-        searchButton.setOnClickListener(buttonClickListener)
+
+
         val settingButton = findViewById<Button>(R.id.setting_button)
-        val settingButtonClickListener: View.OnClickListener = object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                Toast.makeText(this@MainActivity, "Нажали на кнопку настроек!", Toast.LENGTH_SHORT).show()
-            }
+        settingButton.setOnClickListener{
+            val displayIntent = Intent(this, SettingActivity::class.java)
+            startActivity(displayIntent)
         }
-        settingButton.setOnClickListener(settingButtonClickListener)
 
 
         onClick(findViewById<Button>(R.id.media_button))
@@ -35,7 +35,8 @@ class MainActivity : AppCompatActivity(), OnClickListener {
     override fun onClick(p0: View?) {
         //val mediaButton = findViewById<Button>(R.id.media_button)
         p0?.setOnClickListener{
-            Toast.makeText(this@MainActivity, "Нажали на кнопку медиатеки!", Toast.LENGTH_SHORT).show()
+            val displayIntent = Intent(this, MediaActivity::class.java)
+            startActivity(displayIntent)
         }
     }
 }
