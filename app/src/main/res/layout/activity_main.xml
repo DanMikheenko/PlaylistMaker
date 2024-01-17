@@ -45,6 +45,7 @@
             />
 
         <Button
+            android:id="@+id/media_button"
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:backgroundTint="@color/white"
             android:layout_width="match_parent"
@@ -64,6 +65,7 @@
             android:fontFamily="@font/buttonnamefont"
             />
         <Button
+            android:id="@+id/setting_button"
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:backgroundTint="@color/white"
             android:layout_width="match_parent"
