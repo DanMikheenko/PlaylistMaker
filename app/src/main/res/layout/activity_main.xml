@@ -27,7 +27,7 @@
         <Button
             android:id="@+id/search_button"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
             android:layout_margin="@dimen/button_margin"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="80dp"
@@ -42,7 +42,7 @@
             app:iconPadding="@dimen/icon_pudding"
             app:iconTint="@color/icon_color"
             android:fontFamily="@font/buttonnamefont"
-            />
+            android:layout_height="match_parent"/>
 
         <Button
             android:id="@+id/media_button"
@@ -50,7 +50,7 @@
             android:backgroundTint="@color/white"
             android:layout_width="match_parent"
             android:layout_marginTop="0dp"
-            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
             app:cornerRadius="@dimen/button_corner_radius"
             android:layout_marginLeft="@dimen/button_margin"
             android:layout_marginRight="@dimen/button_margin"
@@ -63,13 +63,14 @@
             android:textAllCaps="false"
             android:textSize="@dimen/button_name_text_size"
             android:fontFamily="@font/buttonnamefont"
+            android:layout_height="match_parent"
             />
         <Button
             android:id="@+id/setting_button"
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:backgroundTint="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
             app:cornerRadius="@dimen/button_corner_radius"
             android:layout_margin="@dimen/button_margin"
             android:text="@string/setting_button_text"
@@ -81,6 +82,7 @@
             android:textAllCaps="false"
             android:textSize="@dimen/button_name_text_size"
             android:fontFamily="@font/buttonnamefont"
+            android:layout_height="match_parent"
             />
 
     </LinearLayout>
