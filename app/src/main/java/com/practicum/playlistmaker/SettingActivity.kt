@@ -12,8 +12,8 @@ class SettingActivity : AppCompatActivity() {
 
         val homeButton = findViewById<Button>(R.id.home_button)
         homeButton.setOnClickListener{
-            val displayIntent = Intent(this, MainActivity::class.java)
-            startActivity(displayIntent)
+            finish()
         }
+
     }
 }
