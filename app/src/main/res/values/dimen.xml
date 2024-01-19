@@ -5,5 +5,5 @@
     <dimen name="button_corner_radius">16dp</dimen>
     <dimen name="button_margin">16dp</dimen>
     <dimen name="icon_pudding">8dp</dimen>
-    <dimen name="button_name_text_size">22dp</dimen>
+    <dimen name="button_name_text_size">22sp</dimen>
 </resources>
