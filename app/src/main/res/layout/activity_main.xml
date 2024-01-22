@@ -11,17 +11,20 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_margin="12dp"
+        android:layout_gravity="start"
+        android:layout_margin="@dimen/top_bottom_button_margin"
         android:text="@string/app_name"
-        android:textColor="#FFFFFF"
-        android:textSize="22sp" />
+        android:textColor="@color/white"
+        android:textSize="@dimen/button_name_text_size" />
 
     <Button
         android:id="@+id/search_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/button_margin"
+        android:layout_marginStart="@dimen/button_margin"
+        android:layout_marginEnd="@dimen/button_margin"
+        android:layout_marginTop="@dimen/top_bottom_button_margin"
+        android:layout_marginBottom="@dimen/margin_between_buttons"
         android:layout_weight="1"
         android:backgroundTint="@color/white"
         android:fontFamily="@font/buttonnamefont"
@@ -35,13 +38,14 @@
         app:iconPadding="@dimen/icon_pudding"
         app:iconTint="@color/icon_color" />
 
-    <Button xmlns:android="http://schemas.android.com/apk/res/android"
+    <Button
         android:id="@+id/media_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/button_margin"
-        android:layout_marginTop="0dp"
         android:layout_marginRight="@dimen/button_margin"
+        android:layout_marginTop="@dimen/margin_between_buttons"
+        android:layout_marginBottom="@dimen/margin_between_buttons"
         android:layout_weight="1"
         android:backgroundTint="@color/white"
         android:fontFamily="@font/buttonnamefont"
@@ -55,11 +59,14 @@
         app:iconPadding="@dimen/icon_pudding"
         app:iconTint="@color/icon_color" />
 
-    <Button xmlns:android="http://schemas.android.com/apk/res/android"
+    <Button
         android:id="@+id/setting_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/button_margin"
+        android:layout_marginStart="@dimen/button_margin"
+        android:layout_marginEnd="@dimen/button_margin"
+        android:layout_marginTop="@dimen/margin_between_buttons"
+        android:layout_marginBottom="@dimen/top_bottom_button_margin"
         android:layout_weight="1"
         android:backgroundTint="@color/white"
         android:fontFamily="@font/buttonnamefont"

@@ -1,150 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="horizontal"
-    android:background="@color/white">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    <TextView
+        android:id="@+id/home_button"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:background="@color/white"
-        android:orientation="horizontal">
+        android:layout_height="56dp"
+        android:layout_gravity="center_vertical"
+        android:fontFamily="@font/buttonnamefont"
+        android:gravity="center_vertical"
+        android:text="@string/setting_button_text"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        app:iconGravity="textEnd"
+        app:iconTint="@color/black"
+        android:paddingStart="@dimen/setting_activity_button_padding_start"
+        android:drawablePadding="12dp"
+        android:layout_marginBottom="24dp"
+        app:drawableStartCompat="@drawable/ic_arrow"
+        tools:ignore="RtlSymmetry" />
 
-        <Button
-            android:id="@+id/home_button"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:backgroundTint="@color/white"
-            android:textAllCaps="false"
-            android:textColor="@color/icon_color"
-            android:textSize="@dimen/button_name_text_size"
-            app:icon="@drawable/ic_arrow"
-            app:iconGravity="textStart"
-            app:iconTint="@color/icon_color"
-            android:contentDescription="descr" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="left"
-            android:paddingLeft="12dp"
-            android:paddingTop="10dp"
-            android:paddingRight="86dp"
-            android:paddingBottom="12dp"
-            android:text="@string/setting_button_text"
-            android:textColor="@color/black"
-            android:textSize="22dp"
-            android:fontFamily="@font/buttonnamefont"/>
-
-    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:layout_marginTop="80dp"
-        android:orientation="horizontal">
+        android:layout_height="@dimen/setting_activity_button_height">
+
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/buttonnamefont"
+            android:paddingStart="@dimen/setting_activity_button_padding_start"
             android:text="@string/dark_theme"
-            android:layout_gravity="left"
-            android:textSize="18dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="21dp"
-            android:fontFamily="@font/buttonnamefont"/>
+            android:textColor="@color/black"
+            android:textSize="@dimen/setting_activity_button_text_size"
+            tools:ignore="RtlSymmetry" />
+
         <Switch
-            android:layout_gravity="right"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            />
+            android:layout_height="match_parent" />
     </LinearLayout>
-    <LinearLayout
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:layout_marginTop="141dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/share"
-            android:layout_gravity="left"
-            android:textSize="18dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="21dp"
-            android:fontFamily="@font/buttonnamefont"/>
+        android:layout_height="@dimen/setting_activity_button_height"
+        android:layout_gravity="center_vertical"
+        android:drawableEnd="@drawable/ic_share"
+        android:fontFamily="@font/buttonnamefont"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/setting_activity_button_padding_start"
+        android:paddingEnd="@dimen/setting_activity_button_padding_end"
+        android:text="@string/share"
+        android:textColor="@color/black"
+        android:textSize="@dimen/setting_activity_button_text_size"
+        app:iconGravity="textEnd"
+        app:iconTint="@color/black" />
 
-        <Button
-            app:icon="@drawable/ic_share"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:iconGravity="textStart"
-            app:iconTint="@color/icon_color"
-            android:backgroundTint="@color/white"
-            android:gravity="right"
-            android:contentDescription="descr"
-
-            />
-    </LinearLayout>
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:layout_marginTop="202dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/write_to_support"
-            android:layout_gravity="left"
-            android:textSize="18dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="21dp"
-            android:fontFamily="@font/buttonnamefont"/>
+        android:layout_height="@dimen/setting_activity_button_height"
+        android:layout_gravity="center_vertical"
+        android:drawableEnd="@drawable/ic_support"
+        android:fontFamily="@font/buttonnamefont"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/setting_activity_button_padding_start"
+        android:paddingEnd="@dimen/setting_activity_button_padding_end"
+        android:text="@string/write_to_support"
+        android:textColor="@color/black"
+        android:textSize="@dimen/setting_activity_button_text_size"
+        app:iconGravity="textEnd"
+        app:iconTint="@color/black" />
 
-        <Button
-            app:icon="@drawable/ic_support"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:iconGravity="textStart"
-            app:iconTint="@color/icon_color"
-            android:backgroundTint="@color/white"
-            android:gravity="right"
-            android:contentDescription="descr"
-
-            />
-    </LinearLayout>
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:layout_marginTop="263dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/user_agreement"
-            android:layout_gravity="left"
-            android:textSize="18dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="21dp"
-            android:fontFamily="@font/buttonnamefont"/>
-
-        <Button
-            app:icon="@drawable/arrow_right"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:iconGravity="textStart"
-            app:iconTint="@color/icon_color"
-            android:backgroundTint="@color/white"
-            android:gravity="right"
-            android:contentDescription="descr"
-
-            />
-    </LinearLayout>
+        android:layout_height="@dimen/setting_activity_button_height"
+        android:layout_gravity="center_vertical"
+        android:drawableEnd="@drawable/arrow_right"
+        android:fontFamily="@font/buttonnamefont"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/setting_activity_button_padding_start"
+        android:paddingEnd="@dimen/setting_activity_button_padding_end"
+        android:text="@string/user_agreement"
+        android:textColor="@color/black"
+        android:textSize="@dimen/setting_activity_button_text_size"
+        app:iconGravity="textEnd"
+        app:iconTint="@color/black" />
 
 
-
-</FrameLayout>
+</LinearLayout>

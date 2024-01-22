@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker
 
 import android.os.Bundle
-import android.widget.Button
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 
 class SettingActivity : AppCompatActivity() {
@@ -9,7 +9,7 @@ class SettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
 
-        val homeButton = findViewById<Button>(R.id.home_button)
+        val homeButton = findViewById<View>(R.id.home_button)
         homeButton.setOnClickListener{
             finish()
         }

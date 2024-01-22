@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity(), OnClickListener {
     }
 
     override fun onClick(p0: View?) {
-        //val mediaButton = findViewById<Button>(R.id.media_button)
         p0?.setOnClickListener{
             val displayIntent = Intent(this, MediaActivity::class.java)
             startActivity(displayIntent)
