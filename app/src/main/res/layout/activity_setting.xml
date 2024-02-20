@@ -5,28 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-
     <TextView
         style="@style/SettingActivityTextViewStyle"
         android:id="@+id/home_button"
         android:text="@string/setting_button_text"
-        android:textColor="@color/black"
         android:textSize="22sp"
         android:drawablePadding="12dp"
         android:layout_marginBottom="24dp"
-        app:drawableStartCompat="@drawable/ic_arrow"
+        android:theme="@style/PlaylistMakerActivitySettingHeader"
+        android:textColor="?android:textColor"
         />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_activity_button_height">
+        android:layout_height="@dimen/setting_activity_button_height"
+        >
 
         <TextView
             android:layout_width="wrap_content"
             android:text="@string/dark_theme"
             tools:ignore="RtlSymmetry"
-            style="@style/SettingActivityTextViewStyle"/>
+            style="@style/SettingActivityTextViewStyle"
+            android:theme="@style/PlaylistMakerActivitySetting"
+            android:textColor="?android:textColor"/>
+
 
         <Switch
             android:layout_width="match_parent"
@@ -36,17 +38,25 @@
     <TextView
         android:drawableEnd="@drawable/ic_share"
         android:text="@string/share"
-        style="@style/SettingActivityTextViewStyle"/>
+        style="@style/SettingActivityTextViewStyle"
+        android:theme="@style/PlaylistMakerActivitySetting"
+        android:textColor="?android:textColor"
+        />
 
     <TextView
         android:drawableEnd="@drawable/ic_support"
         android:text="@string/write_to_support"
-        style="@style/SettingActivityTextViewStyle"/>
+        style="@style/SettingActivityTextViewStyle"
+        android:theme="@style/PlaylistMakerActivitySetting"
+        android:textColor="?android:textColor" />
 
     <TextView
         android:drawableEnd="@drawable/arrow_right"
         android:text="@string/user_agreement"
-        style="@style/SettingActivityTextViewStyle"/>
+        style="@style/SettingActivityTextViewStyle"
+        android:theme="@style/PlaylistMakerActivitySetting"
+        android:textColor="?android:textColor"
+        />
 
 
 </LinearLayout>
