@@ -36,6 +36,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/shareTextView"
         android:drawableEnd="@drawable/ic_share"
         android:text="@string/share"
         style="@style/SettingActivityTextViewStyle"
