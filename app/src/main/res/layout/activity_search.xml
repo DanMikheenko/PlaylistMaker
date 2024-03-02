@@ -1,9 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity">
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/searchTextView"
+        style="@style/SettingActivityTextViewStyle"
+        android:text="Поиск"
+        android:textSize="22sp"
+        android:drawablePadding="16dp"
+        android:theme="@style/PlaylistMakerActivitySettingHeader"
+        android:textColor="?android:textColor"
+        />
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content">
+        <EditText
+            style="@style/SettingActivityTextViewStyle"
+            android:id="@+id/editText"
+            android:inputType="text"
+            android:hint="Поиск"
+            android:textSize="16sp"
+            android:layout_height="36dp"
+            android:layout_width="match_parent"
+            app:drawableStartCompat ="@drawable/ic_magnifier_light"
+            android:background="@drawable/edit_text_rounded_corners"
+            app:iconPadding = "@dimen/icon_pudding"
+            android:drawablePadding="10dp"
+            android:layout_margin="@dimen/button_margin"/>
+        <ImageView
+            android:id="@+id/btnClear"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:layout_alignEnd="@id/editText"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:clickable="true" />
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

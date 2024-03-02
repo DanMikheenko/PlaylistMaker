@@ -16,4 +16,9 @@
         <!-- Customize your dark theme here. -->
         <item name="drawableStartCompat">@drawable/ic_arrow_dark_mode</item>
     </style>
+
+    <style name="PlaylistMakerSearchActivity">
+        <!-- Customize your dark theme here. -->
+        <item name="drawableStartCompat">@drawable/ic_arrow_dark_mode</item>
+    </style>
 </resources>
