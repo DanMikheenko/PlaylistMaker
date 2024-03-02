@@ -45,6 +45,7 @@
         />
 
     <TextView
+        android:id="@+id/writeToSpprtTextView"
         android:drawableEnd="@drawable/ic_support"
         android:text="@string/write_to_support"
         style="@style/SettingActivityTextViewStyle"
@@ -52,6 +53,7 @@
         android:textColor="?android:textColor" />
 
     <TextView
+        android:id="@+id/readAgreementTextView"
         android:drawableEnd="@drawable/arrow_right"
         android:text="@string/user_agreement"
         style="@style/SettingActivityTextViewStyle"
