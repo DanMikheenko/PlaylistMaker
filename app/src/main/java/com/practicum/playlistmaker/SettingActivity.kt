@@ -4,7 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 
 class SettingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +31,18 @@ class SettingActivity : AppCompatActivity() {
         val readAgrTextView = findViewById<View>(R.id.readAgreementTextView)
         readAgrTextView.setOnClickListener {
             readUserAgreement()
+        }
+
+        val themeSwitch = findViewById<Switch>(R.id.themeSwitch)
+
+        themeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                // Включить темную тему
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                // Включить светлую тему
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
         }
 
     }

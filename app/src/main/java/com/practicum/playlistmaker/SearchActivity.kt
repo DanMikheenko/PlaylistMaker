@@ -8,20 +8,21 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 
 class SearchActivity : AppCompatActivity() {
+    private lateinit var editText: EditText
+    private val KEY_EDIT_TEXT = "editTextValue"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        editText = findViewById(R.id.editText)
 
         val homeButton = findViewById<View>(R.id.searchTextView)
-        homeButton.setOnClickListener{
+        homeButton.setOnClickListener {
             finish()
         }
         val buttonClear = findViewById<View>(R.id.btnClear)
         buttonClear.setOnClickListener {
             resetSearchText()
         }
-
-        val editText = findViewById<EditText>(R.id.editText)
 
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -34,12 +35,21 @@ class SearchActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
             }
         })
+
+        if (savedInstanceState != null) {
+            // Восстановить текст из сохраненного состояния
+            val savedText = savedInstanceState.getString(KEY_EDIT_TEXT, "")
+            editText.setText(savedText)
+        }
     }
 
 
-
     private fun resetSearchText() {
-        val editText = findViewById<EditText>(R.id.editText)
         editText.text.clear()
+    }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val currentText = editText.text.toString()
+        outState.putString(KEY_EDIT_TEXT, currentText)
     }
 }
