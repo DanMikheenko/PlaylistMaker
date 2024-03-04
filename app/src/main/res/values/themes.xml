@@ -16,7 +16,9 @@
         <item name="drawableStartCompat">@drawable/ic_arrow</item>
     </style>
 
-    <style name="PlaylistMakerActivitySearch" parent="PlaylistMakerActivitySetting">
+    <style name="PlaylistMakerActivitySearch">
+        <item name="android:background">@drawable/edit_text_rounded_corners_light</item>
+        <item name="android:hint">@string/editTextHint</item>
         <item name="drawableStartCompat">@drawable/ic_magnifier_light</item>
     </style>
 

@@ -47,9 +47,11 @@ class SearchActivity : AppCompatActivity() {
     private fun resetSearchText() {
         editText.text.clear()
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
+
         val currentText = editText.text.toString()
         outState.putString(KEY_EDIT_TEXT, currentText)
+        super.onSaveInstanceState(outState)
     }
 }

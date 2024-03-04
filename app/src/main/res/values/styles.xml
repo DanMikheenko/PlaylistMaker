@@ -29,4 +29,10 @@
         <item name="iconGravity">textEnd</item>
         <item name="iconTint">@color/black</item>
     </style>
+
+    <style name="SearchActivityStyle" parent="SettingActivityTextViewStyle">
+        <item name="android:background">@drawable/edit_text_rounded_corners_light</item>
+        <item name="android:textSize">@dimen/editTextSize</item>
+        <item name="android:layout_height">@dimen/editTextLayoutHeight</item>
+    </style>
 </resources>

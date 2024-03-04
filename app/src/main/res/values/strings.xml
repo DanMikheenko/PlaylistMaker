@@ -13,4 +13,5 @@
     <string name="messageThemeToSupportTeam">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="messageToSupportTeam">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="userAgreementURI">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="editTextHint">Поиск</string>
 </resources>
