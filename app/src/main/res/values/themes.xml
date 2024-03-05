@@ -21,5 +21,8 @@
         <item name="android:hint">@string/editTextHint</item>
         <item name="drawableStartCompat">@drawable/ic_magnifier_light</item>
     </style>
+    <style name="PlaylistMakerActivitySearchCancelBtn">
+        <item name="android:src">@drawable/ic_cancel_btn_light</item>
+    </style>
 
 </resources>

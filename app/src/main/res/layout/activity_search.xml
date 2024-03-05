@@ -9,7 +9,7 @@
         android:id="@+id/searchTextView"
         style="@style/SettingActivityTextViewStyle"
         android:drawablePadding="@dimen/button_margin"
-        android:text="Поиск"
+        android:text="@string/search_button_text"
         android:textColor="?android:textColor"
         android:textSize="@dimen/button_name_text_size"
         android:theme="@style/PlaylistMakerActivitySettingHeader" />
@@ -33,14 +33,14 @@
 
         <ImageView
             android:id="@+id/btnClear"
-            android:layout_width="@dimen/cancelBtnLayoutSize"
-            android:layout_height="@dimen/cancelBtnLayoutSize"
+            android:layout_width="@dimen/button_margin"
+            android:layout_height="@dimen/button_margin"
             android:layout_alignEnd="@id/editText"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/button_margin"
             android:clickable="true"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:theme="@style/PlaylistMakerActivitySearchCancelBtn"/>
 
     </RelativeLayout>
 
