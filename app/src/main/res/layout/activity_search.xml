@@ -14,8 +14,8 @@
         android:textSize="@dimen/button_name_text_size"
         android:theme="@style/PlaylistMakerActivitySettingHeader" />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
@@ -35,14 +35,13 @@
             android:id="@+id/btnClear"
             android:layout_width="@dimen/button_margin"
             android:layout_height="@dimen/button_margin"
-            android:layout_alignEnd="@id/editText"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/button_margin"
+            android:layout_gravity="end"
+            android:layout_margin="@dimen/cancelBtnMargin"
             android:clickable="true"
-            android:visibility="gone"
+            android:visibility="visible"
             android:theme="@style/PlaylistMakerActivitySearchCancelBtn"/>
 
-    </RelativeLayout>
+    </FrameLayout>
 
 
 </LinearLayout>

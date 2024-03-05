@@ -8,6 +8,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var editText: EditText
@@ -32,7 +33,11 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                buttonClear.visibility = if (s?.isNotBlank() == true) View.VISIBLE else View.GONE
+                if (s?.isNotBlank() == true) {
+                    buttonClear.isVisible = true
+                } else {
+                    buttonClear.isVisible = false
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
