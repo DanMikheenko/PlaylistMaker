@@ -12,7 +12,11 @@ import androidx.core.view.isVisible
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var editText: EditText
-    private val KEY_EDIT_TEXT = "editTextValue"
+
+    companion object {
+        const val KEY_EDIT_TEXT = "editTextValue"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
