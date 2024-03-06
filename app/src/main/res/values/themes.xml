@@ -3,7 +3,26 @@
     <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:background">@color/main_activity_background</item>
     </style>
 
-    <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
+    <style name="PlaylistMakerActivitySetting" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="android:colorPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="PlaylistMakerActivitySettingHeader" parent="PlaylistMakerActivitySetting">
+        <item name="drawableStartCompat">@drawable/ic_arrow</item>
+    </style>
+
+    <style name="PlaylistMakerActivitySearch">
+        <item name="android:background">@drawable/edit_text_rounded_corners_light</item>
+        <item name="android:hint">@string/editTextHint</item>
+        <item name="drawableStartCompat">@drawable/ic_magnifier_light</item>
+    </style>
+    <style name="PlaylistMakerActivitySearchCancelBtn">
+        <item name="android:src">@drawable/ic_cancel_btn_light</item>
+    </style>
+
 </resources>

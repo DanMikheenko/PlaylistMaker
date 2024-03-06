@@ -5,90 +5,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-
     <TextView
+        style="@style/SettingActivityTextViewStyle"
         android:id="@+id/home_button"
-        android:layout_width="wrap_content"
-        android:layout_height="56dp"
-        android:layout_gravity="center_vertical"
-        android:fontFamily="@font/buttonnamefont"
-        android:gravity="center_vertical"
         android:text="@string/setting_button_text"
-        android:textColor="@color/black"
         android:textSize="22sp"
-        app:iconGravity="textEnd"
-        app:iconTint="@color/black"
-        android:paddingStart="@dimen/setting_activity_button_padding_start"
         android:drawablePadding="12dp"
         android:layout_marginBottom="24dp"
-        app:drawableStartCompat="@drawable/ic_arrow"
-        tools:ignore="RtlSymmetry" />
+        android:theme="@style/PlaylistMakerActivitySettingHeader"
+        android:textColor="?android:textColor"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_activity_button_height">
+        android:layout_height="@dimen/setting_activity_button_height"
+        >
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:fontFamily="@font/buttonnamefont"
-            android:paddingStart="@dimen/setting_activity_button_padding_start"
             android:text="@string/dark_theme"
-            android:textColor="@color/black"
-            android:textSize="@dimen/setting_activity_button_text_size"
-            tools:ignore="RtlSymmetry" />
+            tools:ignore="RtlSymmetry"
+            style="@style/SettingActivityTextViewStyle"
+            android:theme="@style/PlaylistMakerActivitySetting"
+            android:textColor="?android:textColor"/>
+
 
         <Switch
+            android:id="@+id/themeSwitch"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_activity_button_height"
-        android:layout_gravity="center_vertical"
+        android:id="@+id/shareTextView"
         android:drawableEnd="@drawable/ic_share"
-        android:fontFamily="@font/buttonnamefont"
-        android:gravity="center_vertical"
-        android:paddingStart="@dimen/setting_activity_button_padding_start"
-        android:paddingEnd="@dimen/setting_activity_button_padding_end"
         android:text="@string/share"
-        android:textColor="@color/black"
-        android:textSize="@dimen/setting_activity_button_text_size"
-        app:iconGravity="textEnd"
-        app:iconTint="@color/black" />
+        style="@style/SettingActivityTextViewStyle"
+        android:theme="@style/PlaylistMakerActivitySetting"
+        android:textColor="?android:textColor"
+        />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_activity_button_height"
-        android:layout_gravity="center_vertical"
+        android:id="@+id/writeToSpprtTextView"
         android:drawableEnd="@drawable/ic_support"
-        android:fontFamily="@font/buttonnamefont"
-        android:gravity="center_vertical"
-        android:paddingStart="@dimen/setting_activity_button_padding_start"
-        android:paddingEnd="@dimen/setting_activity_button_padding_end"
         android:text="@string/write_to_support"
-        android:textColor="@color/black"
-        android:textSize="@dimen/setting_activity_button_text_size"
-        app:iconGravity="textEnd"
-        app:iconTint="@color/black" />
+        style="@style/SettingActivityTextViewStyle"
+        android:theme="@style/PlaylistMakerActivitySetting"
+        android:textColor="?android:textColor" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_activity_button_height"
-        android:layout_gravity="center_vertical"
+        android:id="@+id/readAgreementTextView"
         android:drawableEnd="@drawable/arrow_right"
-        android:fontFamily="@font/buttonnamefont"
-        android:gravity="center_vertical"
-        android:paddingStart="@dimen/setting_activity_button_padding_start"
-        android:paddingEnd="@dimen/setting_activity_button_padding_end"
         android:text="@string/user_agreement"
-        android:textColor="@color/black"
-        android:textSize="@dimen/setting_activity_button_text_size"
-        app:iconGravity="textEnd"
-        app:iconTint="@color/black" />
+        style="@style/SettingActivityTextViewStyle"
+        android:theme="@style/PlaylistMakerActivitySetting"
+        android:textColor="?android:textColor"
+        />
 
 
 </LinearLayout>

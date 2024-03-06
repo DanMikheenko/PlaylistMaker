@@ -12,4 +12,9 @@
     <dimen name="setting_activity_button_padding_end">12dp</dimen>
     <dimen name="margin_between_buttons">6dp</dimen>
     <dimen name="top_bottom_button_margin">12dp</dimen>
+    <dimen name="editTextSize">16sp</dimen>
+    <dimen name="editTextLayoutHeight">36dp</dimen>
+    <dimen name="cancelBtnLayoutSize">24dp</dimen>
+    <dimen name="editTextDrawablePadding">10dp</dimen>
+    <dimen name="cancelBtnMargin">26dp</dimen>
 </resources>
