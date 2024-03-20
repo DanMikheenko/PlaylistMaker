@@ -38,8 +38,8 @@
             android:layout_gravity="end"
             android:layout_margin="@dimen/cancelBtnMargin"
             android:clickable="true"
-            android:visibility="visible"
-            android:theme="@style/PlaylistMakerActivitySearchCancelBtn"/>
+            android:theme="@style/PlaylistMakerActivitySearchCancelBtn"
+            android:visibility="visible" />
 
     </FrameLayout>
 
@@ -47,7 +47,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
 </LinearLayout>
