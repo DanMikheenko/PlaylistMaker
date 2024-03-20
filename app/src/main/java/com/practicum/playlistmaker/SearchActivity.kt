@@ -10,7 +10,6 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var editText: EditText
@@ -27,8 +26,6 @@ class SearchActivity : AppCompatActivity() {
 
         val homeButton = findViewById<View>(R.id.searchTextView)
         homeButton.setOnClickListener {
-            Glide.get(this).clearMemory()
-            Glide.get(this).clearDiskCache()
             finish()
         }
         val buttonClear = findViewById<View>(R.id.btnClear)
