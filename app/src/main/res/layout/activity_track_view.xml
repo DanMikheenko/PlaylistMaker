@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="@dimen/track_view_height"
     android:layout_marginHorizontal="@dimen/button_margin"
     android:clickable="true">
 
     <ImageView
         android:id="@+id/trackImage"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="@dimen/track_view_image_size"
+        android:layout_height="@dimen/track_view_image_size"
         android:layout_marginEnd="@dimen/button_margin"
         android:layout_gravity="center" />
 
