@@ -29,7 +29,9 @@
             android:drawablePadding="@dimen/editTextDrawablePadding"
             android:inputType="text"
             android:theme="@style/PlaylistMakerActivitySearch"
-            app:iconPadding="@dimen/icon_pudding" />
+            app:iconPadding="@dimen/icon_pudding"
+            android:imeOptions="actionDone"
+            android:singleLine="true"/>
 
         <ImageView
             android:id="@+id/btnClear"

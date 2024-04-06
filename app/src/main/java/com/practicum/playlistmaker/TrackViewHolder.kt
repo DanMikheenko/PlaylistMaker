@@ -18,7 +18,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         Glide.with(trackImage).load(model.artworkUrl100).centerCrop().transform(RoundedCorners(10))
             .placeholder(R.drawable.track_placeholder).error(R.drawable.track_placeholder).into(trackImage)
         artistName.text = model.artistName
-        trackTime.text = model.trackTime
+        trackTime.text = model.formattedDuration()
     }
 
 }
