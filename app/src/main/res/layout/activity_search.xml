@@ -44,6 +44,11 @@
             android:visibility="visible" />
 
     </FrameLayout>
+    <include layout="@layout/activity_nothing_found_plchldr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/placeholder_layout"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

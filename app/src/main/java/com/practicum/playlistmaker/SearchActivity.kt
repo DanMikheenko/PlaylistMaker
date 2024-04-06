@@ -8,6 +8,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -86,15 +87,15 @@ class SearchActivity : AppCompatActivity() {
         }
 
 
-
     }
 
     private fun resetSearchText() {
         editText.text.clear()
     }
 
-    private fun search(request : String){
+    private fun search(request: String) {
         val call = trackService.search(request)
+        val placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
         call.enqueue(object : Callback<TrackResponse> {
             override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
                 if (response.isSuccessful) {
@@ -103,8 +104,9 @@ class SearchActivity : AppCompatActivity() {
                         tracks.addAll(musicTracks)
                         trackAdapter.notifyDataSetChanged()
                     }
-                } else {
-                    // Обработка ошибок
+                    if (tracks.isEmpty()){
+                        placeholderLayout.visibility = View.VISIBLE
+                    }
                 }
             }
 
@@ -115,6 +117,7 @@ class SearchActivity : AppCompatActivity() {
 
 
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
 
         val currentText = editText.text.toString()

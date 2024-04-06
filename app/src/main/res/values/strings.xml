@@ -14,4 +14,5 @@
     <string name="messageToSupportTeam">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="userAgreementURI">https://yandex.ru/legal/practicum_offer/</string>
     <string name="editTextHint">Поиск</string>
+    <string name="nothingFound">Ничего не нашлось</string>
 </resources>

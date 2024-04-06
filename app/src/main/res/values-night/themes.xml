@@ -28,4 +28,8 @@
     <style name="PlaylistMakerActivitySearchCancelBtn">
         <item name="android:src">@drawable/ic_cancel_btn_dark</item>
     </style>
+    <style name="NothingFoundPlaceholderStyle">
+        <item name="android:src">@drawable/nothing_found_placeholder_dark</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>
