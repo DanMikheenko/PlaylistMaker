@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -55,7 +54,7 @@ class SearchActivity : AppCompatActivity() {
             tracks.clear()
         }
 
-        val updateBtn = findViewById<Button>(R.id.updateRequestBtn)
+        val updateBtn = findViewById<View>(R.id.updateRequestBtn)
         updateBtn.setOnClickListener{
             search(lastFailedRequest)
             trackAdapter.notifyDataSetChanged()
