@@ -49,7 +49,11 @@
         android:layout_height="match_parent"
         android:id="@+id/placeholder_layout"
         android:visibility="gone"/>
-
+    <include layout="@layout/activity_connection_error_plchldr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/connection_error_placeholder"
+        android:visibility="gone"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

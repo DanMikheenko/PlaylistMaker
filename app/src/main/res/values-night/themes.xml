@@ -32,4 +32,11 @@
         <item name="android:src">@drawable/nothing_found_placeholder_dark</item>
         <item name="android:textColor">@color/white</item>
     </style>
+    <style name="ConnectionErrorPlaceHolderStyle">
+        <item name="android:src">@drawable/connection_error_dark</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="ConnectionErrRefreshButtonTheme">
+        <item name="buttonStyle">@style/ConnectionErrRefreshButtonDarkStyle</item>
+    </style>
 </resources>

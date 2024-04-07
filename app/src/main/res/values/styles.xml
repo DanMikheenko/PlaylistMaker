@@ -36,4 +36,13 @@
         <item name="android:layout_height">@dimen/editTextLayoutHeight</item>
     </style>
     <style name="TrackTextViewStyle"/>
+
+    <style name="ConnectionErrRefreshButtonLightStyle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/rounded_button_background_light</item>
+    </style>
+    <style name="ConnectionErrRefreshButtonDarkStyle">
+        <item name="android:textColor">@color/icon_color</item>
+        <item name="android:background">@drawable/rounded_button_background_dark</item>
+    </style>
 </resources>

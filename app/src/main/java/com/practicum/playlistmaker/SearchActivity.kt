@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -21,16 +22,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 class SearchActivity : AppCompatActivity() {
     private val itunesBaseUrl = "https://itunes.apple.com"
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(itunesBaseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    private val retrofit =
+        Retrofit.Builder().baseUrl(itunesBaseUrl).addConverterFactory(GsonConverterFactory.create())
+            .build()
 
     private val trackService = retrofit.create(ITunesSearchAPI::class.java)
     private val tracks = ArrayList<Track>()
     val trackAdapter = TrackAdapter(tracks)
 
     private lateinit var editText: EditText
+
+    private var lastFailedRequest = ""
 
     companion object {
         const val KEY_EDIT_TEXT = "editTextValue"
@@ -52,6 +54,14 @@ class SearchActivity : AppCompatActivity() {
             hideKeyboard()
             tracks.clear()
         }
+
+        val updateBtn = findViewById<Button>(R.id.updateRequestBtn)
+        updateBtn.setOnClickListener{
+            search(lastFailedRequest)
+            trackAdapter.notifyDataSetChanged()
+        }
+
+
 
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -96,6 +106,8 @@ class SearchActivity : AppCompatActivity() {
     private fun search(request: String) {
         val call = trackService.search(request)
         val placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
+        val connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
+        connErrPlaceholder.visibility = View.GONE
         call.enqueue(object : Callback<TrackResponse> {
             override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
                 if (response.isSuccessful) {
@@ -104,7 +116,7 @@ class SearchActivity : AppCompatActivity() {
                         tracks.addAll(musicTracks)
                         trackAdapter.notifyDataSetChanged()
                     }
-                    if (tracks.isEmpty()){
+                    if (tracks.isEmpty()) {
                         placeholderLayout.visibility = View.VISIBLE
                     }
                 }
@@ -112,6 +124,8 @@ class SearchActivity : AppCompatActivity() {
 
 
             override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                connErrPlaceholder.visibility = View.VISIBLE
+                lastFailedRequest = request
             }
         })
 
@@ -129,33 +143,4 @@ class SearchActivity : AppCompatActivity() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
-
-//        forecaService.getLocations("Bearer $token", queryInput.text.toString())
-//            .enqueue(object : Callback<LocationsResponse> {
-//                override fun onResponse(call: Call<LocationsResponse>,
-//                                        response: Response<LocationsResponse>) {
-//                    when (response.code()) {
-//                        200 -> {
-//                            if (response.body()?.locations?.isNotEmpty() == true) {
-//                                locations.clear()
-//                                locations.addAll(response.body()?.locations!!)
-//                                adapter.notifyDataSetChanged()
-//                                showMessage("", "")
-//                            } else {
-//                                showMessage(getString(R.string.nothing_found), "")
-//                            }
-//
-//                        }
-//                        401 -> authenticate()
-//                        else -> showMessage(getString(R.string.something_went_wrong), response.code().toString())
-//                    }
-//
-//                }
-//
-//                override fun onFailure(call: Call<LocationsResponse>, t: Throwable) {
-//                    showMessage(getString(R.string.something_went_wrong), t.message.toString())
-//                }
-//
-//            })
-//    }
 }

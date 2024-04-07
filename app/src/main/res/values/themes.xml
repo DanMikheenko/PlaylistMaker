@@ -29,4 +29,12 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="ConnectionErrorPlaceHolderStyle">
+        <item name="android:src">@drawable/connection_error_light</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="ConnectionErrRefreshButtonTheme">
+        <item name="buttonStyle">@style/ConnectionErrRefreshButtonLightStyle</item>
+    </style>
+
 </resources>
