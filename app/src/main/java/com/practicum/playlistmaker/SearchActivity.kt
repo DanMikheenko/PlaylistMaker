@@ -100,6 +100,11 @@ class SearchActivity : AppCompatActivity() {
 
     private fun resetSearchText() {
         editText.text.clear()
+        val placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
+        val connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
+        placeholderLayout.visibility = View.GONE
+        connErrPlaceholder.visibility = View.GONE
+
     }
 
     private fun search(request: String) {
