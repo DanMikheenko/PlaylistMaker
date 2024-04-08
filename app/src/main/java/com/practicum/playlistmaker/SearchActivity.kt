@@ -87,6 +87,11 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.adapter = trackAdapter
 
         editText.setOnEditorActionListener { _, actionId, _ ->
+            tracks.clear()
+            val placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
+            val connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
+            placeholderLayout.visibility = View.GONE
+            connErrPlaceholder.visibility = View.GONE
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 search(editText.text.toString())
                 trackAdapter.notifyDataSetChanged()
@@ -108,6 +113,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun search(request: String) {
+
         val call = trackService.search(request)
         val placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
         val connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
