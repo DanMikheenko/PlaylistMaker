@@ -15,10 +15,15 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(model: Track) {
         trackName.text = model.trackName
-        Glide.with(trackImage).load(model.artworkUrl100).centerCrop().transform(RoundedCorners(10))
-            .placeholder(R.drawable.track_placeholder).error(R.drawable.track_placeholder).into(trackImage)
+        Glide.with(trackImage)
+            .load(model.artworkUrl100)
+            .centerCrop()
+            .transform(RoundedCorners(10))
+            .placeholder(R.drawable.track_placeholder_image)
+            .error(R.drawable.track_placeholder_image)
+            .into(trackImage)
         artistName.text = model.artistName
-        trackTime.text = model.trackTime
+        trackTime.text = model.formattedDuration()
     }
 
 }

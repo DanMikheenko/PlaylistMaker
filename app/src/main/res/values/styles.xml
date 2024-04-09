@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources >
+<resources>
 
     <style name="MainActivityButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">match_parent</item>
@@ -35,8 +35,15 @@
         <item name="android:textSize">@dimen/editTextSize</item>
         <item name="android:layout_height">@dimen/editTextLayoutHeight</item>
     </style>
+    <style name="TrackTextViewStyle"/>
 
-    <style name="TrackTextViewStyle">
+    <style name="Button.LightTheme" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/rounded_button_background_light</item>
+    </style>
 
+    <style name="Button.DarkTheme" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/icon_color</item>
+        <item name="android:background">@drawable/rounded_button_background_dark</item>
     </style>
 </resources>

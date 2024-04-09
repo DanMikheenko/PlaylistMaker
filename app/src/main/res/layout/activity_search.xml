@@ -27,7 +27,10 @@
             android:layout_marginEnd="@dimen/button_margin"
             android:layout_marginBottom="@dimen/button_margin"
             android:drawablePadding="@dimen/editTextDrawablePadding"
+            android:imeOptions="actionDone"
             android:inputType="text"
+            android:singleLine="true"
+            android:textCursorDrawable="@color/cursor_color"
             android:theme="@style/PlaylistMakerActivitySearch"
             app:iconPadding="@dimen/icon_pudding" />
 
@@ -42,6 +45,20 @@
             android:visibility="visible" />
 
     </FrameLayout>
+
+    <include
+        android:id="@+id/placeholder_layout"
+        layout="@layout/activity_nothing_found_plchldr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/connection_error_placeholder"
+        layout="@layout/activity_connection_error_plchldr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
