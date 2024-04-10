@@ -39,6 +39,13 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@drawable/rounded_button_background_light</item>
     </style>
+    <style name="SearchHistoryTheme">
+        <item name="android:background">@color/white</item>
+    </style>
+    <style name="SearchHistoryHeaderTheme">
+        <item name="android:textColor">@color/icon_color</item>
+    </style>
+
 
 
 </resources>

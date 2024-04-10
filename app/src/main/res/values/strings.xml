@@ -18,4 +18,6 @@
     <string name="connectionError">Проблемы со связью</string>
     <string name="checkConnection">Загрузка не удалась. Проверьте подключение к интеренету</string>
     <string name="refresh">Обновить</string>
+    <string name="search_history_header">Вы искали</string>
+    <string name="clear_history_button_header">Очистить историю</string>
 </resources>
