@@ -10,13 +10,14 @@ class SearchHistory(val sharedPreferences: SharedPreferences) {
     }
 
     private fun saveTracksToHistory(tracks: LinkedList<Track>) {
-        val jsonTracks = Gson().toJson(tracks)
+        val gson = Gson()
+        val jsonTracks = gson.toJson(tracks)
         sharedPreferences.edit()
             .putString(SEARCH_HISTORY, jsonTracks)
             .apply()
     }
 
-    private fun readSearchHistory(): LinkedList<Track> {
+    fun readSearchHistory(): LinkedList<Track> {
         val jsonTracks = sharedPreferences
             .getString(SEARCH_HISTORY, "")
         if (jsonTracks.isNullOrEmpty()) return LinkedList<Track>()
@@ -25,19 +26,26 @@ class SearchHistory(val sharedPreferences: SharedPreferences) {
     }
 
     fun addNewTrackToHistory(track: Track) {
-        for (item in readSearchHistory()) {
-            if (item.trackId == track.trackId) {
-                readSearchHistory().remove(item)
-                readSearchHistory().addFirst(track)
-            } else {
-                readSearchHistory().add(track)
+        val storedTracks = readSearchHistory()
+        if (storedTracks.isEmpty()){
+            val tracks = LinkedList<Track>()
+            tracks.addFirst(track)
+            saveTracksToHistory(tracks)
+        }else{
+            val newLinkedList = LinkedList<Track>()
+            for (item in storedTracks) {
+                if (item.trackId != track.trackId) {
+                    newLinkedList.addFirst(item)
+                }
             }
+            newLinkedList.addFirst(track)
+            if (newLinkedList.count() > 10) {
+                newLinkedList.removeLast()
+            }
+            saveTracksToHistory(newLinkedList)
 
-            if (readSearchHistory().count() > 10) {
-                readSearchHistory().removeLast()
-            }
         }
-        saveTracksToHistory(readSearchHistory())
+
     }
 
     fun clear() {

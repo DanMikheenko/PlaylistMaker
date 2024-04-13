@@ -32,7 +32,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var trackAdapter : TrackAdapter
     private lateinit var editText: EditText
     private var lastFailedRequest = ""
-    private lateinit var searchHistoryLinearLayout: LinearLayout
+    private lateinit var searchHistoryLinearLayout : LinearLayout
     private lateinit var searchHistory: SearchHistory
 
     companion object {
@@ -59,12 +59,21 @@ class SearchActivity : AppCompatActivity() {
 
         sharedPreferences = applicationContext.getSharedPreferences(
             PLAY_LIST_MAKER_SHARE_PREFERENCES, MODE_PRIVATE)
+
+        searchHistory = SearchHistory(sharedPreferences)
         trackAdapter = TrackAdapter(tracks, sharedPreferences)
         val updateBtn = findViewById<View>(R.id.updateRequestBtn)
         updateBtn.setOnClickListener {
             search(lastFailedRequest)
             trackAdapter.notifyDataSetChanged()
         }
+
+        val recyclerViewHistory = findViewById<RecyclerView>(R.id.searchHistoryRecyclerView)
+        recyclerViewHistory.adapter = TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
+        
+
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.adapter = trackAdapter
 
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -82,13 +91,34 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
+/*        editText.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (editText.hasFocus() && p0?.isEmpty() == true){
+                    if (!searchHistory.readSearchHistory().isEmpty()){
+                        recyclerView.visibility = View.GONE
+                        searchHistoryLinearLayout.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                TODO("Not yet implemented")
+            }
+
+        })*/
+
         if (savedInstanceState != null) {
             // Восстановить текст из сохраненного состояния
             val savedText = savedInstanceState.getString(KEY_EDIT_TEXT, "")
             editText.setText(savedText)
         }
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.adapter = trackAdapter
+
+
+
 
         editText.setOnEditorActionListener { _, actionId, _ ->
             tracks.clear()
@@ -103,6 +133,10 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
+
+
+
+
     }
 
     private fun resetSearchText() {
