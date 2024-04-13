@@ -20,10 +20,11 @@
         android:id="@+id/searchHistoryRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <TextView
-        android:id="@+id/updateRequestBtn"
+        android:id="@+id/clearHistoryBtn"
         android:layout_width="@dimen/clear_history_button_width"
         android:layout_height="@dimen/clear_history_button_height"
         android:layout_gravity="center"

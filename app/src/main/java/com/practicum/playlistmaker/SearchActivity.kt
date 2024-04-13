@@ -32,7 +32,6 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var trackAdapter : TrackAdapter
     private lateinit var editText: EditText
     private var lastFailedRequest = ""
-    private lateinit var searchHistoryLinearLayout : LinearLayout
     private lateinit var searchHistory: SearchHistory
 
     companion object {
@@ -91,26 +90,6 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
-/*        editText.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (editText.hasFocus() && p0?.isEmpty() == true){
-                    if (!searchHistory.readSearchHistory().isEmpty()){
-                        recyclerView.visibility = View.GONE
-                        searchHistoryLinearLayout.visibility = View.VISIBLE
-                    }
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                TODO("Not yet implemented")
-            }
-
-        })*/
-
         if (savedInstanceState != null) {
             // Восстановить текст из сохраненного состояния
             val savedText = savedInstanceState.getString(KEY_EDIT_TEXT, "")
@@ -143,6 +122,12 @@ class SearchActivity : AppCompatActivity() {
                 historyLayout.visibility = View.VISIBLE
             }
 
+        }
+
+        val clearHistory = findViewById<View>(R.id.clearHistoryBtn)
+        clearHistory.setOnClickListener {
+            searchHistory.clear()
+            recyclerViewHistory.adapter = TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
         }
 
 
