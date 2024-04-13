@@ -124,14 +124,25 @@ class SearchActivity : AppCompatActivity() {
             tracks.clear()
             val placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
             val connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
+            val historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
             placeholderLayout.visibility = View.GONE
             connErrPlaceholder.visibility = View.GONE
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                historyLayout.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
                 search(editText.text.toString())
                 trackAdapter.notifyDataSetChanged()
                 true
             }
             false
+        }
+        editText.setOnFocusChangeListener{view, hasFocus->
+            val historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
+            if (editText.hasFocus() && editText.text.isEmpty()){
+                recyclerView.visibility = View.GONE
+                historyLayout.visibility = View.VISIBLE
+            }
+
         }
 
 
