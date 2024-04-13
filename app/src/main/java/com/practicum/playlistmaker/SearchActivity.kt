@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -27,14 +28,16 @@ class SearchActivity : AppCompatActivity() {
 
     private val trackService = retrofit.create(ITunesSearchAPI::class.java)
     private val tracks = ArrayList<Track>()
-    val trackAdapter = TrackAdapter(tracks)
-
+    private lateinit var sharedPreferences : SharedPreferences
+    private lateinit var trackAdapter : TrackAdapter
     private lateinit var editText: EditText
-
     private var lastFailedRequest = ""
+    private lateinit var searchHistoryLinearLayout: LinearLayout
+    private lateinit var searchHistory: SearchHistory
 
     companion object {
         const val KEY_EDIT_TEXT = "editTextValue"
+        const val PLAY_LIST_MAKER_SHARE_PREFERENCES = "playListMakerSettings"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,13 +57,14 @@ class SearchActivity : AppCompatActivity() {
             tracks.clear()
         }
 
+        sharedPreferences = applicationContext.getSharedPreferences(
+            PLAY_LIST_MAKER_SHARE_PREFERENCES, MODE_PRIVATE)
+        trackAdapter = TrackAdapter(tracks, sharedPreferences)
         val updateBtn = findViewById<View>(R.id.updateRequestBtn)
-        updateBtn.setOnClickListener{
+        updateBtn.setOnClickListener {
             search(lastFailedRequest)
             trackAdapter.notifyDataSetChanged()
         }
-
-
 
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -99,8 +103,6 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
-
-
     }
 
     private fun resetSearchText() {
@@ -109,7 +111,6 @@ class SearchActivity : AppCompatActivity() {
         val connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
         placeholderLayout.visibility = View.GONE
         connErrPlaceholder.visibility = View.GONE
-
     }
 
     private fun search(request: String) {
