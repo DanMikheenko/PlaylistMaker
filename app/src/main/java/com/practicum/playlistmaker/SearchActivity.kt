@@ -117,7 +117,7 @@ class SearchActivity : AppCompatActivity() {
         }
         editText.setOnFocusChangeListener{view, hasFocus->
             val historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
-            if (editText.hasFocus() && editText.text.isEmpty()){
+            if (editText.hasFocus() && editText.text.isEmpty() && searchHistory.readSearchHistory().isNotEmpty()){
                 recyclerView.visibility = View.GONE
                 historyLayout.visibility = View.VISIBLE
             }
@@ -128,6 +128,8 @@ class SearchActivity : AppCompatActivity() {
         clearHistory.setOnClickListener {
             searchHistory.clear()
             recyclerViewHistory.adapter = TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
+            val historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
+            historyLayout.visibility = View.GONE
         }
 
 
