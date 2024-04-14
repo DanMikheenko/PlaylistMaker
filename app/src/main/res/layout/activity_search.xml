@@ -42,7 +42,7 @@
             android:layout_margin="@dimen/cancelBtnMargin"
             android:clickable="true"
             android:theme="@style/PlaylistMakerActivitySearchCancelBtn"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
     </FrameLayout>
 
