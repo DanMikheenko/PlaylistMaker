@@ -7,6 +7,7 @@ import java.util.LinkedList
 class SearchHistory(val sharedPreferences: SharedPreferences) {
     companion object {
         private const val SEARCH_HISTORY = "searchHistory"
+        private const val HISTORY_CAPACITY = 10
     }
 
     private fun saveTracksToHistory(tracks: LinkedList<Track>) {
@@ -39,7 +40,7 @@ class SearchHistory(val sharedPreferences: SharedPreferences) {
                 }
             }
             newLinkedList.addFirst(track)
-            if (newLinkedList.count() > 10) {
+            if (newLinkedList.count() > HISTORY_CAPACITY) {
                 newLinkedList.removeLast()
             }
             saveTracksToHistory(newLinkedList)
