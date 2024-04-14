@@ -6,7 +6,7 @@ import java.util.LinkedList
 
 class SearchHistory(val sharedPreferences: SharedPreferences) {
     companion object {
-        const val SEARCH_HISTORY = "searchHistory"
+        private const val SEARCH_HISTORY = "searchHistory"
     }
 
     private fun saveTracksToHistory(tracks: LinkedList<Track>) {
