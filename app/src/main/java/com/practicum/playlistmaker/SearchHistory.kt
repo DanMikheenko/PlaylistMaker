@@ -17,7 +17,7 @@ class SearchHistory(val sharedPreferences: SharedPreferences) {
             .apply()
     }
 
-    fun readSearchHistory(): LinkedList<Track> {
+    fun readSearchHistory(): List<Track> {
         val jsonTracks = sharedPreferences
             .getString(SEARCH_HISTORY, "")
         if (jsonTracks.isNullOrEmpty()) return LinkedList<Track>()
