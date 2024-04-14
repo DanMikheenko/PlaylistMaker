@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/trackLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="@dimen/track_view_height"
     android:layout_marginHorizontal="@dimen/button_margin"
@@ -10,8 +11,8 @@
         android:id="@+id/trackImage"
         android:layout_width="@dimen/track_view_image_size"
         android:layout_height="@dimen/track_view_image_size"
-        android:layout_marginEnd="@dimen/button_margin"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/button_margin" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -22,6 +23,7 @@
 
         <TextView
             android:id="@+id/trackName"
+            style="@style/TrackTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -31,8 +33,7 @@
             android:maxLines="1"
             android:textColor="?attr/colorOnPrimary"
             android:textSize="@dimen/editTextSize"
-            tools:text="A track name"
-            style="@style/TrackTextViewStyle"/>
+            tools:text="A track name" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,6 +67,7 @@
                 tools:text="25:00" />
         </LinearLayout>
     </LinearLayout>
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

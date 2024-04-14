@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -27,14 +28,15 @@ class SearchActivity : AppCompatActivity() {
 
     private val trackService = retrofit.create(ITunesSearchAPI::class.java)
     private val tracks = ArrayList<Track>()
-    val trackAdapter = TrackAdapter(tracks)
-
+    private lateinit var sharedPreferences : SharedPreferences
+    private lateinit var trackAdapter : TrackAdapter
     private lateinit var editText: EditText
-
     private var lastFailedRequest = ""
+    private lateinit var searchHistory: SearchHistory
 
     companion object {
         const val KEY_EDIT_TEXT = "editTextValue"
+        const val PLAY_LIST_MAKER_SHARE_PREFERENCES = "playListMakerSettings"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,13 +56,23 @@ class SearchActivity : AppCompatActivity() {
             tracks.clear()
         }
 
+        sharedPreferences = applicationContext.getSharedPreferences(
+            PLAY_LIST_MAKER_SHARE_PREFERENCES, MODE_PRIVATE)
+
+        searchHistory = SearchHistory(sharedPreferences)
+        trackAdapter = TrackAdapter(tracks, sharedPreferences)
         val updateBtn = findViewById<View>(R.id.updateRequestBtn)
-        updateBtn.setOnClickListener{
+        updateBtn.setOnClickListener {
             search(lastFailedRequest)
             trackAdapter.notifyDataSetChanged()
         }
 
+        val recyclerViewHistory = findViewById<RecyclerView>(R.id.searchHistoryRecyclerView)
+        recyclerViewHistory.adapter = TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
+        
 
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.adapter = trackAdapter
 
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -83,22 +95,44 @@ class SearchActivity : AppCompatActivity() {
             val savedText = savedInstanceState.getString(KEY_EDIT_TEXT, "")
             editText.setText(savedText)
         }
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.adapter = trackAdapter
+
+
+
 
         editText.setOnEditorActionListener { _, actionId, _ ->
             tracks.clear()
             val placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
             val connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
+            val historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
             placeholderLayout.visibility = View.GONE
             connErrPlaceholder.visibility = View.GONE
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                historyLayout.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
                 search(editText.text.toString())
                 trackAdapter.notifyDataSetChanged()
                 true
             }
             false
         }
+        editText.setOnFocusChangeListener{view, hasFocus->
+            val historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
+            if (editText.hasFocus() && editText.text.isEmpty() && searchHistory.readSearchHistory().isNotEmpty()){
+                recyclerView.visibility = View.GONE
+                historyLayout.visibility = View.VISIBLE
+            }
+
+        }
+
+        val clearHistory = findViewById<View>(R.id.clearHistoryBtn)
+        clearHistory.setOnClickListener {
+            searchHistory.clear()
+            recyclerViewHistory.adapter = TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
+            val historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
+            historyLayout.visibility = View.GONE
+        }
+
+
 
 
     }
@@ -109,7 +143,6 @@ class SearchActivity : AppCompatActivity() {
         val connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
         placeholderLayout.visibility = View.GONE
         connErrPlaceholder.visibility = View.GONE
-
     }
 
     private fun search(request: String) {
