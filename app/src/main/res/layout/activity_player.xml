@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/PlayerConstraintLayoutTheme"
-    tools:context=".Player">
+    tools:context=".PlayerActivity">
 
     <View
         android:id="@+id/leftPadding"
@@ -36,7 +36,7 @@
         app:layout_constraintTop_toBottomOf="@id/playerBackButton" />
 
     <ImageView
-        android:id="@+id/trackImage"
+        android:id="@+id/trackImagePlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/player_image_placeholder"
@@ -49,11 +49,11 @@
         android:id="@+id/bottonImagePadding"
         android:layout_width="match_parent"
         android:layout_height="@dimen/standard_player_padding_20dp"
-        app:layout_constraintEnd_toEndOf="@id/trackImage"
-        app:layout_constraintTop_toBottomOf="@id/trackImage" />
+        app:layout_constraintEnd_toEndOf="@id/trackImagePlayer"
+        app:layout_constraintTop_toBottomOf="@id/trackImagePlayer" />
 
     <TextView
-        android:id="@+id/albName"
+        android:id="@+id/trackNamePlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Yesterday (Remastered 2009)"
@@ -66,7 +66,7 @@
         android:id="@+id/bottomAlbNamePadding"
         android:layout_width="match_parent"
         android:layout_height="@dimen/standard_player_padding_20dp"
-        app:layout_constraintTop_toBottomOf="@id/albName" />
+        app:layout_constraintTop_toBottomOf="@id/trackNamePlayer" />
 
     <TextView
         android:id="@+id/trackAuthor"

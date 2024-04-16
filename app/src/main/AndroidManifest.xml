@@ -15,8 +15,9 @@
         android:supportsRtl="true"
         tools:targetApi="31">
         <activity
-            android:name=".Player"
-            android:exported="false" />
+            android:name=".PlayerActivity"
+            android:exported="false"
+            android:theme="@style/PlaylistMakerActivitySetting"/>
         <activity
             android:name=".connection_error_plchldr"
             android:exported="false" />
