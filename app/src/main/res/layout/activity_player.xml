@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/PlayerConstraintLayoutTheme"
     tools:context=".Player">
 
     <View
@@ -23,8 +24,8 @@
         android:id="@+id/playerBackButton"
         android:layout_width="match_parent"
         android:layout_height="@dimen/setting_activity_button_height"
-        android:drawableStart="@drawable/ic_arrow"
         android:paddingStart="@dimen/editTextDrawablePadding"
+        android:theme="@style/backButtonPlayerTheme"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,6 +58,7 @@
         android:layout_height="wrap_content"
         android:text="Yesterday (Remastered 2009)"
         android:textSize="@dimen/button_name_text_size"
+        android:theme="@style/PlayerTextViewTheme"
         app:layout_constraintStart_toEndOf="@id/leftPadding"
         app:layout_constraintTop_toBottomOf="@id/bottonImagePadding" />
 
@@ -72,6 +74,7 @@
         android:layout_height="wrap_content"
         android:text="The Beatles"
         android:textSize="@dimen/author_name_text_size_14sp"
+        android:theme="@style/PlayerTextViewTheme"
         app:layout_constraintStart_toEndOf="@id/leftPadding"
         app:layout_constraintTop_toBottomOf="@id/bottomAlbNamePadding" />
 
@@ -101,12 +104,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <ImageButton
+        <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            app:srcCompat="@drawable/play_button" />
+            android:theme="@style/PlayButtonTheme" />
 
         <View
             android:layout_width="0dp"
@@ -154,6 +156,7 @@
             android:layout_marginStart="@dimen/editTextDrawablePadding"
             android:text="Длительность"
             android:textSize="@dimen/author_name_text_size_14sp"
+            android:theme="@style/TrackInfoHeaderTheme"
             app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
 
         <View
@@ -168,6 +171,7 @@
             android:layout_marginEnd="@dimen/editTextDrawablePadding"
             android:text="5:35"
             android:textSize="@dimen/author_name_text_size_14sp"
+            android:theme="@style/PlayerTextViewTheme"
             app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
 
     </LinearLayout>
@@ -189,6 +193,7 @@
             android:layout_marginStart="@dimen/editTextDrawablePadding"
             android:text="Альбом"
             android:textSize="@dimen/author_name_text_size_14sp"
+            android:theme="@style/TrackInfoHeaderTheme"
             app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
 
         <View
@@ -203,6 +208,7 @@
             android:layout_marginEnd="@dimen/editTextDrawablePadding"
             android:text="Yesterday (Remastered 2009)"
             android:textSize="@dimen/author_name_text_size_14sp"
+            android:theme="@style/PlayerTextViewTheme"
             app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
 
     </LinearLayout>
@@ -224,6 +230,7 @@
             android:layout_marginStart="@dimen/editTextDrawablePadding"
             android:text="Год"
             android:textSize="@dimen/author_name_text_size_14sp"
+            android:theme="@style/TrackInfoHeaderTheme"
             app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
 
         <View
@@ -238,8 +245,10 @@
             android:layout_marginEnd="@dimen/editTextDrawablePadding"
             android:text="1965"
             android:textSize="@dimen/author_name_text_size_14sp"
+            android:theme="@style/PlayerTextViewTheme"
             app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/genreLinearLayout"
         android:layout_width="wrap_content"
@@ -257,6 +266,7 @@
             android:layout_marginStart="@dimen/editTextDrawablePadding"
             android:text="Жанр"
             android:textSize="@dimen/author_name_text_size_14sp"
+            android:theme="@style/TrackInfoHeaderTheme"
             app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
 
         <View
@@ -271,8 +281,10 @@
             android:layout_marginEnd="@dimen/editTextDrawablePadding"
             android:text="Rock"
             android:textSize="@dimen/author_name_text_size_14sp"
+            android:theme="@style/PlayerTextViewTheme"
             app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/countryLinearLayout"
         android:layout_width="wrap_content"
@@ -290,6 +302,7 @@
             android:layout_marginStart="@dimen/editTextDrawablePadding"
             android:text="Страна"
             android:textSize="@dimen/author_name_text_size_14sp"
+            android:theme="@style/TrackInfoHeaderTheme"
             app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
 
         <View
@@ -304,6 +317,7 @@
             android:layout_marginEnd="@dimen/editTextDrawablePadding"
             android:text="Великобритания"
             android:textSize="@dimen/author_name_text_size_14sp"
+            android:theme="@style/PlayerTextViewTheme"
             app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
     </LinearLayout>
 
