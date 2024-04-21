@@ -64,6 +64,10 @@
         <item name="android:background">@drawable/play_button</item>
     </style>
 
+    <style name="AddToPlaylistButtonTheme">
+        <item name="android:background">@drawable/circle_button_background</item>
+    </style>
+
 
 
 </resources>

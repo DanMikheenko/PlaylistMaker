@@ -67,4 +67,8 @@
         <item name="android:background">@drawable/play_button_dark</item>
     </style>
 
+    <style name="AddToPlaylistButtonTheme">
+        <item name="android:drawableTint">@color/white</item>
+    </style>
+
 </resources>
