@@ -9,6 +9,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 
 class PlayerActivity() : AppCompatActivity() {
+    companion object{
+        private const val SELECTED_TRACK = "selectedTrack"
+    }
 
     lateinit var track: Track
 
@@ -16,7 +19,7 @@ class PlayerActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
         val intent = intent
-        var selectedTrackJson = intent.getStringExtra("selectedTrack")
+        var selectedTrackJson = intent.getStringExtra(SELECTED_TRACK)
         track = Gson().fromJson<Track>(selectedTrackJson, Track::class.java)
 
         val trackImagePlayer: ImageView = findViewById(R.id.trackImagePlayer)
