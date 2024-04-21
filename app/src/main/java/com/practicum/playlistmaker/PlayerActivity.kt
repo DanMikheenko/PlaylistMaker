@@ -13,7 +13,7 @@ class PlayerActivity() : AppCompatActivity() {
         private const val SELECTED_TRACK = "selectedTrack"
     }
 
-    lateinit var track: Track
+    private lateinit var track: Track
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
