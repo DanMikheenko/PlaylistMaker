@@ -58,6 +58,7 @@
         android:layout_height="wrap_content"
         android:text="Yesterday (Remastered 2009)"
         android:textSize="@dimen/button_name_text_size"
+        android:maxLines="1"
         android:theme="@style/PlayerTextViewTheme"
         app:layout_constraintStart_toEndOf="@id/leftPadding"
         app:layout_constraintTop_toBottomOf="@id/bottonImagePadding" />
@@ -73,6 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="The Beatles"
+        android:maxLines="1"
         android:textSize="@dimen/author_name_text_size_14sp"
         android:theme="@style/PlayerTextViewTheme"
         app:layout_constraintStart_toEndOf="@id/leftPadding"
