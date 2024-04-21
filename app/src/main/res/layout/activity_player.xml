@@ -67,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:text="Yesterday (Remastered 2009)"
+            tools:text="Yesterday (Remastered 2009)"
             android:textSize="@dimen/button_name_text_size"
             android:theme="@style/PlayerTextViewTheme"
             app:layout_constraintStart_toEndOf="@id/leftPadding"
@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:text="The Beatles"
+            tools:text="The Beatles"
             android:textSize="@dimen/author_name_text_size_14sp"
             android:theme="@style/PlayerTextViewTheme"
             app:layout_constraintStart_toEndOf="@id/leftPadding"
@@ -142,7 +142,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="0:00"
+            tools:text="0:00"
             android:textSize="@dimen/author_name_text_size_14sp"
             app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
 
@@ -182,7 +182,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/editTextDrawablePadding"
-                android:text="5:35"
+                tools:text="5:35"
                 android:textSize="@dimen/author_name_text_size_14sp"
                 android:theme="@style/PlayerTextViewTheme"
                 app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
@@ -219,7 +219,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/editTextDrawablePadding"
-                android:text="Yesterday (Remastered 2009)"
+                tools:text="Yesterday (Remastered 2009)"
                 android:textSize="@dimen/author_name_text_size_14sp"
                 android:theme="@style/PlayerTextViewTheme"
                 app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
@@ -256,7 +256,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/editTextDrawablePadding"
-                android:text="1965"
+                tools:text="1965"
                 android:textSize="@dimen/author_name_text_size_14sp"
                 android:theme="@style/PlayerTextViewTheme"
                 app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
@@ -292,7 +292,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/editTextDrawablePadding"
-                android:text="Rock"
+                tools:text="Rock"
                 android:textSize="@dimen/author_name_text_size_14sp"
                 android:theme="@style/PlayerTextViewTheme"
                 app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
@@ -328,7 +328,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/editTextDrawablePadding"
-                android:text="Великобритания"
+                tools:text="Великобритания"
                 android:textSize="@dimen/author_name_text_size_14sp"
                 android:theme="@style/PlayerTextViewTheme"
                 app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
