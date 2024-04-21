@@ -41,7 +41,7 @@ class PlayerActivity() : AppCompatActivity() {
         albNameTextView.text = track.collectionName
 
         val yearTextView = findViewById<TextView>(R.id.yearTextView)
-        yearTextView.text = track.releaseDate
+        yearTextView.text = track.releaseDate?.substring(0,4)
 
         val genreTextView = findViewById<TextView>(R.id.genreTextView)
         genreTextView.text = track.primaryGenreName
