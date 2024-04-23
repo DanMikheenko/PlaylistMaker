@@ -108,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/editTextDrawablePadding"
-                android:src="@drawable/add_to_playlist"/>
+                android:src="@drawable/add_to_playlist" />
 
             <View
                 android:layout_width="0dp"
@@ -215,6 +215,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/editTextDrawablePadding"
+                android:maxLines="1"
                 android:textSize="@dimen/author_name_text_size_14sp"
                 android:theme="@style/PlayerTextViewTheme"
                 app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout"
@@ -329,7 +330,5 @@
                 app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout"
                 tools:text="Великобритания" />
         </LinearLayout>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
