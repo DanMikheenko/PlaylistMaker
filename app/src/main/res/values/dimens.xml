@@ -12,4 +12,5 @@
     <dimen name="clear_history_button_width">148dp</dimen>
     <dimen name="standard_player_padding_20dp">20dp</dimen>
     <dimen name="author_name_text_size_14sp">14sp</dimen>
+    <dimen name="margin_40dp">40dp</dimen>
 </resources>

@@ -64,8 +64,10 @@
 
         <TextView
             android:id="@+id/trackNamePlayer"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/editTextDrawablePadding"
+            android:layout_marginEnd="@dimen/editTextDrawablePadding"
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="@dimen/button_name_text_size"
@@ -82,8 +84,10 @@
 
         <TextView
             android:id="@+id/trackAuthor"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/editTextDrawablePadding"
+            android:layout_marginEnd="@dimen/editTextDrawablePadding"
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="@dimen/author_name_text_size_14sp"
@@ -189,9 +193,9 @@
 
         <LinearLayout
             android:id="@+id/trackAlbLinearLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:gravity="center"
+            android:gravity="start"
             android:orientation="horizontal"
             app:layout_constraintEnd_toStartOf="@id/rightPadding"
             app:layout_constraintStart_toEndOf="@id/leftPadding"
@@ -199,29 +203,31 @@
 
             <TextView
                 android:id="@+id/albNameHeaderTextView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="@dimen/editTextDrawablePadding"
+                android:layout_marginEnd="@dimen/margin_40dp"
+                android:maxLines="1"
                 android:text="Альбом"
                 android:textSize="@dimen/author_name_text_size_14sp"
                 android:theme="@style/TrackInfoHeaderTheme"
-                app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
+                app:layout_constraintStart_toStartOf="@id/trackAlbLinearLayout"
+                app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout"
+                app:layout_constraintWidth_percent="1" />
 
             <TextView
                 android:id="@+id/albNameTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/editTextDrawablePadding"
                 android:ellipsize="end"
+                android:gravity="end"
                 android:maxLines="1"
                 android:textSize="@dimen/author_name_text_size_14sp"
                 android:theme="@style/PlayerTextViewTheme"
-                app:layout_constraintTop_toBottomOf="@id/mediaButtonsLinearLayout"
+                app:layout_constraintWidth_percent="0.5"
                 tools:text="Yesterday (Remastered 2009)" />
 
         </LinearLayout>
