@@ -51,5 +51,24 @@
     <style name="SearchHistoryHeaderTheme">
         <item name="android:textColor">@color/white</item>
     </style>
+    <style name="backButtonPlayerTheme">
+        <item name="android:drawableStart">@drawable/ic_arrow_dark_mode</item>
+    </style>
+    <style name="PlayerConstraintLayoutTheme">
+        <item name="android:background">@color/icon_color</item>
+    </style>
+    <style name="PlayerTextViewTheme">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="GrayButtonTheme">
+        <item name="colorButtonNormal">@color/icon_color</item>
+    </style>
+    <style name="PlayButtonTheme">
+        <item name="android:background">@drawable/play_button_dark</item>
+    </style>
+
+    <style name="AddToPlaylistButtonTheme">
+        <item name="android:drawableTint">@color/white</item>
+    </style>
 
 </resources>

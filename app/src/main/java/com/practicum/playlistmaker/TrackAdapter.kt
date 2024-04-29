@@ -1,12 +1,16 @@
 package com.practicum.playlistmaker
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 
-class TrackAdapter(private val tracks: List<Track>, private val sharedPreferences: SharedPreferences) :
-    RecyclerView.Adapter<TrackViewHolder>() {
+class TrackAdapter(
+    private val tracks: List<Track>,
+    private val sharedPreferences: SharedPreferences,
+) : RecyclerView.Adapter<TrackViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view =
@@ -23,6 +27,10 @@ class TrackAdapter(private val tracks: List<Track>, private val sharedPreference
         val searchHistory = SearchHistory(sharedPreferences)
         holder.itemView.setOnClickListener {
             searchHistory.addNewTrackToHistory(tracks[position])
+            val playerIntent = Intent(holder.itemView.context, PlayerActivity::class.java)
+            playerIntent.putExtra("selectedTrack", Gson().toJson(tracks[position]))
+            holder.itemView.context.startActivity(playerIntent)
         }
+
     }
 }

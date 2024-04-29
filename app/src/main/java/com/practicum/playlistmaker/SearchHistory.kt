@@ -44,7 +44,6 @@ class SearchHistory(val sharedPreferences: SharedPreferences) {
                 newLinkedList.removeLast()
             }
             saveTracksToHistory(newLinkedList)
-
         }
 
     }

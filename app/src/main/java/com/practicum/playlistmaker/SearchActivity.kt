@@ -28,8 +28,8 @@ class SearchActivity : AppCompatActivity() {
 
     private val trackService = retrofit.create(ITunesSearchAPI::class.java)
     private val tracks = ArrayList<Track>()
-    private lateinit var sharedPreferences : SharedPreferences
-    private lateinit var trackAdapter : TrackAdapter
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var trackAdapter: TrackAdapter
     private lateinit var editText: EditText
     private var lastFailedRequest = ""
     private lateinit var searchHistory: SearchHistory
@@ -57,7 +57,8 @@ class SearchActivity : AppCompatActivity() {
         }
 
         sharedPreferences = applicationContext.getSharedPreferences(
-            PLAY_LIST_MAKER_SHARE_PREFERENCES, MODE_PRIVATE)
+            PLAY_LIST_MAKER_SHARE_PREFERENCES, MODE_PRIVATE
+        )
 
         searchHistory = SearchHistory(sharedPreferences)
         trackAdapter = TrackAdapter(tracks, sharedPreferences)
@@ -68,11 +69,14 @@ class SearchActivity : AppCompatActivity() {
         }
 
         val recyclerViewHistory = findViewById<RecyclerView>(R.id.searchHistoryRecyclerView)
-        recyclerViewHistory.adapter = TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
-        
+        recyclerViewHistory.adapter =
+            TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
+
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = trackAdapter
+
+        recyclerView
 
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -115,9 +119,11 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
-        editText.setOnFocusChangeListener{view, hasFocus->
+        editText.setOnFocusChangeListener { view, hasFocus ->
             val historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
-            if (editText.hasFocus() && editText.text.isEmpty() && searchHistory.readSearchHistory().isNotEmpty()){
+            if (editText.hasFocus() && editText.text.isEmpty() && searchHistory.readSearchHistory()
+                    .isNotEmpty()
+            ) {
                 recyclerView.visibility = View.GONE
                 historyLayout.visibility = View.VISIBLE
             }
@@ -127,12 +133,11 @@ class SearchActivity : AppCompatActivity() {
         val clearHistory = findViewById<View>(R.id.clearHistoryBtn)
         clearHistory.setOnClickListener {
             searchHistory.clear()
-            recyclerViewHistory.adapter = TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
+            recyclerViewHistory.adapter =
+                TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
             val historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
             historyLayout.visibility = View.GONE
         }
-
-
 
 
     }
@@ -186,4 +191,5 @@ class SearchActivity : AppCompatActivity() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
+
 }
