@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -95,8 +96,6 @@ class SearchActivity : AppCompatActivity() {
                 historyLayout.visibility = View.GONE
                 searchDebounce()
                 recyclerView.visibility = View.VISIBLE
-
-
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -165,9 +164,12 @@ class SearchActivity : AppCompatActivity() {
         val call = trackService.search(editText.text.toString())
         val placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
         val connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        progressBar.visibility = View.VISIBLE
         connErrPlaceholder.visibility = View.GONE
         call.enqueue(object : Callback<TrackResponse> {
             override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
+                progressBar.visibility = View.GONE
                 if (response.isSuccessful) {
                     val musicTracks = response.body()?.results
                     if (musicTracks != null) {
