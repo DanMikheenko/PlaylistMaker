@@ -36,7 +36,7 @@ class PlayerActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
         val intent = intent
-        var selectedTrackJson = intent.getStringExtra(SELECTED_TRACK)
+        val selectedTrackJson = intent.getStringExtra(SELECTED_TRACK)
         track = Gson().fromJson<Track>(selectedTrackJson, Track::class.java)
         play = findViewById(R.id.playButton)
         preparePlayer()
@@ -66,7 +66,7 @@ class PlayerActivity() : AppCompatActivity() {
         albNameTextView.text = track.collectionName
 
         val yearTextView = findViewById<TextView>(R.id.yearTextView)
-        yearTextView.text = track.releaseDate?.substring(0, 4)
+        yearTextView.text = track.releaseDate.substring(0, 4)
 
         val genreTextView = findViewById<TextView>(R.id.genreTextView)
         genreTextView.text = track.primaryGenreName
