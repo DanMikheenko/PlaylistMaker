@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker
 
+import android.content.res.Configuration
 import android.icu.text.SimpleDateFormat
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -29,7 +30,6 @@ class PlayerActivity() : AppCompatActivity() {
     private lateinit var play: TextView
     private var mainThreadHandler: Handler? = Handler(Looper.getMainLooper())
     private lateinit var secondsLeftTextView: TextView
-    private var remainingSeconds: Int = 0
     private var runnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,7 +96,20 @@ class PlayerActivity() : AppCompatActivity() {
 
     private fun startPlayer() {
         mediaPlayer.start()
-        play.setBackgroundResource(R.drawable.pause_button_image_dark_theme)
+
+        // Проверка текущей темы
+        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                play.setBackgroundResource(R.drawable.pause_button_image_dark_theme)
+            }
+            Configuration.UI_MODE_NIGHT_NO -> {
+                play.setBackgroundResource(R.drawable.pause_button_image_light_theme)
+            }
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> {
+                play.setBackgroundResource(R.drawable.pause_button_image_light_theme)
+            }
+        }
+
         runnable = object : Runnable {
             override fun run() {
                 secondsLeftTextView.text = SimpleDateFormat(
@@ -112,7 +125,18 @@ class PlayerActivity() : AppCompatActivity() {
 
     private fun pausePlayer() {
         mediaPlayer.pause()
-        play.setBackgroundResource(R.drawable.play_button_dark)
+
+        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                play.setBackgroundResource(R.drawable.play_button_dark)
+            }
+            Configuration.UI_MODE_NIGHT_NO -> {
+                play.setBackgroundResource(R.drawable.play_button)
+            }
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> {
+                play.setBackgroundResource(R.drawable.play_button)
+            }
+        }
         playerState = STATE_PAUSED
     }
 
@@ -136,5 +160,6 @@ class PlayerActivity() : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.release()
+        runnable?.let { mainThreadHandler?.removeCallbacks(it) }
     }
 }
