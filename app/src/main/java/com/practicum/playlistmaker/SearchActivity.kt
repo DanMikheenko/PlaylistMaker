@@ -114,6 +114,7 @@ class SearchActivity : AppCompatActivity() {
 
         editText.setOnEditorActionListener { _, actionId, _ ->
             tracks.clear()
+            handler.removeCallbacks(searchRunnable)
             val placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
             val connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
             val historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
