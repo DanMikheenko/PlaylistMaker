@@ -89,7 +89,6 @@ class PlayerActivity() : AppCompatActivity() {
             playerState = STATE_PREPARED
         }
         mediaPlayer.setOnCompletionListener {
-            play.text = "PLAY"
             playerState = STATE_PREPARED
         }
     }
