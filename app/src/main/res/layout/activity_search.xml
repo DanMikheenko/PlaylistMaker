@@ -26,13 +26,14 @@
             android:layout_marginTop="@dimen/button_margin"
             android:layout_marginEnd="@dimen/button_margin"
             android:layout_marginBottom="@dimen/button_margin"
-            android:drawablePadding="@dimen/editTextDrawablePadding"
+            android:drawablePadding="@dimen/_10dp"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:singleLine="true"
             android:textCursorDrawable="@color/cursor_color"
             android:theme="@style/PlaylistMakerActivitySearch"
-            app:iconPadding="@dimen/icon_pudding" />
+            app:iconPadding="@dimen/icon_pudding"
+            />
 
         <ImageView
             android:id="@+id/btnClear"

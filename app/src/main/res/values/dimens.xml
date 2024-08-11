@@ -13,4 +13,5 @@
     <dimen name="standard_player_padding_20dp">20dp</dimen>
     <dimen name="author_name_text_size_14sp">14sp</dimen>
     <dimen name="margin_40dp">40dp</dimen>
+    <dimen name="_10dp">10dp</dimen>
 </resources>
