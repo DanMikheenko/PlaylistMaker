@@ -169,6 +169,7 @@ class SearchActivity : AppCompatActivity() {
         connErrPlaceholder.visibility = View.GONE
         call.enqueue(object : Callback<TrackResponse> {
             override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
+                tracks.clear()
                 progressBar.visibility = View.GONE
                 if (response.isSuccessful) {
                     val musicTracks = response.body()?.results
@@ -206,6 +207,8 @@ class SearchActivity : AppCompatActivity() {
     private val searchRunnable = Runnable { search() }
     private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
+        tracks.clear()
+        trackAdapter.notifyDataSetChanged()
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
