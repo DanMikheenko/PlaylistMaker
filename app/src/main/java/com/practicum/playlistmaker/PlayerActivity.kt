@@ -90,6 +90,19 @@ class PlayerActivity() : AppCompatActivity() {
         }
         mediaPlayer.setOnCompletionListener {
             playerState = STATE_PREPARED
+            runnable?.let { mainThreadHandler?.removeCallbacks(it) }
+            secondsLeftTextView.text = "00:00"
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                Configuration.UI_MODE_NIGHT_YES -> {
+                    play.setBackgroundResource(R.drawable.play_button_dark)
+                }
+                Configuration.UI_MODE_NIGHT_NO -> {
+                    play.setBackgroundResource(R.drawable.play_button)
+                }
+                Configuration.UI_MODE_NIGHT_UNDEFINED -> {
+                    play.setBackgroundResource(R.drawable.play_button)
+                }
+            }
         }
     }
 
