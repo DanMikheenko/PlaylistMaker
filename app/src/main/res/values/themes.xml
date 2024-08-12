@@ -67,6 +67,10 @@
         <item name="android:background">@drawable/circle_button_background</item>
     </style>
 
+    <style name="SearchActivityBackgroundStyle">
+        <item name="android:background">@color/white</item>
+    </style>
+
 
 
 </resources>

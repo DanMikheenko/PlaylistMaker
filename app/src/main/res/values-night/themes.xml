@@ -70,4 +70,8 @@
         <item name="android:drawableTint">@color/white</item>
     </style>
 
+    <style name="SearchActivityBackgroundStyle">
+        <item name="android:background">@color/icon_color</item>
+    </style>
+
 </resources>
