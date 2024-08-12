@@ -37,6 +37,10 @@ class SearchActivity : AppCompatActivity() {
     private var lastFailedRequest = ""
     private lateinit var searchHistory: SearchHistory
     private lateinit var recyclerViewHistory : RecyclerView
+    private lateinit var historyLayout : LinearLayout
+    private lateinit var placeholderLayout : LinearLayout
+    private lateinit var connErrPlaceholder : LinearLayout
+    private lateinit var recyclerView : RecyclerView
 
     companion object {
         const val KEY_EDIT_TEXT = "editTextValue"
@@ -79,8 +83,11 @@ class SearchActivity : AppCompatActivity() {
         recyclerViewHistory.adapter =
             TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
 
+        historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
+        placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
+        connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = trackAdapter
 
         editText.addTextChangedListener(object : TextWatcher {
@@ -131,14 +138,15 @@ class SearchActivity : AppCompatActivity() {
             false
         }
         editText.setOnFocusChangeListener { view, hasFocus ->
-            val historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
             if (editText.hasFocus() && editText.text.isEmpty() && searchHistory.readSearchHistory()
                     .isNotEmpty()
             ) {
+                handler.removeCallbacks(searchRunnable)
+                placeholderLayout.visibility = View.GONE
+                connErrPlaceholder.visibility = View.GONE
                 recyclerView.visibility = View.GONE
                 historyLayout.visibility = View.VISIBLE
             }
-
         }
 
         val clearHistory = findViewById<View>(R.id.clearHistoryBtn)
@@ -146,7 +154,6 @@ class SearchActivity : AppCompatActivity() {
             searchHistory.clear()
             recyclerViewHistory.adapter =
                 TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
-            val historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
             historyLayout.visibility = View.GONE
         }
 
@@ -155,13 +162,21 @@ class SearchActivity : AppCompatActivity() {
 
     private fun resetSearchText() {
         editText.text.clear()
-        val placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
-        val connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
+        handler.removeCallbacks(searchRunnable)
         placeholderLayout.visibility = View.GONE
         connErrPlaceholder.visibility = View.GONE
+        historyLayout.visibility = View.VISIBLE
     }
 
     private fun search() {
+        if (editText.text.toString().isEmpty()){
+            handler.removeCallbacks(searchRunnable)
+            placeholderLayout.visibility = View.GONE
+            connErrPlaceholder.visibility = View.GONE
+            recyclerView.visibility = View.GONE
+            historyLayout.visibility = View.VISIBLE
+            return
+        }
 
         val call = trackService.search(editText.text.toString())
         val placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
@@ -218,7 +233,6 @@ class SearchActivity : AppCompatActivity() {
         super.onResume()
         recyclerViewHistory.adapter =
             TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
-
         recyclerViewHistory.adapter?.notifyDataSetChanged()
     }
 
