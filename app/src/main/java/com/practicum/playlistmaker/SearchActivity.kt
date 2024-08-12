@@ -36,6 +36,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var editText: EditText
     private var lastFailedRequest = ""
     private lateinit var searchHistory: SearchHistory
+    private lateinit var recyclerViewHistory : RecyclerView
 
     companion object {
         const val KEY_EDIT_TEXT = "editTextValue"
@@ -74,7 +75,7 @@ class SearchActivity : AppCompatActivity() {
             trackAdapter.notifyDataSetChanged()
         }
 
-        val recyclerViewHistory = findViewById<RecyclerView>(R.id.searchHistoryRecyclerView)
+        recyclerViewHistory = findViewById<RecyclerView>(R.id.searchHistoryRecyclerView)
         recyclerViewHistory.adapter =
             TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
 
@@ -211,6 +212,14 @@ class SearchActivity : AppCompatActivity() {
         tracks.clear()
         trackAdapter.notifyDataSetChanged()
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        recyclerViewHistory.adapter =
+            TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
+
+        recyclerViewHistory.adapter?.notifyDataSetChanged()
     }
 
 }
