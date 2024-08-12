@@ -71,6 +71,12 @@
         <item name="android:background">@color/white</item>
     </style>
 
+    <style name="SwitchTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here -->
+        <item name="colorSwitchThumbNormal">@color/thumb_off_color</item>
+        <item name="colorControlActivated">@color/thumb_on_color</item>
+    </style>
+
 
 
 </resources>
