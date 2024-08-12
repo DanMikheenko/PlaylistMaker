@@ -19,7 +19,6 @@
 
     <style name="PlaylistMakerActivitySearch">
         <!-- Customize your dark theme here. -->
-        <item name="android:background">@drawable/edit_text_rounded_corners_dark</item>
         <item name="android:hint">@string/editTextHint</item>
         <item name="android:textColorHint">@color/black</item>
         <item name="drawableStartCompat">@drawable/ic_magnifier_dark</item>
