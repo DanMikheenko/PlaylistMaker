@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:theme="@style/SearchActivityBackgroundStyle">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/searchTextView"
@@ -33,8 +32,7 @@
             android:singleLine="true"
             android:textCursorDrawable="@color/cursor_color"
             android:theme="@style/PlaylistMakerActivitySearch"
-            app:iconPadding="@dimen/icon_pudding"
-            />
+            app:iconPadding="@dimen/icon_pudding" />
 
         <ImageView
             android:id="@+id/btnClear"
@@ -42,6 +40,7 @@
             android:layout_height="@dimen/button_margin"
             android:layout_gravity="end"
             android:layout_margin="@dimen/cancelBtnMargin"
+            android:background="@android:color/transparent"
             android:clickable="true"
             android:theme="@style/PlaylistMakerActivitySearchCancelBtn"
             android:visibility="gone" />
@@ -61,28 +60,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
+
     <include
         android:id="@+id/search_history_layout"
         layout="@layout/activity_search_history"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_gravity="center"
-        android:indeterminateTint="#3772E7"
         android:layout_marginTop="120dp"
+        android:indeterminateTint="#3772E7"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:visibility="visible"/>
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
 </LinearLayout>
