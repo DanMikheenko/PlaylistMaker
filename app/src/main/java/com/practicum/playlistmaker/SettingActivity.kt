@@ -1,7 +1,9 @@
 package com.practicum.playlistmaker
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Switch
@@ -11,6 +13,11 @@ class SettingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = Color.BLACK
+            window.navigationBarColor = Color.BLACK
+        }
 
         val homeButton = findViewById<View>(R.id.home_button)
         homeButton.setOnClickListener{

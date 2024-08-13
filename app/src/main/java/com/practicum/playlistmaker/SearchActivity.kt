@@ -2,6 +2,8 @@ package com.practicum.playlistmaker
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -54,6 +56,12 @@ class SearchActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = Color.BLACK
+            window.navigationBarColor = Color.BLACK
+        }
+
         editText = findViewById(R.id.editText)
 
         val homeButton = findViewById<View>(R.id.searchTextView)
