@@ -3,6 +3,8 @@ package com.practicum.playlistmaker
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -10,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -33,16 +36,25 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var editText: EditText
     private var lastFailedRequest = ""
     private lateinit var searchHistory: SearchHistory
+    private lateinit var recyclerViewHistory : RecyclerView
+    private lateinit var historyLayout : LinearLayout
+    private lateinit var placeholderLayout : LinearLayout
+    private lateinit var connErrPlaceholder : LinearLayout
+    private lateinit var recyclerView : RecyclerView
 
     companion object {
         const val KEY_EDIT_TEXT = "editTextValue"
         const val PLAY_LIST_MAKER_SHARE_PREFERENCES = "playListMakerSettings"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
+
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
         editText = findViewById(R.id.editText)
 
         val homeButton = findViewById<View>(R.id.searchTextView)
@@ -64,19 +76,20 @@ class SearchActivity : AppCompatActivity() {
         trackAdapter = TrackAdapter(tracks, sharedPreferences)
         val updateBtn = findViewById<View>(R.id.updateRequestBtn)
         updateBtn.setOnClickListener {
-            search(lastFailedRequest)
+            search()
             trackAdapter.notifyDataSetChanged()
         }
 
-        val recyclerViewHistory = findViewById<RecyclerView>(R.id.searchHistoryRecyclerView)
+        recyclerViewHistory = findViewById<RecyclerView>(R.id.searchHistoryRecyclerView)
         recyclerViewHistory.adapter =
             TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
 
+        historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
+        placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
+        connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = trackAdapter
-
-        recyclerView
 
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -88,6 +101,10 @@ class SearchActivity : AppCompatActivity() {
                 } else {
                     buttonClear.isVisible = false
                 }
+                val historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
+                historyLayout.visibility = View.GONE
+                searchDebounce()
+                recyclerView.visibility = View.VISIBLE
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -98,6 +115,7 @@ class SearchActivity : AppCompatActivity() {
             // Восстановить текст из сохраненного состояния
             val savedText = savedInstanceState.getString(KEY_EDIT_TEXT, "")
             editText.setText(savedText)
+
         }
 
 
@@ -105,6 +123,7 @@ class SearchActivity : AppCompatActivity() {
 
         editText.setOnEditorActionListener { _, actionId, _ ->
             tracks.clear()
+            handler.removeCallbacks(searchRunnable)
             val placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
             val connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
             val historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
@@ -113,21 +132,22 @@ class SearchActivity : AppCompatActivity() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 historyLayout.visibility = View.GONE
                 recyclerView.visibility = View.VISIBLE
-                search(editText.text.toString())
+                search()
                 trackAdapter.notifyDataSetChanged()
                 true
             }
             false
         }
         editText.setOnFocusChangeListener { view, hasFocus ->
-            val historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
             if (editText.hasFocus() && editText.text.isEmpty() && searchHistory.readSearchHistory()
                     .isNotEmpty()
             ) {
+                handler.removeCallbacks(searchRunnable)
+                placeholderLayout.visibility = View.GONE
+                connErrPlaceholder.visibility = View.GONE
                 recyclerView.visibility = View.GONE
                 historyLayout.visibility = View.VISIBLE
             }
-
         }
 
         val clearHistory = findViewById<View>(R.id.clearHistoryBtn)
@@ -135,7 +155,6 @@ class SearchActivity : AppCompatActivity() {
             searchHistory.clear()
             recyclerViewHistory.adapter =
                 TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
-            val historyLayout = findViewById<LinearLayout>(R.id.search_history_layout)
             historyLayout.visibility = View.GONE
         }
 
@@ -144,20 +163,32 @@ class SearchActivity : AppCompatActivity() {
 
     private fun resetSearchText() {
         editText.text.clear()
-        val placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
-        val connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
+        handler.removeCallbacks(searchRunnable)
         placeholderLayout.visibility = View.GONE
         connErrPlaceholder.visibility = View.GONE
+        historyLayout.visibility = View.VISIBLE
     }
 
-    private fun search(request: String) {
+    private fun search() {
+        if (editText.text.toString().isEmpty()){
+            handler.removeCallbacks(searchRunnable)
+            placeholderLayout.visibility = View.GONE
+            connErrPlaceholder.visibility = View.GONE
+            recyclerView.visibility = View.GONE
+            historyLayout.visibility = View.VISIBLE
+            return
+        }
 
-        val call = trackService.search(request)
+        val call = trackService.search(editText.text.toString())
         val placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
         val connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        progressBar.visibility = View.VISIBLE
         connErrPlaceholder.visibility = View.GONE
         call.enqueue(object : Callback<TrackResponse> {
             override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
+                tracks.clear()
+                progressBar.visibility = View.GONE
                 if (response.isSuccessful) {
                     val musicTracks = response.body()?.results
                     if (musicTracks != null) {
@@ -173,7 +204,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                 connErrPlaceholder.visibility = View.VISIBLE
-                lastFailedRequest = request
+                lastFailedRequest = editText.text.toString()
             }
         })
 
@@ -190,6 +221,20 @@ class SearchActivity : AppCompatActivity() {
     private fun hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+    }
+    private val searchRunnable = Runnable { search() }
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        tracks.clear()
+        trackAdapter.notifyDataSetChanged()
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        recyclerViewHistory.adapter =
+            TrackAdapter(searchHistory.readSearchHistory(), sharedPreferences)
+        recyclerViewHistory.adapter?.notifyDataSetChanged()
     }
 
 }

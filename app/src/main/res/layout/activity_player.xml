@@ -122,6 +122,7 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/playButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="@style/PlayButtonTheme" />
@@ -143,6 +144,7 @@
             android:id="@+id/trackTimeMillisTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/button_margin"
             android:gravity="center"
             android:text="0:00"
             android:textSize="@dimen/author_name_text_size_14sp"
@@ -157,6 +159,7 @@
         <LinearLayout
             android:id="@+id/trackDurationLinearLayout"
             android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/button_margin"
             android:layout_height="32dp"
             android:gravity="center"
             android:orientation="horizontal"
