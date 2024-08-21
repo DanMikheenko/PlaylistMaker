@@ -93,6 +93,8 @@ class PlayerActivity() : AppCompatActivity() {
             playerState = STATE_PREPARED
             runnable?.let { mainThreadHandler?.removeCallbacks(it) }
             secondsLeftTextView.text = "00:00"
+
+            //todo: Это должно решаться через Resource Qualifiers
             when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
                 Configuration.UI_MODE_NIGHT_YES -> {
                     play.setBackgroundResource(R.drawable.play_button_dark)
@@ -110,6 +112,7 @@ class PlayerActivity() : AppCompatActivity() {
     private fun startPlayer() {
         mediaPlayer.start()
 
+        //todo: Это должно решаться через Resource Qualifiers
         // Проверка текущей темы
         when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> {
