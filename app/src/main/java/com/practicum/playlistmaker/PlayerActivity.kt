@@ -1,10 +1,8 @@
 package com.practicum.playlistmaker
 
 import android.content.res.Configuration
-import android.graphics.Color
 import android.icu.text.SimpleDateFormat
 import android.media.MediaPlayer
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -37,11 +35,6 @@ class PlayerActivity() : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = Color.BLACK
-            window.navigationBarColor = Color.BLACK
-        }
 
         val intent = intent
         val selectedTrackJson = intent.getStringExtra(SELECTED_TRACK)

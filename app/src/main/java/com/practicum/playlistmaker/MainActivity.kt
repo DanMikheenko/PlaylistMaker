@@ -1,8 +1,6 @@
 package com.practicum.playlistmaker
 
 import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
@@ -13,11 +11,6 @@ class MainActivity : AppCompatActivity(), OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = Color.BLACK
-            window.navigationBarColor = Color.BLACK
-        }
 
         val searchButton = findViewById<Button>(R.id.search_button)
         searchButton.setOnClickListener{

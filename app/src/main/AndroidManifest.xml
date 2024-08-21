@@ -19,12 +19,6 @@
             android:exported="false"
             android:theme="@style/PlaylistMakerActivitySetting"/>
         <activity
-            android:name=".connection_error_plchldr"
-            android:exported="false" />
-        <activity
-            android:name=".nothing_found_plchldr"
-            android:exported="false" />
-        <activity
             android:name=".MediaActivity"
             android:exported="false"
             android:theme="@style/PlaylistMakerActivitySetting" />
