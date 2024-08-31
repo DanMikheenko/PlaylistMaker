@@ -1,14 +1,14 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.domain.models
 
 data class Track(
     var trackId: String,
     var trackName: String,
-    var previewUrl: String,
+    var previewUrl: String?,
     var artistName: String,
     var trackTimeMillis: String,
     var artworkUrl100: String,
     var collectionName: String,
-    var releaseDate: String,
+    var releaseDate: String?,
     var primaryGenreName: String,
     var country: String
 ) {

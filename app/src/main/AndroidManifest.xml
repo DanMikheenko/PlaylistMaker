@@ -15,26 +15,26 @@
         android:supportsRtl="true"
         tools:targetApi="31">
         <activity
-            android:name=".PlayerActivity"
+            android:name=".presentation.ui.PlayerActivity"
             android:exported="false"
             android:theme="@style/PlaylistMakerActivitySetting"/>
         <activity
-            android:name=".MediaActivity"
+            android:name=".presentation.ui.MediaActivity"
             android:exported="false"
             android:theme="@style/PlaylistMakerActivitySetting" />
         <activity
-            android:name=".TrackView"
+            android:name=".presentation.TrackView"
             android:exported="false" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".presentation.ui.SearchActivity"
             android:exported="false"
             android:theme="@style/PlaylistMakerActivitySetting" />
         <activity
-            android:name=".SettingActivity"
+            android:name=".presentation.ui.SettingActivity"
             android:exported="false"
             android:theme="@style/PlaylistMakerActivitySetting" />
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.ui.MainActivity"
             android:exported="true"
             android:theme="@style/Base.Theme.PlaylistMaker">
             <intent-filter>
