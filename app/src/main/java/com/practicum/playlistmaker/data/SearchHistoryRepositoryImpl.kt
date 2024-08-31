@@ -1,11 +1,14 @@
-package com.practicum.playlistmaker.presentation
+package com.practicum.playlistmaker.data
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.practicum.playlistmaker.domain.api.SearchHistoryRepository
 import com.practicum.playlistmaker.domain.models.Track
+
 import java.util.LinkedList
 
-class SearchHistory(val sharedPreferences: SharedPreferences) {
+class SearchHistoryRepositoryImpl(val sharedPreferences: SharedPreferences) :
+    SearchHistoryRepository {
     companion object {
         private const val SEARCH_HISTORY = "searchHistory"
         private const val HISTORY_CAPACITY = 10
@@ -19,7 +22,7 @@ class SearchHistory(val sharedPreferences: SharedPreferences) {
             .apply()
     }
 
-    fun readSearchHistory(): List<Track> {
+    override fun readSearchHistory(): List<Track> {
         val jsonTracks = sharedPreferences
             .getString(SEARCH_HISTORY, "")
         if (jsonTracks.isNullOrEmpty()) return LinkedList<Track>()
@@ -27,13 +30,13 @@ class SearchHistory(val sharedPreferences: SharedPreferences) {
 
     }
 
-    fun addNewTrackToHistory(track: Track) {
+    override fun addNewTrackToHistory(track: Track) {
         val storedTracks = readSearchHistory()
-        if (storedTracks.isEmpty()){
+        if (storedTracks.isEmpty()) {
             val tracks = LinkedList<Track>()
             tracks.addFirst(track)
             saveTracksToHistory(tracks)
-        }else{
+        } else {
             val newLinkedList = LinkedList<Track>()
             for (item in storedTracks) {
                 if (item.trackId != track.trackId) {
@@ -49,8 +52,7 @@ class SearchHistory(val sharedPreferences: SharedPreferences) {
 
     }
 
-    fun clear() {
+    override fun clear() {
         saveTracksToHistory(LinkedList<Track>())
     }
-
 }

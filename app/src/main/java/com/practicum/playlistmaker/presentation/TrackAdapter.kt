@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.practicum.playlistmaker.Creator
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.domain.models.Track
 import com.practicum.playlistmaker.presentation.ui.PlayerActivity
@@ -36,7 +37,7 @@ class TrackAdapter(
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
 
         holder.bind(tracks[position])
-        val searchHistory = SearchHistory(sharedPreferences)
+        val searchHistory = Creator.provideSearchHistoryInteractor(sharedPreferences)
         holder.itemView.setOnClickListener {
             if (clickDebounce()) {
                 searchHistory.addNewTrackToHistory(tracks[position])
