@@ -83,7 +83,7 @@ class SearchActivity : AppCompatActivity() {
         placeholderLayout = findViewById<LinearLayout>(R.id.placeholder_layout)
         connErrPlaceholder = findViewById<LinearLayout>(R.id.connection_error_placeholder)
 
-        historyLayout.visibility = View.VISIBLE
+
 
         recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = trackAdapter
@@ -137,8 +137,16 @@ class SearchActivity : AppCompatActivity() {
                 placeholderLayout.visibility = View.GONE
                 connErrPlaceholder.visibility = View.GONE
                 recyclerView.visibility = View.GONE
+                historyLayout.visibility = View.GONE
+            }
+            if (editText.hasFocus() && editText.text.isEmpty() && !isSearchHistoryEmpty()) {
+                handler.removeCallbacks(searchRunnable)
+                placeholderLayout.visibility = View.GONE
+                connErrPlaceholder.visibility = View.GONE
+                recyclerView.visibility = View.GONE
                 historyLayout.visibility = View.VISIBLE
             }
+
         }
 
         val clearHistory = findViewById<View>(R.id.clearHistoryBtn)
