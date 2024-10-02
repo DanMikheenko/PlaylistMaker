@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.presentation.ui
+package com.practicum.playlistmaker.settings.ui.activity
 
 import android.content.Intent
 import android.net.Uri
@@ -6,21 +6,27 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
-import com.practicum.playlistmaker.App
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.settings.ui.view_model.SettingsViewModel
 
 class SettingActivity : AppCompatActivity() {
+    private lateinit var viewModel: SettingsViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
 
+        viewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
+
         val homeButton = findViewById<View>(R.id.home_button)
-        homeButton.setOnClickListener{
+        homeButton.setOnClickListener {
             finish()
         }
 
         val shareTextView = findViewById<View>(R.id.shareTextView)
-        shareTextView.setOnClickListener{
+        shareTextView.setOnClickListener {
             share()
         }
 
@@ -34,14 +40,18 @@ class SettingActivity : AppCompatActivity() {
             readUserAgreement()
         }
 
-
         val themeSwitch = findViewById<Switch>(R.id.themeSwitch)
-        themeSwitch.isChecked = (applicationContext as App).isDarkThemeEnabled()
-        themeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            (applicationContext as App).switchTheme(isChecked)
+
+        viewModel.isDarkThemeEnabled().observe(this, Observer { isEnabled ->
+            themeSwitch.isChecked = isEnabled
+        })
+
+        themeSwitch.setOnCheckedChangeListener { _, isEnabled ->
+            viewModel.switchTheme(isEnabled)
         }
 
     }
+
     private fun share() {
 
         val shareIntent = Intent(Intent.ACTION_SEND)
@@ -55,7 +65,7 @@ class SettingActivity : AppCompatActivity() {
         startActivity(Intent.createChooser(shareIntent, "Поделиться приложением через..."))
     }
 
-    private fun writeToSupport(){
+    private fun writeToSupport() {
         val writeToSupportIntent = Intent(Intent.ACTION_SENDTO)
         writeToSupportIntent.data = Uri.parse("mailto:")
 
@@ -71,7 +81,7 @@ class SettingActivity : AppCompatActivity() {
         startActivity(writeToSupportIntent)
     }
 
-    private fun readUserAgreement(){
+    private fun readUserAgreement() {
         val readAgreementIntent = Intent(Intent.ACTION_VIEW)
         readAgreementIntent.data = Uri.parse(resources.getString(R.string.userAgreementURI))
         startActivity(readAgreementIntent)

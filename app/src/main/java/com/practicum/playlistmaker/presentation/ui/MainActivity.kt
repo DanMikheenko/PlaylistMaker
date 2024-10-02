@@ -7,6 +7,7 @@ import android.view.View.OnClickListener
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.settings.ui.activity.SettingActivity
 
 class MainActivity : AppCompatActivity(), OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
