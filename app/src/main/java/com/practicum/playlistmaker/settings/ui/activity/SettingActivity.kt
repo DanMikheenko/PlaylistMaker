@@ -1,7 +1,5 @@
 package com.practicum.playlistmaker.settings.ui.activity
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Switch
@@ -10,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.settings.ui.view_model.SettingsViewModel
+import com.practicum.playlistmaker.settings.ui.view_model.ViewModelFactory
 
 class SettingActivity : AppCompatActivity() {
     private lateinit var viewModel: SettingsViewModel
@@ -17,9 +16,14 @@ class SettingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
+        // Передаем ApplicationContext и ActivityContext в фабрику
+        val factory = ViewModelFactory(applicationContext, this)
 
-        viewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory).get(SettingsViewModel::class.java)
+        setUI()
+    }
 
+    private fun setUI() {
         val homeButton = findViewById<View>(R.id.home_button)
         homeButton.setOnClickListener {
             finish()
@@ -49,41 +53,17 @@ class SettingActivity : AppCompatActivity() {
         themeSwitch.setOnCheckedChangeListener { _, isEnabled ->
             viewModel.switchTheme(isEnabled)
         }
-
     }
 
     private fun share() {
-
-        val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.setType("text/plain")
-
-
-        val shareMessage = resources.getString(R.string.shareMessage)
-
-        shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
-
-        startActivity(Intent.createChooser(shareIntent, "Поделиться приложением через..."))
+        viewModel.shareApp()
     }
 
     private fun writeToSupport() {
-        val writeToSupportIntent = Intent(Intent.ACTION_SENDTO)
-        writeToSupportIntent.data = Uri.parse("mailto:")
-
-        val destinationEmailAdress = resources.getString(R.string.studentEmal)
-        writeToSupportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(destinationEmailAdress))
-
-        val message = resources.getString(R.string.messageToSupportTeam)
-        writeToSupportIntent.putExtra(Intent.EXTRA_TEXT, message)
-
-        val extraSubject = resources.getString(R.string.messageThemeToSupportTeam)
-        writeToSupportIntent.putExtra(Intent.EXTRA_SUBJECT, extraSubject)
-
-        startActivity(writeToSupportIntent)
+        viewModel.openSupport()
     }
 
     private fun readUserAgreement() {
-        val readAgreementIntent = Intent(Intent.ACTION_VIEW)
-        readAgreementIntent.data = Uri.parse(resources.getString(R.string.userAgreementURI))
-        startActivity(readAgreementIntent)
+        viewModel.openTerms()
     }
 }

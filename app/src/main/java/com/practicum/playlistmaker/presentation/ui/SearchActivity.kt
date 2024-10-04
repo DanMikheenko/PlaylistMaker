@@ -17,7 +17,7 @@ import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.playlistmaker.Creator
+import creator.Creator
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.domain.api.SearchHistoryInteractor
 import com.practicum.playlistmaker.domain.api.TracksInteractor
