@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import creator.Creator
+import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.settings.data.ThemeSettingsModel
 
 class SettingsViewModel(application: Context, activityContext: Context) : ViewModel() {
