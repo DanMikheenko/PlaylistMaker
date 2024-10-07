@@ -8,19 +8,21 @@ import android.os.Looper
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
-import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.player.domain.api.PlayerInteractor
+import com.practicum.playlistmaker.creator.Creator
+import com.practicum.playlistmaker.player.ui.view_model.PlayerState
+import com.practicum.playlistmaker.player.ui.view_model.PlayerViewModel
+import com.practicum.playlistmaker.player.ui.view_model.PlayerViewModelFactory
 import com.practicum.playlistmaker.search.domain.models.Track
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
-    private var playerState = STATE_DEFAULT
-    private lateinit var interactor: PlayerInteractor
+    private lateinit var viewModel: PlayerViewModel
     private lateinit var track: Track
     private lateinit var playButton: TextView
     private lateinit var secondsLeftTextView: TextView
@@ -31,12 +33,13 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
 
-        interactor = Creator.providePlayerInteractor()
-
         val intent = intent
         val selectedTrackJson = intent.getStringExtra(SELECTED_TRACK)
         track = Gson().fromJson(selectedTrackJson, Track::class.java)
 
+        val factory =
+            PlayerViewModelFactory(Creator.providePlayerInteractor(), track)
+        viewModel = ViewModelProvider(this, factory).get(PlayerViewModel::class.java)
         playButton = findViewById(R.id.playButton)
         secondsLeftTextView = findViewById(R.id.trackTimeMillisTextView)
 
@@ -72,22 +75,17 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun preparePlayer() {
-        interactor.preparePlayer(
-            track,
-            onPrepared = {
-                playButton.isEnabled = true
-            },
+        viewModel.preparePlayer(
+            onPrepared = { playButton.isEnabled = true },
             onCompletion = {
-                playerState = STATE_PREPARED
                 runnable?.let { mainThreadHandler?.removeCallbacks(it) }
                 secondsLeftTextView.text = "00:00"
                 updatePlayButtonBackground()
-            }
-        )
+            })
     }
 
     private fun startPlayer() {
-        interactor.startPlayer()
+        viewModel.startPlayer()
         updatePauseButtonBackground()
 
         runnable = object : Runnable {
@@ -95,26 +93,30 @@ class PlayerActivity : AppCompatActivity() {
                 secondsLeftTextView.text = SimpleDateFormat(
                     "mm:ss",
                     Locale.getDefault()
-                ).format(interactor.getCurrentPosition())
+                ).format(viewModel.getPlayerCurrentPosition())
                 mainThreadHandler?.postDelayed(this, 10)
             }
         }
         mainThreadHandler?.post(runnable!!)
-        playerState = STATE_PLAYING
     }
 
     private fun pausePlayer() {
-        interactor.pausePlayer()
+        viewModel.pausePlayer()
         updatePlayButtonBackground()
-        playerState = STATE_PAUSED
     }
 
     private fun playbackControl() {
-        when (playerState) {
-            STATE_PLAYING -> pausePlayer()
-            STATE_PREPARED, STATE_PAUSED -> startPlayer()
-            STATE_DEFAULT -> startPlayer()
+        var state : PlayerState
+        state = PlayerState.Default
+        viewModel.state.observe(this) { _state ->
+            state = _state
         }
+        when (state) {
+            PlayerState.Playing -> pausePlayer()
+            PlayerState.Prepared, PlayerState.Paused -> startPlayer()
+            PlayerState.Default -> startPlayer()
+        }
+
     }
 
     private fun updatePlayButtonBackground() {
@@ -156,15 +158,11 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        interactor.releasePlayer()
+        viewModel.releasePlayer()
         runnable?.let { mainThreadHandler?.removeCallbacks(it) }
     }
 
     companion object {
         private const val SELECTED_TRACK = "selectedTrack"
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
     }
 }
