@@ -33,4 +33,11 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository): Play
     override fun isPlaying(): Boolean {
         return playerRepository.isPlaying()
     }
+
+    override fun setOnPrepared(onPrepared: () -> Unit) {
+        playerRepository.setOnPrepared(onPrepared)
+    }
+    override fun setOnCompletion(onCompletion: () -> Unit){
+        playerRepository.setOnCompletion(onCompletion)
+    }
 }

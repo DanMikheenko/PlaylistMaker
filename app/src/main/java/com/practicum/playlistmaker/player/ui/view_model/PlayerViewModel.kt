@@ -5,6 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.practicum.playlistmaker.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
@@ -15,8 +21,15 @@ class PlayerViewModel(
     private val _state = MutableLiveData<PlayerState>()
     val state: LiveData<PlayerState> = _state
 
+    private val _playingTrackPosition = MutableLiveData<Int>()
+    val playingTrackPosition: LiveData<Int> = _playingTrackPosition
+
+    private var playbackJob: Job? = null
+
     init {
         _state.postValue(PlayerState.Default)
+
+
     }
 
     fun preparePlayer(
@@ -24,12 +37,20 @@ class PlayerViewModel(
         onCompletion: () -> Unit
     ) {
         playerInteractor.preparePlayer(track, onPrepared, onCompletion)
-        _state.postValue(PlayerState.Prepared)
+        playerInteractor.setOnPrepared {
+            _state.postValue(PlayerState.Prepared)
+        }
     }
 
     fun startPlayer() {
         playerInteractor.startPlayer()
         _state.postValue(PlayerState.Playing)
+        startTrackingPlayingTrackPosition()
+        playerInteractor.setOnCompletion {
+            stopTrackingPlayingTrackPosition()
+            _playingTrackPosition.postValue(0)
+            _state.postValue(PlayerState.Played)
+        }
     }
 
     fun pausePlayer(){
@@ -40,8 +61,29 @@ class PlayerViewModel(
     fun releasePlayer(){
         playerInteractor.releasePlayer()
         _state.postValue(PlayerState.Default)
+        stopTrackingPlayingTrackPosition()
     }
     fun getPlayerCurrentPosition() : Int{
         return playerInteractor.getCurrentPosition()
     }
+
+    fun startTrackingPlayingTrackPosition(){
+        playbackJob = CoroutineScope(Dispatchers.IO).launch{
+            withContext(Dispatchers.Main) {
+                while (true){
+                    delay(100)
+                    _playingTrackPosition.value = getPlayerCurrentPosition()
+                }
+            }
+        }
+    }
+    fun stopTrackingPlayingTrackPosition(){
+        playbackJob?.cancel()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        stopTrackingPlayingTrackPosition()
+    }
+
 }

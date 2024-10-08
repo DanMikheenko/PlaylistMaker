@@ -19,4 +19,7 @@ interface PlayerInteractor {
     fun getCurrentPosition(): Int
 
     fun isPlaying(): Boolean
+
+    fun setOnPrepared(onPrepared: () -> Unit)
+    fun setOnCompletion(onCompletion: () -> Unit)
 }

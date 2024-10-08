@@ -37,4 +37,15 @@ class PlayerRepositoryImpl : PlayerRepository {
     override fun isPlaying(): Boolean {
         return mediaPlayer.isPlaying
     }
+
+    override fun setOnPrepared(onPrepared: () -> Unit) {
+        mediaPlayer.setOnPreparedListener {
+            onPrepared()
+        }
+    }
+    override fun setOnCompletion(onCompletion: () -> Unit) {
+        mediaPlayer.setOnCompletionListener {
+            onCompletion()
+        }
+    }
 }

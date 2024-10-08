@@ -28,6 +28,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var secondsLeftTextView: TextView
     private var mainThreadHandler: Handler? = Handler(Looper.getMainLooper())
     private var runnable: Runnable? = null
+    private lateinit var playerState: PlayerState
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,10 +47,22 @@ class PlayerActivity : AppCompatActivity() {
         preparePlayer()
 
         playButton.setOnClickListener {
-            playbackControl()
+            playClick()
         }
 
         setupUI()
+
+        viewModel.state.observe(this) { _state ->
+            playerState = _state
+            render()
+        }
+
+        viewModel.playingTrackPosition.observe(this) { _seconds ->
+            secondsLeftTextView.text = SimpleDateFormat(
+                "mm:ss",
+                Locale.getDefault()
+            ).format(_seconds)
+        }
     }
 
     private fun setupUI() {
@@ -87,17 +100,6 @@ class PlayerActivity : AppCompatActivity() {
     private fun startPlayer() {
         viewModel.startPlayer()
         updatePauseButtonBackground()
-
-        runnable = object : Runnable {
-            override fun run() {
-                secondsLeftTextView.text = SimpleDateFormat(
-                    "mm:ss",
-                    Locale.getDefault()
-                ).format(viewModel.getPlayerCurrentPosition())
-                mainThreadHandler?.postDelayed(this, 10)
-            }
-        }
-        mainThreadHandler?.post(runnable!!)
     }
 
     private fun pausePlayer() {
@@ -105,16 +107,12 @@ class PlayerActivity : AppCompatActivity() {
         updatePlayButtonBackground()
     }
 
-    private fun playbackControl() {
-        var state : PlayerState
-        state = PlayerState.Default
-        viewModel.state.observe(this) { _state ->
-            state = _state
-        }
-        when (state) {
+    private fun playClick() {
+        when (playerState) {
             PlayerState.Playing -> pausePlayer()
             PlayerState.Prepared, PlayerState.Paused -> startPlayer()
             PlayerState.Default -> startPlayer()
+            PlayerState.Played -> TODO()
         }
 
     }
@@ -164,5 +162,18 @@ class PlayerActivity : AppCompatActivity() {
 
     companion object {
         private const val SELECTED_TRACK = "selectedTrack"
+    }
+
+    private fun render() {
+        when (playerState) {
+            PlayerState.Playing -> updatePauseButtonBackground()
+            PlayerState.Prepared, PlayerState.Paused -> updatePlayButtonBackground()
+            PlayerState.Default -> updatePlayButtonBackground()
+            PlayerState.Played -> {
+                secondsLeftTextView.text = "00:00"
+                updatePlayButtonBackground()
+
+            }
+        }
     }
 }
