@@ -7,15 +7,9 @@ import com.practicum.playlistmaker.search.domain.models.Track
 class PlayerRepositoryImpl : PlayerRepository {
     private val mediaPlayer = MediaPlayer()
 
-    override fun preparePlayer(track: Track, onPrepared: () -> Unit, onCompletion: () -> Unit) {
+    override fun preparePlayer(track: Track) {
         mediaPlayer.setDataSource(track.previewUrl)
         mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            onPrepared()
-        }
-        mediaPlayer.setOnCompletionListener {
-            onCompletion()
-        }
     }
 
     override fun startPlayer() {

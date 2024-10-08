@@ -4,14 +4,12 @@ import com.practicum.playlistmaker.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker.player.domain.api.PlayerRepository
 import com.practicum.playlistmaker.search.domain.models.Track
 
-class PlayerInteractorImpl(private val playerRepository: PlayerRepository): PlayerInteractor {
+class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : PlayerInteractor {
 
     override fun preparePlayer(
-        track: Track,
-        onPrepared: () -> Unit,
-        onCompletion: () -> Unit
+        track: Track
     ) {
-        playerRepository.preparePlayer(track, onPrepared, onCompletion)
+        playerRepository.preparePlayer(track)
     }
 
     override fun startPlayer() {
@@ -37,7 +35,8 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository): Play
     override fun setOnPrepared(onPrepared: () -> Unit) {
         playerRepository.setOnPrepared(onPrepared)
     }
-    override fun setOnCompletion(onCompletion: () -> Unit){
+
+    override fun setOnCompletion(onCompletion: () -> Unit) {
         playerRepository.setOnCompletion(onCompletion)
     }
 }

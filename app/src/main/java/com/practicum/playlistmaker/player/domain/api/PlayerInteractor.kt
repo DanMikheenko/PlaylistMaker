@@ -4,11 +4,8 @@ import com.practicum.playlistmaker.search.domain.models.Track
 
 interface PlayerInteractor {
     fun preparePlayer(
-        track: Track,
-        onPrepared: () -> Unit,
-        onCompletion: () -> Unit
-    ) {
-    }
+        track: Track
+    )
 
     fun startPlayer()
 

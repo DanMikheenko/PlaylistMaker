@@ -33,10 +33,8 @@ class PlayerViewModel(
     }
 
     fun preparePlayer(
-        onPrepared: () -> Unit,
-        onCompletion: () -> Unit
     ) {
-        playerInteractor.preparePlayer(track, onPrepared, onCompletion)
+        playerInteractor.preparePlayer(track)
         playerInteractor.setOnPrepared {
             _state.postValue(PlayerState.Prepared)
         }

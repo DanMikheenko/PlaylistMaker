@@ -88,13 +88,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun preparePlayer() {
-        viewModel.preparePlayer(
-            onPrepared = { playButton.isEnabled = true },
-            onCompletion = {
-                runnable?.let { mainThreadHandler?.removeCallbacks(it) }
-                secondsLeftTextView.text = "00:00"
-                updatePlayButtonBackground()
-            })
+        viewModel.preparePlayer()
     }
 
     private fun startPlayer() {
@@ -167,11 +161,16 @@ class PlayerActivity : AppCompatActivity() {
     private fun render() {
         when (playerState) {
             PlayerState.Playing -> updatePauseButtonBackground()
-            PlayerState.Prepared, PlayerState.Paused -> updatePlayButtonBackground()
+            PlayerState.Prepared, PlayerState.Paused -> {
+                updatePlayButtonBackground()
+                playButton.isEnabled = true
+            }
+
             PlayerState.Default -> updatePlayButtonBackground()
             PlayerState.Played -> {
                 secondsLeftTextView.text = "00:00"
                 updatePlayButtonBackground()
+                runnable?.let { mainThreadHandler?.removeCallbacks(it) }
 
             }
         }
