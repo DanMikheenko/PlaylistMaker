@@ -48,7 +48,6 @@ class SearchActivity : AppCompatActivity() {
         binding.btnClear.setOnClickListener {
             resetSearchText()
             hideKeyboard()
-            viewModel.clearTracks()
         }
 
 
@@ -65,11 +64,6 @@ class SearchActivity : AppCompatActivity() {
         }
 
         trackAdapter = TrackAdapter(emptyList())
-
-        viewModel.tracks.observe(this) { foundTracks ->
-            trackAdapter = TrackAdapter(foundTracks)
-            binding.recyclerView.adapter = trackAdapter
-        }
 
         viewModel.state.observe(this) { searchState ->
             render(searchState)
@@ -113,7 +107,6 @@ class SearchActivity : AppCompatActivity() {
         }
 
         binding.editText.setOnEditorActionListener { v, actionId, event ->
-            viewModel.clearTracks()
             handler.removeCallbacks(searchRunnable)
             binding.placeholderLayout.root.visibility = View.GONE
             binding.connectionErrorPlaceholder.root.visibility = View.GONE
@@ -152,7 +145,9 @@ class SearchActivity : AppCompatActivity() {
         when (state) {
             is SearchState.Loading -> showProgressBar()
             is SearchState.NothingFound -> showNothingFound()
-            is SearchState.Success -> showResult()
+            is SearchState.Success -> {
+                binding.recyclerView.adapter = TrackAdapter(state.data)
+                showResult()}
             is SearchState.ConnectionError -> showConnectionError()
             is SearchState.Error -> {}
         }
@@ -168,7 +163,6 @@ class SearchActivity : AppCompatActivity() {
 
     private fun search() {
         showProgressBar()
-        viewModel.clearTracks()
         viewModel.search(binding.editText.text.toString())
         showResult()
     }
@@ -193,7 +187,6 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.readSearchHistory()
     }
 
     private fun hideAll() {

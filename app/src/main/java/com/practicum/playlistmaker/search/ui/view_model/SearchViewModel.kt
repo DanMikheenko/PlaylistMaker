@@ -29,8 +29,6 @@ class SearchViewModel(
         }
     }
 
-    private val _tracks = MutableLiveData<List<Track>>()
-    val tracks: LiveData<List<Track>> = _tracks
 
     private val _tracksHistory = MutableLiveData<List<Track>>()
     val tracksHistory: LiveData<List<Track>> = _tracksHistory
@@ -43,7 +41,6 @@ class SearchViewModel(
 
     fun search(query: String) {
         _state.postValue(SearchState.Loading)
-        _tracks.postValue(emptyList())
         tracksInteractor.searchTracks(query, object :
             TracksInteractor.TracksConsumer {
             override fun consume(foundTracks: List<Track>) {
@@ -51,7 +48,6 @@ class SearchViewModel(
                     _state.postValue(SearchState.NothingFound)
                 } else {
                     _state.postValue(SearchState.Success(foundTracks))
-                    _tracks.postValue(foundTracks)
                 }
             }
         })
@@ -73,24 +69,6 @@ class SearchViewModel(
 
     }
 
-    fun isSearchHistoryEmpty(): Boolean {
-        var isEmpty = true
-        searchHistoryInteractor.readSearchHistory(object :
-            SearchHistoryInteractor.SearchHistoryConsumer {
-            override fun consume(trackHistory: List<Track>) {
-                if (trackHistory.isEmpty()) {
-                    isEmpty = true
-                } else {
-                    isEmpty = false
-                }
-            }
-        })
-        return isEmpty
-    }
-
-    fun clearTracks() {
-        _tracks.postValue(emptyList())
-    }
 
     fun clearHistory() {
         searchHistoryInteractor.clear()
