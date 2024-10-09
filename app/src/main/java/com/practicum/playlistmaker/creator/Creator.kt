@@ -25,6 +25,7 @@ import com.practicum.playlistmaker.sharing.domain.SharingInteractorImpl
 import com.practicum.playlistmaker.sharing.domain.SharingRepository
 
 object Creator {
+
     private fun getTracksRepository(): TracksRepository {
         return TracksRepositoryImpl(RetrofitNetworkClient())
     }
@@ -37,13 +38,23 @@ object Creator {
         return PlayerRepositoryImpl()
     }
 
-    private fun getSharingRepository(context: Context): SharingRepository{
+    private fun getSharingRepository(context: Context): SharingRepository {
         return ExternalNavigation(context)
     }
 
-    private fun getThemeSettingsRepository(context: Context) : ThemeSettingsRepository {
+    private fun getThemeSettingsRepository(context: Context): ThemeSettingsRepository {
         return ThemeSettingsRepositoryImpl(context)
     }
+
+    private lateinit var _appContext: Context
+    fun setApplicationContext(context: Context) {
+        _appContext = context
+    }
+
+    fun getApplicationContext(): Context {
+        return _appContext
+    }
+
 
     fun provideTracksInteractor(): TracksInteractor {
         return TracksInteractorImpl(getTracksRepository())
@@ -61,7 +72,7 @@ object Creator {
         return SharingInteractorImpl(getSharingRepository(context))
     }
 
-    fun provideThemeSettingsInteractor(context: Context): ThemeSettingsInteractor{
+    fun provideThemeSettingsInteractor(context: Context): ThemeSettingsInteractor {
         return ThemeSettingsInteractorImpl(getThemeSettingsRepository(context))
     }
 

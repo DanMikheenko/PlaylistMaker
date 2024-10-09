@@ -66,5 +66,9 @@ class SearchViewModel(
         _tracks.postValue(emptyList())
     }
 
+    fun clearHistory(){
+        searchHistoryInteractor.clear()
+    }
+
 
 }

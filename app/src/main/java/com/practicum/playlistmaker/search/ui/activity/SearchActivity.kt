@@ -27,7 +27,8 @@ import com.practicum.playlistmaker.search.ui.view_model.SearchViewModelFactory
 class SearchActivity : AppCompatActivity() {
     private lateinit var viewModel: SearchViewModel
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences = Creator.getApplicationContext().getSharedPreferences(
+        PLAY_LIST_MAKER_SHARE_PREFERENCES, MODE_PRIVATE)
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var searchHistoryInteractor: SearchHistoryInteractor
 
@@ -56,18 +57,14 @@ class SearchActivity : AppCompatActivity() {
             viewModel.clearTracks()
         }
 
-        sharedPreferences = applicationContext.getSharedPreferences(
-            PLAY_LIST_MAKER_SHARE_PREFERENCES, MODE_PRIVATE
-        )
 
-        searchHistoryInteractor = Creator.provideSearchHistoryInteractor(sharedPreferences)
         val updateBtn = findViewById<View>(R.id.updateRequestBtn)
         updateBtn.setOnClickListener {
             search()
         }
 
         val factory =
-            SearchViewModelFactory(searchHistoryInteractor, Creator.provideTracksInteractor())
+            SearchViewModelFactory(Creator.provideSearchHistoryInteractor(sharedPreferences), Creator.provideTracksInteractor())
         viewModel = ViewModelProvider(this, factory).get(SearchViewModel::class.java)
 
 
@@ -146,7 +143,7 @@ class SearchActivity : AppCompatActivity() {
 
         val clearHistory = findViewById<View>(R.id.clearHistoryBtn)
         clearHistory.setOnClickListener {
-            searchHistoryInteractor.clear()
+            viewModel.clearHistory()
             searchHistoryInteractor.readSearchHistory(object :
                 SearchHistoryInteractor.SearchHistoryConsumer {
                 override fun consume(trackHistory: List<Track>) {
