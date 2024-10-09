@@ -31,17 +31,17 @@ class SettingActivity : AppCompatActivity() {
 
         val shareTextView = findViewById<View>(R.id.shareTextView)
         shareTextView.setOnClickListener {
-            share()
+            viewModel.shareApp()
         }
 
         val writeTextView = findViewById<View>(R.id.writeToSpprtTextView)
         writeTextView.setOnClickListener {
-            writeToSupport()
+            viewModel.openSupport()
         }
 
         val readAgrTextView = findViewById<View>(R.id.readAgreementTextView)
         readAgrTextView.setOnClickListener {
-            readUserAgreement()
+            viewModel.openTerms()
         }
 
         val themeSwitch = findViewById<Switch>(R.id.themeSwitch)
@@ -53,17 +53,5 @@ class SettingActivity : AppCompatActivity() {
         themeSwitch.setOnCheckedChangeListener { _, isEnabled ->
             viewModel.switchTheme(isEnabled)
         }
-    }
-
-    private fun share() {
-        viewModel.shareApp()
-    }
-
-    private fun writeToSupport() {
-        viewModel.openSupport()
-    }
-
-    private fun readUserAgreement() {
-        viewModel.openTerms()
     }
 }
