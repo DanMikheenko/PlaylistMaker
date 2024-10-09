@@ -106,7 +106,7 @@ class PlayerActivity : AppCompatActivity() {
             PlayerState.Playing -> pausePlayer()
             PlayerState.Prepared, PlayerState.Paused -> startPlayer()
             PlayerState.Default -> startPlayer()
-            PlayerState.Played -> TODO()
+            PlayerState.Played -> {}
         }
 
     }
@@ -151,7 +151,7 @@ class PlayerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.releasePlayer()
-        runnable?.let { mainThreadHandler?.removeCallbacks(it) }
+        mainThreadHandler?.removeCallbacksAndMessages(null)
     }
 
     companion object {
