@@ -4,24 +4,25 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.sharing.domain.SharingRepository
 
-class ExternalNavigation(private val context: Context, private val activityContext: Context) {
-    fun shareApp() {
+class ExternalNavigation(private val context: Context) : SharingRepository {
+    override fun shareApp() {
         val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         shareIntent.setType("text/plain")
         shareIntent.putExtra(Intent.EXTRA_TEXT, getShareAppLink())
-        activityContext.startActivity(Intent.createChooser(shareIntent, "Поделиться приложением через..."))
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(shareIntent)
     }
 
-    fun openTerms() {
+    override fun openTerms() {
         val readAgreementIntent = Intent(Intent.ACTION_VIEW)
         readAgreementIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         readAgreementIntent.data = Uri.parse(getTermsLink())
         context.startActivity(readAgreementIntent)
     }
 
-    fun openSupport() {
+    override fun openSupport() {
         val writeToSupportIntent = Intent(Intent.ACTION_SENDTO)
         writeToSupportIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         writeToSupportIntent.data = Uri.parse("mailto:")

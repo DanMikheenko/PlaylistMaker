@@ -6,9 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.practicum.playlistmaker.creator.Creator
 
-class SettingsViewModel(application: Context, activityContext: Context) : ViewModel() {
-    private val sharingInteractor = Creator.provideSharingInteractor(application, activityContext)
-    private val themeSettingsInteractor = Creator.provideThemeSettingsInteractor(application)
+class SettingsViewModel(context: Context) : ViewModel() {
+    private val sharingInteractor = Creator.provideSharingInteractor(context)
+    private val themeSettingsInteractor = Creator.provideThemeSettingsInteractor(context)
 
     private val _isDarkThemeEnabled = MutableLiveData<Boolean>().apply {
         value = themeSettingsInteractor.isDarkThemeEnabled()

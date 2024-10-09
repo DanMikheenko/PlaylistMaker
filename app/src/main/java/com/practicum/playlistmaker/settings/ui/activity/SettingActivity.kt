@@ -16,8 +16,8 @@ class SettingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
-        // Передаем ApplicationContext и ActivityContext в фабрику
-        val factory = ViewModelFactory(applicationContext, this)
+        // Передаем ApplicationContext в фабрику
+        val factory = ViewModelFactory(applicationContext)
 
         viewModel = ViewModelProvider(this, factory).get(SettingsViewModel::class.java)
         setUI()

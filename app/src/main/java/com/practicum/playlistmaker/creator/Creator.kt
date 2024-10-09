@@ -20,8 +20,9 @@ import com.practicum.playlistmaker.settings.domain.api.ThemeSettingsInteractor
 import com.practicum.playlistmaker.settings.domain.api.ThemeSettingsRepository
 import com.practicum.playlistmaker.settings.domain.impl.ThemeSettingsInteractorImpl
 import com.practicum.playlistmaker.sharing.data.ExternalNavigation
-import com.practicum.playlistmaker.sharing.data.SharingInteractorImpl
 import com.practicum.playlistmaker.sharing.domain.SharingInteractor
+import com.practicum.playlistmaker.sharing.domain.SharingInteractorImpl
+import com.practicum.playlistmaker.sharing.domain.SharingRepository
 
 object Creator {
     private fun getTracksRepository(): TracksRepository {
@@ -36,8 +37,8 @@ object Creator {
         return PlayerRepositoryImpl()
     }
 
-    private fun getSharingInteractor(context: Context, activityContext: Context): SharingInteractor{
-        return SharingInteractorImpl(ExternalNavigation(context,activityContext))
+    private fun getSharingRepository(context: Context): SharingRepository{
+        return ExternalNavigation(context)
     }
 
     private fun getThemeSettingsRepository(context: Context) : ThemeSettingsRepository {
@@ -56,8 +57,8 @@ object Creator {
         return PlayerInteractorImpl(getPlayerRepository())
     }
 
-    fun provideSharingInteractor(context: Context, activityContext: Context): SharingInteractor {
-        return getSharingInteractor(context, activityContext)
+    fun provideSharingInteractor(context: Context): SharingInteractor {
+        return SharingInteractorImpl(getSharingRepository(context))
     }
 
     fun provideThemeSettingsInteractor(context: Context): ThemeSettingsInteractor{
