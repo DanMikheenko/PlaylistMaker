@@ -7,7 +7,7 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import com.practicum.playlistmaker.settings.domain.api.ThemeSettingsRepository
 
-class ThemeSettingsRepositoryImpl(context: Context) : ThemeSettingsRepository {
+class ThemeSettingsRepositoryImpl(private val context: Context) : ThemeSettingsRepository {
 
     private companion object {
         private const val PLAY_LIST_MAKER = "playListMakerSettings"
@@ -19,13 +19,7 @@ class ThemeSettingsRepositoryImpl(context: Context) : ThemeSettingsRepository {
         context.getSharedPreferences(PLAY_LIST_MAKER, MODE_PRIVATE)
 
     init {
-        switchTheme(
-            sharedPreferences.getBoolean(
-                THEME_MODE,
-                context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-            )
-        )
-
+        getInitialTheme()
     }
 
     override fun isDarkThemeEnabled(): Boolean {
@@ -45,6 +39,15 @@ class ThemeSettingsRepositoryImpl(context: Context) : ThemeSettingsRepository {
             } else {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
+        )
+    }
+
+    override fun getInitialTheme() {
+        switchTheme(
+            sharedPreferences.getBoolean(
+                THEME_MODE,
+                context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+            )
         )
     }
 }

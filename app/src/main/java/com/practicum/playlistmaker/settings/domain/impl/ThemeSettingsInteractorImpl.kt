@@ -10,4 +10,8 @@ class ThemeSettingsInteractorImpl(private val themeSettingsRepository: ThemeSett
     override fun switchTheme(isEnabled:Boolean){
         themeSettingsRepository.switchTheme(isEnabled)
     }
+
+    override fun getInitialTheme() {
+        themeSettingsRepository.getInitialTheme()
+    }
 }

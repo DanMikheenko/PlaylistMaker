@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.search.ui
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -14,8 +13,7 @@ import com.practicum.playlistmaker.player.ui.activity.PlayerActivity
 import com.practicum.playlistmaker.search.domain.models.Track
 
 class TrackAdapter(
-    private val tracks: List<Track>,
-    private val sharedPreferences: SharedPreferences,
+    private val tracks: List<Track>
 ) : RecyclerView.Adapter<TrackViewHolder>() {
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
@@ -37,7 +35,7 @@ class TrackAdapter(
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
 
         holder.bind(tracks[position])
-        val searchHistory = Creator.provideSearchHistoryInteractor(sharedPreferences)
+        val searchHistory = Creator.provideSearchHistoryInteractor(Creator.getSharedPreferences())
         holder.itemView.setOnClickListener {
             if (clickDebounce()) {
                 searchHistory.addNewTrackToHistory(tracks[position])

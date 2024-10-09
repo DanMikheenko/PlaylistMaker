@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.creator
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import com.practicum.playlistmaker.player.data.PlayerRepositoryImpl
 import com.practicum.playlistmaker.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker.player.domain.api.PlayerRepository
@@ -25,6 +26,7 @@ import com.practicum.playlistmaker.sharing.domain.SharingInteractorImpl
 import com.practicum.playlistmaker.sharing.domain.SharingRepository
 
 object Creator {
+    const val PLAY_LIST_MAKER_SHARE_PREFERENCES = "playListMakerSettings"
 
     private fun getTracksRepository(): TracksRepository {
         return TracksRepositoryImpl(RetrofitNetworkClient())
@@ -53,6 +55,10 @@ object Creator {
 
     fun getApplicationContext(): Context {
         return _appContext
+    }
+
+    fun getSharedPreferences(): SharedPreferences{
+        return _appContext.getSharedPreferences(PLAY_LIST_MAKER_SHARE_PREFERENCES, MODE_PRIVATE)
     }
 
 

@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.search.ui.activity
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,30 +10,25 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
-import com.practicum.playlistmaker.search.domain.api.SearchHistoryInteractor
-import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.TrackAdapter
+import com.practicum.playlistmaker.search.ui.view_model.SearchHistoryState
 import com.practicum.playlistmaker.search.ui.view_model.SearchState
 import com.practicum.playlistmaker.search.ui.view_model.SearchViewModel
-import com.practicum.playlistmaker.search.ui.view_model.SearchViewModelFactory
+
 
 class SearchActivity : AppCompatActivity() {
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by viewModels { SearchViewModel.Factory }
     private lateinit var binding: ActivitySearchBinding
-    private val sharedPreferences: SharedPreferences = Creator.getApplicationContext().getSharedPreferences(
-        PLAY_LIST_MAKER_SHARE_PREFERENCES, MODE_PRIVATE)
     private lateinit var trackAdapter: TrackAdapter
-    private lateinit var searchHistoryInteractor: SearchHistoryInteractor
+    private lateinit var searchHistoryState: SearchHistoryState
 
     companion object {
         const val KEY_EDIT_TEXT = "editTextValue"
-        const val PLAY_LIST_MAKER_SHARE_PREFERENCES = "playListMakerSettings"
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
@@ -62,29 +56,33 @@ class SearchActivity : AppCompatActivity() {
         updateBtn.setOnClickListener {
             search()
         }
-
-        val factory =
-            SearchViewModelFactory(Creator.provideSearchHistoryInteractor(sharedPreferences), Creator.provideTracksInteractor())
-        viewModel = ViewModelProvider(this, factory).get(SearchViewModel::class.java)
-
-
-
         viewModel.readSearchHistory()
 
         // Наблюдение за изменениями LiveData
         viewModel.tracksHistory.observe(this) { tracksHistory ->
-            binding.searchHistoryLayout.searchHistoryRecyclerView.adapter = TrackAdapter(tracksHistory, sharedPreferences)
+            binding.searchHistoryLayout.searchHistoryRecyclerView.adapter =
+                TrackAdapter(tracksHistory)
         }
 
-        trackAdapter = TrackAdapter(emptyList(), sharedPreferences)
+        trackAdapter = TrackAdapter(emptyList())
 
         viewModel.tracks.observe(this) { foundTracks ->
-            trackAdapter = TrackAdapter(foundTracks, sharedPreferences)
+            trackAdapter = TrackAdapter(foundTracks)
             binding.recyclerView.adapter = trackAdapter
         }
 
-        viewModel.state.observe(this){ searchState ->
+        viewModel.state.observe(this) { searchState ->
             render(searchState)
+        }
+
+        viewModel.searchHistoryState.observe(this) { _searchHistoryState ->
+            searchHistoryState = _searchHistoryState
+            when (searchHistoryState) {
+                SearchHistoryState.Empty -> {
+                    hideAll()
+                }
+                SearchHistoryState.NotEmpty -> showHistory()
+            }
         }
 
 
@@ -130,11 +128,11 @@ class SearchActivity : AppCompatActivity() {
             false
         }
         binding.editText.setOnFocusChangeListener { view, hasFocus ->
-            if (binding.editText.hasFocus() && binding.editText.text.isEmpty() && viewModel.isSearchHistoryEmpty()) {
+            if (binding.editText.hasFocus() && binding.editText.text.isEmpty() && searchHistoryState == SearchHistoryState.Empty) {
                 handler.removeCallbacks(searchRunnable)
                 hideAll()
             }
-            if (binding.editText.hasFocus() && binding.editText.text.isEmpty() && !viewModel.isSearchHistoryEmpty()) {
+            if (binding.editText.hasFocus() && binding.editText.text.isEmpty() && searchHistoryState == SearchHistoryState.NotEmpty) {
                 handler.removeCallbacks(searchRunnable)
                 showHistory()
             }
@@ -144,12 +142,6 @@ class SearchActivity : AppCompatActivity() {
         val clearHistory = findViewById<View>(R.id.clearHistoryBtn)
         clearHistory.setOnClickListener {
             viewModel.clearHistory()
-            searchHistoryInteractor.readSearchHistory(object :
-                SearchHistoryInteractor.SearchHistoryConsumer {
-                override fun consume(trackHistory: List<Track>) {
-                    binding.searchHistoryLayout.searchHistoryRecyclerView.adapter = TrackAdapter(trackHistory, sharedPreferences)
-                }
-            })
             binding.searchHistoryLayout.root.visibility = View.GONE
         }
 
@@ -162,7 +154,7 @@ class SearchActivity : AppCompatActivity() {
             is SearchState.NothingFound -> showNothingFound()
             is SearchState.Success -> showResult()
             is SearchState.ConnectionError -> showConnectionError()
-            is SearchState.Error -> TODO()
+            is SearchState.Error -> {}
         }
     }
 
@@ -202,10 +194,6 @@ class SearchActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.readSearchHistory()
-        viewModel.tracksHistory.observe(this) { tracksHistory ->
-            binding.searchHistoryLayout.searchHistoryRecyclerView.adapter = TrackAdapter(tracksHistory, sharedPreferences)
-            binding.searchHistoryLayout.searchHistoryRecyclerView.adapter?.notifyDataSetChanged()
-        }
     }
 
     private fun hideAll() {
@@ -237,6 +225,7 @@ class SearchActivity : AppCompatActivity() {
         binding.recyclerView.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE
     }
+
     private fun showNothingFound() {
         binding.placeholderLayout.root.visibility = View.VISIBLE
         binding.connectionErrorPlaceholder.root.visibility = View.GONE
