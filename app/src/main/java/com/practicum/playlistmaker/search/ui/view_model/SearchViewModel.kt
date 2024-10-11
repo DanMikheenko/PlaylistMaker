@@ -58,11 +58,14 @@ class SearchViewModel(
 
             }
         })
-
     }
 
     fun clearHistory() {
         searchHistoryInteractor.clear()
         _state.postValue(State.ShowEmptyTrackHistory)
     }
+    fun addTrackToSearchHistory(track: Track){
+        searchHistoryInteractor.addNewTrackToHistory(track)
+    }
+
 }

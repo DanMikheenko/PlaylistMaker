@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.search.ui.activity
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,17 +14,20 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
+import com.practicum.playlistmaker.player.ui.activity.PlayerActivity
+import com.practicum.playlistmaker.search.domain.models.Track
+import com.practicum.playlistmaker.search.ui.OnTrackClickListener
 import com.practicum.playlistmaker.search.ui.TrackAdapter
 import com.practicum.playlistmaker.search.ui.view_model.SearchViewModel
 import com.practicum.playlistmaker.search.ui.view_model.State
 
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     private val viewModel: SearchViewModel by viewModels { SearchViewModel.Factory }
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var trackAdapter: TrackAdapter
     private lateinit var state: State
 
     companion object {
@@ -54,8 +58,7 @@ class SearchActivity : AppCompatActivity() {
         updateBtn.setOnClickListener {
             search()
         }
-        viewModel.readSearchHistory()
-        trackAdapter = TrackAdapter(emptyList())
+        state = State.ShowEmptyTrackHistory
 
         viewModel.state.observe(this) { _state ->
             state = _state
@@ -98,15 +101,10 @@ class SearchActivity : AppCompatActivity() {
             false
         }
         binding.editText.setOnFocusChangeListener { view, hasFocus ->
-            if (binding.editText.hasFocus() && binding.editText.text.isEmpty() && state == State.ShowEmptyTrackHistory) {
+            if (binding.editText.hasFocus() && binding.editText.text.isEmpty()) {
                 handler.removeCallbacks(searchRunnable)
                 viewModel.readSearchHistory()
             }
-            if (binding.editText.hasFocus() && binding.editText.text.isEmpty() && state != State.ShowEmptyTrackHistory) {
-                handler.removeCallbacks(searchRunnable)
-                viewModel.readSearchHistory()
-            }
-
         }
 
         binding.searchHistoryLayout.clearHistoryBtn.setOnClickListener {
@@ -121,22 +119,24 @@ class SearchActivity : AppCompatActivity() {
             is State.LoadingSearchingTracks -> showProgressBar()
             is State.ShowEmptyResult -> showNothingFound()
             is State.ShowSearchResult -> {
-                binding.recyclerView.adapter = TrackAdapter(state.data)
+                binding.recyclerView.adapter = TrackAdapter(state.data, this)
                 showResult()
             }
 
             is State.ConnectionError -> {
                 showConnectionError()
             }
+
             is State.Error -> {
             }
+
             is State.ShowEmptyTrackHistory -> {
                 hideAll()
             }
 
             is State.ShowSearchingTrackHistory -> {
                 binding.searchHistoryLayout.searchHistoryRecyclerView.adapter =
-                    TrackAdapter(state.data)
+                    TrackAdapter(state.data, this)
                 showHistory()
             }
         }
@@ -172,9 +172,6 @@ class SearchActivity : AppCompatActivity() {
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
 
     private fun hideAll() {
         binding.placeholderLayout.root.visibility = View.GONE
@@ -220,6 +217,13 @@ class SearchActivity : AppCompatActivity() {
         binding.searchHistoryLayout.root.visibility = View.GONE
         binding.recyclerView.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
+    }
+
+    override fun onTrackClick(track: Track) {
+        viewModel.addTrackToSearchHistory(track)
+        val intent = Intent(this, PlayerActivity::class.java)
+        intent.putExtra("selectedTrack", Gson().toJson(track))
+        startActivity(intent)
     }
 
 

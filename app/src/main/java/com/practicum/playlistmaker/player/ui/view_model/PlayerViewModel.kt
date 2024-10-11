@@ -47,30 +47,32 @@ class PlayerViewModel(
         }
     }
 
-    fun pausePlayer(){
+    fun pausePlayer() {
         playerInteractor.pausePlayer()
         _state.postValue(PlayerState.Paused)
     }
 
-    fun releasePlayer(){
+    fun releasePlayer() {
         playerInteractor.releasePlayer()
         _state.postValue(PlayerState.Default)
         stopTrackingPlayingTrackPosition()
     }
-    fun getPlayerCurrentPosition() : Int{
+
+    fun getPlayerCurrentPosition(): Int {
         return playerInteractor.getCurrentPosition()
     }
 
-    fun startTrackingPlayingTrackPosition(){
+    fun startTrackingPlayingTrackPosition() {
         playbackJob?.cancel()
         playbackJob = viewModelScope.launch {
-            while (true){
+            while (true) {
                 delay(100)
                 _playingTrackPosition.value = getPlayerCurrentPosition()
             }
         }
     }
-    fun stopTrackingPlayingTrackPosition(){
+
+    fun stopTrackingPlayingTrackPosition() {
         playbackJob?.cancel()
     }
 
@@ -78,5 +80,4 @@ class PlayerViewModel(
         super.onCleared()
         stopTrackingPlayingTrackPosition()
     }
-
 }

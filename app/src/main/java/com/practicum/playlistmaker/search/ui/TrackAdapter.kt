@@ -1,19 +1,16 @@
 package com.practicum.playlistmaker.search.ui
 
-import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.creator.Creator
-import com.practicum.playlistmaker.player.ui.activity.PlayerActivity
 import com.practicum.playlistmaker.search.domain.models.Track
 
 class TrackAdapter(
-    private val tracks: List<Track>
+    private val tracks: List<Track>,
+    private val listener: OnTrackClickListener
 ) : RecyclerView.Adapter<TrackViewHolder>() {
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
@@ -35,13 +32,9 @@ class TrackAdapter(
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
 
         holder.bind(tracks[position])
-        val searchHistory = Creator.provideSearchHistoryInteractor()
         holder.itemView.setOnClickListener {
             if (clickDebounce()) {
-                searchHistory.addNewTrackToHistory(tracks[position])
-                val playerIntent = Intent(holder.itemView.context, PlayerActivity::class.java)
-                playerIntent.putExtra("selectedTrack", Gson().toJson(tracks[position]))
-                holder.itemView.context.startActivity(playerIntent)
+                listener.onTrackClick(tracks[position])
             }
         }
     }
