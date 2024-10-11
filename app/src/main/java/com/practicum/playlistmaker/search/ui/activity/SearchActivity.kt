@@ -96,7 +96,6 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
                 (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
             ) {
                 search()
-                true
             }
             false
         }
