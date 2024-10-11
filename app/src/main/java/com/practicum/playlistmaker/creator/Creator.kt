@@ -27,59 +27,54 @@ import com.practicum.playlistmaker.sharing.domain.SharingRepository
 
 object Creator {
     const val PLAY_LIST_MAKER_SHARE_PREFERENCES = "playListMakerSettings"
+    private lateinit var _appContext: Context
+
+    fun setApplicationContext(context: Context) {
+        _appContext = context
+    }
 
     private fun getTracksRepository(): TracksRepository {
         return TracksRepositoryImpl(RetrofitNetworkClient())
     }
 
-    private fun getSearchHistoryRepository(sharedPreferences: SharedPreferences): SearchHistoryRepository {
-        return SearchHistoryRepositoryImpl(sharedPreferences)
+    private fun getSearchHistoryRepository(): SearchHistoryRepository {
+        return SearchHistoryRepositoryImpl(getSharedPreferences())
     }
 
     private fun getPlayerRepository(): PlayerRepository {
         return PlayerRepositoryImpl()
     }
 
-    private fun getSharingRepository(context: Context): SharingRepository {
-        return ExternalNavigation(context)
+    private fun getSharingRepository(): SharingRepository {
+        return ExternalNavigation(_appContext)
     }
 
-    private fun getThemeSettingsRepository(context: Context): ThemeSettingsRepository {
-        return ThemeSettingsRepositoryImpl(context)
+    private fun getThemeSettingsRepository(): ThemeSettingsRepository {
+        return ThemeSettingsRepositoryImpl(_appContext)
     }
 
-    private lateinit var _appContext: Context
-    fun setApplicationContext(context: Context) {
-        _appContext = context
-    }
-
-    fun getApplicationContext(): Context {
-        return _appContext
-    }
-
-    fun getSharedPreferences(): SharedPreferences{
+    fun getSharedPreferences(): SharedPreferences {
         return _appContext.getSharedPreferences(PLAY_LIST_MAKER_SHARE_PREFERENCES, MODE_PRIVATE)
     }
-
 
     fun provideTracksInteractor(): TracksInteractor {
         return TracksInteractorImpl(getTracksRepository())
     }
 
-    fun provideSearchHistoryInteractor(sharedPreferences: SharedPreferences): SearchHistoryInteractor {
-        return SearchHistoryInteractorImpl(getSearchHistoryRepository(sharedPreferences))
+    fun provideSearchHistoryInteractor(): SearchHistoryInteractor {
+        return SearchHistoryInteractorImpl(getSearchHistoryRepository())
     }
 
     fun providePlayerInteractor(): PlayerInteractor {
         return PlayerInteractorImpl(getPlayerRepository())
     }
 
-    fun provideSharingInteractor(context: Context): SharingInteractor {
-        return SharingInteractorImpl(getSharingRepository(context))
+    fun provideSharingInteractor(): SharingInteractor {
+        return SharingInteractorImpl(getSharingRepository())
     }
 
-    fun provideThemeSettingsInteractor(context: Context): ThemeSettingsInteractor {
-        return ThemeSettingsInteractorImpl(getThemeSettingsRepository(context))
+    fun provideThemeSettingsInteractor(): ThemeSettingsInteractor {
+        return ThemeSettingsInteractorImpl(getThemeSettingsRepository())
     }
 
 

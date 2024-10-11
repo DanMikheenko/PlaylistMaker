@@ -5,8 +5,8 @@ import android.app.Application
 class App: Application() {
     override fun onCreate() {
         super.onCreate()
-        Creator.setApplicationContext(applicationContext)
-        val themeSettingsInteractor = Creator.provideThemeSettingsInteractor(this)
+        Creator.setApplicationContext(this)
+        val themeSettingsInteractor = Creator.provideThemeSettingsInteractor()
         themeSettingsInteractor.getInitialTheme()
     }
 }

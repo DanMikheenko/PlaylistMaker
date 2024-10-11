@@ -35,7 +35,7 @@ class TrackAdapter(
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
 
         holder.bind(tracks[position])
-        val searchHistory = Creator.provideSearchHistoryInteractor(Creator.getSharedPreferences())
+        val searchHistory = Creator.provideSearchHistoryInteractor()
         holder.itemView.setOnClickListener {
             if (clickDebounce()) {
                 searchHistory.addNewTrackToHistory(tracks[position])

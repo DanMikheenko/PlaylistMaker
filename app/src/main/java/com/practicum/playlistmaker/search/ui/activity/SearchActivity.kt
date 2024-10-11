@@ -73,7 +73,6 @@ class SearchActivity : AppCompatActivity() {
                     binding.btnClear.isVisible = false
                 }
                 searchDebounce()
-
             }
 
             override fun afterTextChanged(s: Editable?) {

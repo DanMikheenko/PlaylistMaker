@@ -22,7 +22,7 @@ class SearchViewModel(
                 extras: CreationExtras
             ): T {
                 return SearchViewModel(
-                    searchHistoryInteractor = Creator.provideSearchHistoryInteractor(Creator.getSharedPreferences()),
+                    searchHistoryInteractor = Creator.provideSearchHistoryInteractor(),
                     tracksInteractor = Creator.provideTracksInteractor()
                 ) as T
             }
