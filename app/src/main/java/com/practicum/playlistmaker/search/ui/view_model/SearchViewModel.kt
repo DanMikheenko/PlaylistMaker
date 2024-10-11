@@ -29,25 +29,18 @@ class SearchViewModel(
         }
     }
 
-
-    private val _tracksHistory = MutableLiveData<List<Track>>()
-    val tracksHistory: LiveData<List<Track>> = _tracksHistory
-
-    private val _state = MutableLiveData<SearchState>()
-    val state: LiveData<SearchState> = _state
-
-    private val _searchHistoryState = MutableLiveData<SearchHistoryState>()
-    val searchHistoryState: LiveData<SearchHistoryState> = _searchHistoryState
+    private val _state = MutableLiveData<State>()
+    val state: LiveData<State> = _state
 
     fun search(query: String) {
-        _state.postValue(SearchState.Loading)
+        _state.postValue(State.LoadingSearchingTracks)
         tracksInteractor.searchTracks(query, object :
             TracksInteractor.TracksConsumer {
             override fun consume(foundTracks: List<Track>) {
                 if (foundTracks.isEmpty()) {
-                    _state.postValue(SearchState.NothingFound)
+                    _state.postValue(State.ShowEmptyResult)
                 } else {
-                    _state.postValue(SearchState.Success(foundTracks))
+                    _state.postValue(State.ShowSearchResult(foundTracks))
                 }
             }
         })
@@ -58,10 +51,9 @@ class SearchViewModel(
             SearchHistoryInteractor.SearchHistoryConsumer {
             override fun consume(trackHistory: List<Track>) {
                 if (trackHistory.isEmpty()) {
-                    _searchHistoryState.postValue(SearchHistoryState.Empty)
+                    _state.postValue(State.ShowEmptyTrackHistory)
                 } else {
-                    _searchHistoryState.postValue(SearchHistoryState.NotEmpty)
-                    _tracksHistory.postValue(trackHistory)
+                    _state.postValue(State.ShowSearchingTrackHistory(trackHistory))
                 }
 
             }
@@ -69,11 +61,8 @@ class SearchViewModel(
 
     }
 
-
     fun clearHistory() {
         searchHistoryInteractor.clear()
-        _searchHistoryState.postValue(SearchHistoryState.Empty)
+        _state.postValue(State.ShowEmptyTrackHistory)
     }
-
-
 }
