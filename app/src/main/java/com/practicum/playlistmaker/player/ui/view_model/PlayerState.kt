@@ -4,6 +4,5 @@ sealed interface PlayerState {
     object Default : PlayerState
     object Prepared : PlayerState
     object Playing : PlayerState
-    object Played : PlayerState
     object Paused : PlayerState
 }

@@ -47,7 +47,7 @@ class PlayerViewModel(
         playerInteractor.setOnCompletion {
             stopTrackingPlayingTrackPosition()
             _playingTrackPosition.postValue(0)
-            _state.postValue(PlayerState.Played)
+            _state.postValue(PlayerState.Default)
         }
     }
 

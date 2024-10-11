@@ -106,7 +106,6 @@ class PlayerActivity : AppCompatActivity() {
             PlayerState.Playing -> pausePlayer()
             PlayerState.Prepared, PlayerState.Paused -> startPlayer()
             PlayerState.Default -> startPlayer()
-            PlayerState.Played -> {}
         }
 
     }
@@ -165,13 +164,11 @@ class PlayerActivity : AppCompatActivity() {
                 updatePlayButtonBackground()
                 playButton.isEnabled = true
             }
-
-            PlayerState.Default -> updatePlayButtonBackground()
-            PlayerState.Played -> {
+            PlayerState.Default -> {
+                updatePlayButtonBackground()
                 secondsLeftTextView.text = "00:00"
                 updatePlayButtonBackground()
                 runnable?.let { mainThreadHandler?.removeCallbacks(it) }
-
             }
         }
     }
