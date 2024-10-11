@@ -1,14 +1,18 @@
 package com.practicum.playlistmaker.settings.ui.view_model
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.practicum.playlistmaker.creator.Creator
+import com.practicum.playlistmaker.settings.domain.api.ThemeSettingsInteractor
+import com.practicum.playlistmaker.sharing.domain.SharingInteractor
 
-class SettingsViewModel(context: Context) : ViewModel() {
-    private val sharingInteractor = Creator.provideSharingInteractor()
-    private val themeSettingsInteractor = Creator.provideThemeSettingsInteractor()
+class SettingsViewModel(
+    private val sharingInteractor : SharingInteractor,
+    private val themeSettingsInteractor: ThemeSettingsInteractor
+) : ViewModel() {
 
     private val _isDarkThemeEnabled = MutableLiveData<Boolean>().apply {
         value = themeSettingsInteractor.isDarkThemeEnabled()
@@ -31,6 +35,21 @@ class SettingsViewModel(context: Context) : ViewModel() {
 
     fun openSupport() {
         sharingInteractor.openSupport()
+    }
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(
+                modelClass: Class<T>,
+                extras: CreationExtras
+            ): T {
+                return SettingsViewModel(
+                    sharingInteractor = Creator.provideSharingInteractor(),
+                    themeSettingsInteractor = Creator.provideThemeSettingsInteractor()
+                ) as T
+            }
+        }
     }
 
 }

@@ -14,21 +14,6 @@ class SearchViewModel(
     private val searchHistoryInteractor: SearchHistoryInteractor,
     private val tracksInteractor: TracksInteractor
 ) : ViewModel() {
-    companion object {
-        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(
-                modelClass: Class<T>,
-                extras: CreationExtras
-            ): T {
-                return SearchViewModel(
-                    searchHistoryInteractor = Creator.provideSearchHistoryInteractor(),
-                    tracksInteractor = Creator.provideTracksInteractor()
-                ) as T
-            }
-        }
-    }
-
     private val _state = MutableLiveData<State>()
     val state: LiveData<State> = _state
 
@@ -64,8 +49,24 @@ class SearchViewModel(
         searchHistoryInteractor.clear()
         _state.postValue(State.ShowEmptyTrackHistory)
     }
-    fun addTrackToSearchHistory(track: Track){
+
+    fun addTrackToSearchHistory(track: Track) {
         searchHistoryInteractor.addNewTrackToHistory(track)
+    }
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(
+                modelClass: Class<T>,
+                extras: CreationExtras
+            ): T {
+                return SearchViewModel(
+                    searchHistoryInteractor = Creator.provideSearchHistoryInteractor(),
+                    tracksInteractor = Creator.provideTracksInteractor()
+                ) as T
+            }
+        }
     }
 
 }

@@ -3,23 +3,18 @@ package com.practicum.playlistmaker.settings.ui.activity
 import android.os.Bundle
 import android.view.View
 import android.widget.Switch
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.settings.ui.view_model.SettingsViewModel
-import com.practicum.playlistmaker.settings.ui.view_model.ViewModelFactory
 
 class SettingActivity : AppCompatActivity() {
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel: SettingsViewModel by viewModels { SettingsViewModel.Factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
-        // Передаем ApplicationContext в фабрику
-        val factory = ViewModelFactory(applicationContext)
-
-        viewModel = ViewModelProvider(this, factory).get(SettingsViewModel::class.java)
         setUI()
     }
 
