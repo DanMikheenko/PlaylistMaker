@@ -120,6 +120,7 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
             }
 
             is State.Error -> {
+                showConnectionError()
             }
 
             is State.ShowEmptyTrackHistory -> {
@@ -210,6 +211,7 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
         binding.recyclerView.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
     }
+
 
     override fun onTrackClick(track: Track) {
         val intent = Intent(this, PlayerActivity::class.java)

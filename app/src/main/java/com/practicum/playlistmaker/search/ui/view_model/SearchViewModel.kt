@@ -21,11 +21,19 @@ class SearchViewModel(
         _state.postValue(State.LoadingSearchingTracks)
         tracksInteractor.searchTracks(query, object :
             TracksInteractor.TracksConsumer {
-            override fun consume(foundTracks: List<Track>) {
-                if (foundTracks.isEmpty()) {
-                    _state.postValue(State.ShowEmptyResult)
-                } else {
-                    _state.postValue(State.ShowSearchResult(foundTracks))
+            override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
+                if (errorMessage.isNullOrEmpty()) {
+                    if (foundTracks?.isEmpty() == true) {
+                        _state.postValue(State.ShowEmptyResult)
+                    } else {
+                        _state.postValue(foundTracks?.let { State.ShowSearchResult(it) })
+                    }
+                }
+                if (errorMessage == "Проверьте подключение к интернету"){
+                    _state.postValue(State.ConnectionError)
+                }
+                if (errorMessage == "Ошибка сервера"){
+                    _state.postValue(State.Error)
                 }
             }
         })

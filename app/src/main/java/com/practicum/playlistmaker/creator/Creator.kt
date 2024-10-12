@@ -77,5 +77,9 @@ object Creator {
         return ThemeSettingsInteractorImpl(getThemeSettingsRepository())
     }
 
+    fun provideApplicationContext(): Context{
+        return _appContext
+    }
+
 
 }
