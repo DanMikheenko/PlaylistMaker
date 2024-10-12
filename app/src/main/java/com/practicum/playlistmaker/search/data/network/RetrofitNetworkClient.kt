@@ -1,7 +1,5 @@
 package com.practicum.playlistmaker.search.data.network
 
-import android.content.Context
-import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.search.data.NetworkClient
@@ -37,8 +35,7 @@ class RetrofitNetworkClient : NetworkClient {
     }
 
     private fun isConnected(): Boolean {
-        val connectivityManager = Creator.provideApplicationContext().getSystemService(
-            Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager = Creator.provideConnectivityManagerInteractor()
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (capabilities != null) {
             when {

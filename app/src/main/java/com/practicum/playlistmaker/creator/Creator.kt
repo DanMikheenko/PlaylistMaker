@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.creator
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import com.practicum.playlistmaker.player.data.PlayerRepositoryImpl
 import com.practicum.playlistmaker.player.domain.api.PlayerInteractor
@@ -77,8 +78,8 @@ object Creator {
         return ThemeSettingsInteractorImpl(getThemeSettingsRepository())
     }
 
-    fun provideApplicationContext(): Context{
-        return _appContext
+    fun provideConnectivityManagerInteractor(): ConnectivityManager {
+        return _appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
 
