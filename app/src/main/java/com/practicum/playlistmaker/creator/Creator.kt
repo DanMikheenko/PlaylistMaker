@@ -38,7 +38,7 @@ object Creator {
     }
 
     private fun getSearchHistoryRepository(): SearchHistoryRepository {
-        return SearchHistoryRepositoryImpl(getSharedPreferences())
+        return SearchHistoryRepositoryImpl()
     }
 
     private fun getPlayerRepository(): PlayerRepository {

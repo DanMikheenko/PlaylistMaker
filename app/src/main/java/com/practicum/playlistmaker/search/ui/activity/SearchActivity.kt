@@ -29,12 +29,6 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     private val viewModel: SearchViewModel by viewModels { SearchViewModel.Factory }
     private lateinit var binding: ActivitySearchBinding
     private lateinit var state: State
-
-    companion object {
-        const val KEY_EDIT_TEXT = "editTextValue"
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-    }
-
     private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +46,6 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
             resetSearchText()
             hideKeyboard()
         }
-
 
         val updateBtn = findViewById<View>(R.id.updateRequestBtn)
         updateBtn.setOnClickListener {
@@ -219,11 +212,21 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     }
 
     override fun onTrackClick(track: Track) {
-        viewModel.addTrackToSearchHistory(track)
         val intent = Intent(this, PlayerActivity::class.java)
         intent.putExtra("selectedTrack", Gson().toJson(track))
         startActivity(intent)
+        viewModel.addTrackToSearchHistory(track)
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        if (state is State.ShowSearchingTrackHistory){
+            viewModel.readSearchHistory()
+        }
+    }
 
+    companion object {
+        const val KEY_EDIT_TEXT = "editTextValue"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+    }
 }
