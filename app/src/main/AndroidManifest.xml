@@ -2,10 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".App"
+        android:name=".creator.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -15,26 +16,26 @@
         android:supportsRtl="true"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.ui.PlayerActivity"
+            android:name=".player.ui.activity.PlayerActivity"
             android:exported="false"
             android:theme="@style/PlaylistMakerActivitySetting"/>
         <activity
-            android:name=".presentation.ui.MediaActivity"
+            android:name=".media_library.ui.activity.MediaActivity"
             android:exported="false"
             android:theme="@style/PlaylistMakerActivitySetting" />
         <activity
-            android:name=".presentation.TrackView"
+            android:name=".search.ui.TrackView"
             android:exported="false" />
         <activity
-            android:name=".presentation.ui.SearchActivity"
+            android:name=".search.ui.activity.SearchActivity"
             android:exported="false"
             android:theme="@style/PlaylistMakerActivitySetting" />
         <activity
-            android:name=".presentation.ui.SettingActivity"
+            android:name=".settings.ui.activity.SettingActivity"
             android:exported="false"
             android:theme="@style/PlaylistMakerActivitySetting" />
         <activity
-            android:name=".presentation.ui.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Base.Theme.PlaylistMaker">
             <intent-filter>
