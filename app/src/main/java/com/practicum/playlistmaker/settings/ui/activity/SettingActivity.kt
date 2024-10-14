@@ -3,14 +3,15 @@ package com.practicum.playlistmaker.settings.ui.activity
 import android.os.Bundle
 import android.view.View
 import android.widget.Switch
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.settings.ui.view_model.SettingsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingActivity : AppCompatActivity() {
-    private val viewModel: SettingsViewModel by viewModels { SettingsViewModel.Factory }
+    private val viewModel by viewModel<SettingsViewModel>()
+    //private val viewModel: SettingsViewModel by viewModels { SettingsViewModel.Factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

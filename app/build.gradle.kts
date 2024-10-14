@@ -40,6 +40,7 @@ android {
 }
 
 dependencies {
+    implementation("io.insert-koin:koin-android:3.3.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.6")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.6")
