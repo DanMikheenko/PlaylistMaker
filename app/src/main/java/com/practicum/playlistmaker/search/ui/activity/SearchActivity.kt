@@ -27,7 +27,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     private val viewModel by viewModel<SearchViewModel>()
-    //private val viewModel: SearchViewModel by viewModels { SearchViewModel.Factory }
     private lateinit var binding: ActivitySearchBinding
     private lateinit var state: State
     private val handler = Handler(Looper.getMainLooper())

@@ -7,7 +7,7 @@ import com.practicum.playlistmaker.settings.domain.api.ThemeSettingsInteractor
 import com.practicum.playlistmaker.sharing.domain.SharingInteractor
 
 class SettingsViewModel(
-    private val sharingInteractor : SharingInteractor,
+    private val sharingInteractor: SharingInteractor,
     private val themeSettingsInteractor: ThemeSettingsInteractor
 ) : ViewModel() {
 
@@ -33,20 +33,4 @@ class SettingsViewModel(
     fun openSupport() {
         sharingInteractor.openSupport()
     }
-
-//    companion object {
-//        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-//            @Suppress("UNCHECKED_CAST")
-//            override fun <T : ViewModel> create(
-//                modelClass: Class<T>,
-//                extras: CreationExtras
-//            ): T {
-//                return SettingsViewModel(
-//                    sharingInteractor = Creator.provideSharingInteractor(),
-//                    themeSettingsInteractor = Creator.provideThemeSettingsInteractor()
-//                ) as T
-//            }
-//        }
-//    }
-
 }

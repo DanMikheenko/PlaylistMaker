@@ -58,20 +58,4 @@ class SearchViewModel(
     fun addTrackToSearchHistory(track: Track) {
         searchHistoryInteractor.addNewTrackToHistory(track)
     }
-
-//    companion object {
-//        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-//            @Suppress("UNCHECKED_CAST")
-//            override fun <T : ViewModel> create(
-//                modelClass: Class<T>,
-//                extras: CreationExtras
-//            ): T {
-//                return SearchViewModel(
-//                    searchHistoryInteractor = Creator.provideSearchHistoryInteractor(),
-//                    tracksInteractor = Creator.provideTracksInteractor()
-//                ) as T
-//            }
-//        }
-//    }
-
 }
