@@ -11,7 +11,6 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.gson.Gson
@@ -23,10 +22,11 @@ import com.practicum.playlistmaker.search.ui.OnTrackClickListener
 import com.practicum.playlistmaker.search.ui.TrackAdapter
 import com.practicum.playlistmaker.search.ui.view_model.SearchViewModel
 import com.practicum.playlistmaker.search.ui.view_model.State
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SearchActivity : AppCompatActivity(), OnTrackClickListener {
-    private val viewModel: SearchViewModel by viewModels { SearchViewModel.Factory }
+    private val viewModel by viewModel<SearchViewModel>()
     private lateinit var binding: ActivitySearchBinding
     private lateinit var state: State
     private val handler = Handler(Looper.getMainLooper())

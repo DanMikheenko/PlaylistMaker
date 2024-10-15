@@ -6,7 +6,7 @@ import com.practicum.playlistmaker.search.domain.api.SearchHistoryRepository
 import com.practicum.playlistmaker.search.domain.models.Track
 import java.util.LinkedList
 
-class SearchHistoryRepositoryImpl(private val sharedPreferences: SharedPreferences) :
+class SearchHistoryRepositoryImpl(private val sharedPreferences: SharedPreferences, private val gson: Gson) :
     SearchHistoryRepository {
     companion object {
         private const val SEARCH_HISTORY = "searchHistory"
@@ -14,7 +14,6 @@ class SearchHistoryRepositoryImpl(private val sharedPreferences: SharedPreferenc
     }
 
     private fun saveTracksToHistory(tracks: LinkedList<Track>) {
-        val gson = Gson()
         val jsonTracks = gson.toJson(tracks)
         sharedPreferences.edit()
             .putString(SEARCH_HISTORY, jsonTracks)

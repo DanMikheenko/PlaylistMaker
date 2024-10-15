@@ -4,8 +4,7 @@ import android.media.MediaPlayer
 import com.practicum.playlistmaker.player.domain.api.PlayerRepository
 import com.practicum.playlistmaker.search.domain.models.Track
 
-class PlayerRepositoryImpl : PlayerRepository {
-    private val mediaPlayer = MediaPlayer()
+class PlayerRepositoryImpl(private val mediaPlayer: MediaPlayer) : PlayerRepository {
 
     override fun preparePlayer(track: Track) {
         mediaPlayer.setDataSource(track.previewUrl)
@@ -21,7 +20,7 @@ class PlayerRepositoryImpl : PlayerRepository {
     }
 
     override fun releasePlayer() {
-        mediaPlayer.release()
+        mediaPlayer.reset()
     }
 
     override fun getCurrentPosition(): Int {
