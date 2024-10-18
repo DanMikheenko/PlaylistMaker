@@ -19,4 +19,12 @@ class FavoriteTracksFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_favorite_tracks, container, false)
     }
+    companion object {
+        fun newInstance(): FavoriteTracksFragment {
+            val fragment = FavoriteTracksFragment()
+            val args = Bundle()
+            fragment.arguments = args
+            return fragment
+        }
+    }
 }
