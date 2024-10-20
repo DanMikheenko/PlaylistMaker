@@ -75,5 +75,9 @@
     <style name="SearchActivityBackgroundStyle">
         <item name="android:background">@color/icon_color</item>
     </style>
+    <style name="CustomTabLayout" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabTextColor">@color/white</item>
+    </style>
 
 </resources>
