@@ -23,8 +23,6 @@ class PlaylistsFragment : Fragment() {
     companion object {
         fun newInstance(): PlaylistsFragment {
             val fragment = PlaylistsFragment()
-            val args = Bundle()
-            fragment.arguments = args
             return fragment
         }
     }
