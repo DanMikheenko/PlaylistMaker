@@ -22,8 +22,6 @@ class FavoriteTracksFragment : Fragment() {
     companion object {
         fun newInstance(): FavoriteTracksFragment {
             val fragment = FavoriteTracksFragment()
-            val args = Bundle()
-            fragment.arguments = args
             return fragment
         }
     }
