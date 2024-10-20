@@ -26,4 +26,6 @@
     <string name="mediateca_header">Медиатека</string>
     <string name="no_playlist_created">Вы не создали\nни одного плейлиста</string>
     <string name="new_playlist_button_name">Новый плейлист</string>
+    <string name="FavoriteTracksSign">Избранные треки</string>
+    <string name="PlaylistSign">Плейлисты</string>
 </resources>

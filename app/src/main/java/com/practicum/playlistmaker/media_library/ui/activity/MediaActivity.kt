@@ -28,8 +28,8 @@ class MediaActivity : AppCompatActivity() {
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
-                0 -> "Избранные треки"
-                1 -> "Плейлисты"
+                0 -> getString(R.string.FavoriteTracksSign)
+                1 -> getString(R.string.PlaylistSign)
                 else -> ""
             }
         }.attach()
