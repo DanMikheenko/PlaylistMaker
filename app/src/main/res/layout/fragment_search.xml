@@ -11,8 +11,7 @@
         android:drawablePadding="@dimen/button_margin"
         android:text="@string/search_button_text"
         android:textColor="?android:textColor"
-        android:textSize="@dimen/button_name_text_size"
-        android:theme="@style/PlaylistMakerActivitySettingHeader" />
+        android:textSize="@dimen/button_name_text_size"/>
 
     <FrameLayout
         android:layout_width="match_parent"

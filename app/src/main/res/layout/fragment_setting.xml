@@ -12,7 +12,6 @@
         android:textSize="22sp"
         android:drawablePadding="12dp"
         android:layout_marginBottom="24dp"
-        android:theme="@style/PlaylistMakerActivitySettingHeader"
         android:textColor="?android:textColor"
         />
 

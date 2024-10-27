@@ -20,24 +20,12 @@
             android:exported="false"
             android:theme="@style/PlaylistMakerActivitySetting"/>
         <activity
-            android:name=".media_library.ui.activity.MediaActivity"
-            android:exported="false"
-            android:theme="@style/PlaylistMakerActivitySetting" />
-        <activity
             android:name=".search.ui.TrackView"
             android:exported="false" />
         <activity
-            android:name=".search.ui.activity.SearchActivity"
-            android:exported="false"
-            android:theme="@style/PlaylistMakerActivitySetting" />
-        <activity
-            android:name=".settings.ui.activity.SettingActivity"
-            android:exported="false"
-            android:theme="@style/PlaylistMakerActivitySetting" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Base.Theme.PlaylistMaker">
+            android:theme="@style/PlaylistMakerActivitySetting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
