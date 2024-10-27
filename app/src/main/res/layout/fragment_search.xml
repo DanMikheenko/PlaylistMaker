@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/searchTextView"
+        style="@style/SettingActivityTextViewStyle"
+        android:drawablePadding="@dimen/button_margin"
+        android:text="@string/search_button_text"
+        android:textColor="?android:textColor"
+        android:textSize="@dimen/button_name_text_size"
+        android:theme="@style/PlaylistMakerActivitySettingHeader" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/editText"
+            style="@style/SearchActivityStyle"
+            android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/button_margin"
+            android:layout_marginTop="@dimen/button_margin"
+            android:layout_marginEnd="@dimen/button_margin"
+            android:layout_marginBottom="@dimen/button_margin"
+            android:drawablePadding="@dimen/_10dp"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textCursorDrawable="@color/cursor_color"
+            android:theme="@style/PlaylistMakerActivitySearch"
+            app:iconPadding="@dimen/icon_pudding" />
+
+        <ImageView
+            android:id="@+id/btnClear"
+            android:layout_width="@dimen/button_margin"
+            android:layout_height="@dimen/button_margin"
+            android:layout_gravity="end"
+            android:layout_margin="@dimen/cancelBtnMargin"
+            android:background="@android:color/transparent"
+            android:clickable="true"
+            android:theme="@style/PlaylistMakerActivitySearchCancelBtn"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+    <include
+        android:id="@+id/placeholder_layout"
+        layout="@layout/activity_nothing_found_plchldr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/connection_error_placeholder"
+        layout="@layout/activity_connection_error_plchldr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/search_history_layout"
+        layout="@layout/activity_search_history"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="120dp"
+        android:indeterminateTint="#3772E7"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+</LinearLayout>

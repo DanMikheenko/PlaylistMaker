@@ -16,23 +16,23 @@ class MediaActivity : AppCompatActivity() {
         setContentView(R.layout.activity_media)
 
 
-        val backButton = findViewById<TextView>(R.id.mediaTextView)
-        backButton.setOnClickListener{
-            finish()
-        }
-
-        val viewPager = findViewById<ViewPager2>(R.id.viewPager)
-        val tabLayout = findViewById<com.google.android.material.tabs.TabLayout>(R.id.tabLayout)
-
-        viewPager.adapter = ViewPagerAdapter(this)
-
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = when (position) {
-                0 -> getString(R.string.FavoriteTracksSign)
-                1 -> getString(R.string.PlaylistSign)
-                else -> ""
-            }
-        }.attach()
+//        val backButton = findViewById<TextView>(R.id.mediaTextView)
+//        backButton.setOnClickListener{
+//            finish()
+//        }
+//
+//        val viewPager = findViewById<ViewPager2>(R.id.viewPager)
+//        val tabLayout = findViewById<com.google.android.material.tabs.TabLayout>(R.id.tabLayout)
+//
+//        viewPager.adapter = ViewPagerAdapter(this)
+//
+//        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+//            tab.text = when (position) {
+//                0 -> getString(R.string.FavoriteTracksSign)
+//                1 -> getString(R.string.PlaylistSign)
+//                else -> ""
+//            }
+//        }.attach()
 
     }
 }
