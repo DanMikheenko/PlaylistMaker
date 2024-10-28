@@ -29,7 +29,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchFragment : Fragment(), OnTrackClickListener {
     private val viewModel by viewModel<SearchViewModel>()
     private lateinit var binding: FragmentSearchBinding
-    private lateinit var state: State
     private val handler = Handler(Looper.getMainLooper())
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,11 +50,9 @@ class SearchFragment : Fragment(), OnTrackClickListener {
             search()
         }
 
-        state = State.ShowEmptyTrackHistory
 
         viewModel.state.observe(viewLifecycleOwner) { _state ->
-            state = _state
-            render(state)
+            render(_state)
         }
 
         binding.editText.addTextChangedListener(object : TextWatcher {
@@ -103,6 +100,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
             viewModel.clearHistory()
         }
     }
+
     private fun render(state: State) {
         when (state) {
             is State.LoadingSearchingTracks -> showProgressBar()
@@ -152,7 +150,8 @@ class SearchFragment : Fragment(), OnTrackClickListener {
     }
 
     private fun hideKeyboard() {
-        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
@@ -219,8 +218,8 @@ class SearchFragment : Fragment(), OnTrackClickListener {
 
     override fun onResume() {
         super.onResume()
-        if (state is State.ShowSearchingTrackHistory) {
-            viewModel.readSearchHistory()
+        viewModel.state.observe(viewLifecycleOwner) { _state ->
+            render(_state)
         }
     }
 
