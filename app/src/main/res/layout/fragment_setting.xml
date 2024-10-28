@@ -5,62 +5,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <TextView
-        style="@style/SettingActivityTextViewStyle"
-        android:id="@+id/home_button"
-        android:text="@string/setting_button_text"
-        android:textSize="22sp"
-        android:drawablePadding="12dp"
-        android:layout_marginBottom="24dp"
-        android:textColor="?android:textColor"
-        />
 
-    <LinearLayout
+    <Toolbar
         android:layout_width="match_parent"
         android:layout_height="@dimen/setting_activity_button_height"
-        >
+        android:subtitleTextAppearance="@font/ys_display_medium"
+        android:title="@string/setting_button_text" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="@string/dark_theme"
-            tools:ignore="RtlSymmetry"
-            style="@style/SettingActivityTextViewStyle"
-            android:theme="@style/PlaylistMakerActivitySetting"
-            android:textColor="?android:textColor"/>
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/themeSwitch"
+        style="@style/SettingActivityTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="20dp"
+        android:text="@string/dark_theme"
+        android:textColor="?attr/colorOnPrimary"
+        android:theme="@style/SwitchTheme" />
 
-
-        <Switch
-            android:id="@+id/themeSwitch"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:theme="@style/SwitchTheme"/>
-    </LinearLayout>
-
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/shareTextView"
+        style="@style/SettingActivityTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:drawableEnd="@drawable/ic_share"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="20dp"
         android:text="@string/share"
-        style="@style/SettingActivityTextViewStyle"
-        android:theme="@style/PlaylistMakerActivitySetting"
-        android:textColor="?android:textColor"
-        />
+        android:theme="@style/PlaylistMakerActivitySetting" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/writeToSpprtTextView"
+        style="@style/SettingActivityTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:drawableEnd="@drawable/ic_support"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="20dp"
         android:text="@string/write_to_support"
-        style="@style/SettingActivityTextViewStyle"
-        android:theme="@style/PlaylistMakerActivitySetting"
-        android:textColor="?android:textColor" />
+        android:theme="@style/PlaylistMakerActivitySetting" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/readAgreementTextView"
-        android:drawableEnd="@drawable/arrow_right"
-        android:text="@string/user_agreement"
         style="@style/SettingActivityTextViewStyle"
-        android:theme="@style/PlaylistMakerActivitySetting"
-        android:textColor="?android:textColor"
-        />
-
-
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/arrow_right"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="20dp"
+        android:text="@string/user_agreement"
+        android:theme="@style/PlaylistMakerActivitySetting" />
 </LinearLayout>

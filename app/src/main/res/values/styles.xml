@@ -24,7 +24,7 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingStart">@dimen/setting_activity_button_padding_start</item>
         <item name="android:paddingEnd">@dimen/setting_activity_button_padding_end</item>
-        <item name="android:textColor">@color/black</item>
+<!--        <item name="android:textColor">@color/black</item>-->
         <item name="android:textSize">@dimen/setting_activity_button_text_size</item>
         <item name="iconGravity">textEnd</item>
         <item name="iconTint">@color/black</item>

@@ -4,13 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/searchTextView"
-        style="@style/SettingActivityTextViewStyle"
-        android:drawablePadding="@dimen/button_margin"
-        android:text="@string/media_button_text"
-        android:textColor="?android:textColor"
-        android:textSize="@dimen/button_name_text_size" />
+    <Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_activity_button_height"
+        android:title="@string/media_button_text"
+        android:subtitleTextAppearance="@font/ys_display_medium" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
