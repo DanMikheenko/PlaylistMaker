@@ -3,15 +3,16 @@
     <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="android:background">@color/main_activity_background</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnPrimary">@color/white</item>
         <item name="android:statusBarColor">@color/main_activity_background</item>
     </style>
 
     <style name="PlaylistMakerActivitySetting" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="android:colorPrimary">@color/white</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="colorOnPrimary">@color/icon_color</item>
+        <item name="android:textColor">@color/icon_color</item>
         <item name="android:statusBarColor">@color/main_activity_background</item>
     </style>
 
