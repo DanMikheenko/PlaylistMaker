@@ -14,9 +14,16 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_56dp"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph"/>
-
+        app:navGraph="@navigation/nav_graph" />
     <!-- BottomNavigationView -->
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/_56dp"
+        android:background="@android:color/darker_gray" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -25,10 +32,11 @@
         android:background="@android:color/transparent"
         app:itemActiveIndicatorStyle="@style/ShapeAppearance.Material3.Corner.None"
         app:itemIconTint="@color/bottom_nav_icon_color"
-        app:itemTextColor="@color/bottom_nav_icon_color"
-        app:menu="@menu/bottom_nav_menu"
+        app:itemPaddingBottom="@dimen/_10dp"
+        app:itemPaddingTop="@dimen/_8dp"
         app:itemTextAppearanceActive="@style/BottomNavTextStyle"
         app:itemTextAppearanceInactive="@style/BottomNavTextStyle"
-        app:itemPaddingTop="@dimen/_8dp"
-        app:itemPaddingBottom="@dimen/_10dp"/>
+        app:itemTextColor="@color/bottom_nav_icon_color"
+        app:menu="@menu/bottom_nav_menu" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
