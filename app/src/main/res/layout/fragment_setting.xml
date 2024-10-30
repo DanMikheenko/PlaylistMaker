@@ -17,11 +17,12 @@
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/themeSwitch"
         style="@style/SettingActivityTextViewStyle"
+        android:layout_marginTop="@dimen/_20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="20dp"
+        android:paddingHorizontal="@dimen/button_margin"
+        android:paddingVertical="@dimen/_20dp"
         android:text="@string/dark_theme"
         android:textColor="?attr/colorOnSecondary"
         android:theme="@style/SwitchTheme" />
@@ -32,8 +33,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/ic_share"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="20dp"
+        android:paddingHorizontal="@dimen/button_margin"
+        android:paddingVertical="@dimen/_20dp"
         android:text="@string/share"
         android:theme="@style/PlaylistMakerActivitySetting" />
 
@@ -43,8 +44,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/ic_support"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="20dp"
+        android:paddingHorizontal="@dimen/button_margin"
+        android:paddingVertical="@dimen/_20dp"
         android:text="@string/write_to_support"
         android:theme="@style/PlaylistMakerActivitySetting" />
 
@@ -54,8 +55,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/arrow_right"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="20dp"
+        android:paddingHorizontal="@dimen/button_margin"
+        android:paddingVertical="@dimen/_20dp"
         android:text="@string/user_agreement"
         android:theme="@style/PlaylistMakerActivitySetting" />
 </LinearLayout>

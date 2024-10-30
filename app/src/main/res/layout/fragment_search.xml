@@ -30,6 +30,7 @@
             android:inputType="text"
             android:singleLine="true"
             android:textCursorDrawable="@color/cursor_color"
+            android:textColor="@color/black"
             android:theme="@style/PlaylistMakerActivitySearch"
             app:iconPadding="@dimen/icon_pudding" />
 
