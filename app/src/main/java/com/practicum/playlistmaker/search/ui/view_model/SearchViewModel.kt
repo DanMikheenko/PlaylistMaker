@@ -11,7 +11,7 @@ class SearchViewModel(
     private val searchHistoryInteractor: SearchHistoryInteractor,
     private val tracksInteractor: TracksInteractor
 ) : ViewModel() {
-    private val _state = MutableLiveData<State>()
+    private val _state = MutableLiveData<State>(State.ShowEmptyTrackHistory)
     val state: LiveData<State> = _state
 
     fun search(query: String) {

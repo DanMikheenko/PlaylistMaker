@@ -3,16 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:theme="@style/Base.Theme.PlaylistMaker"
+    android:background="?attr/colorOnPrimary">
 
-    <TextView
-        android:id="@+id/searchTextView"
-        style="@style/SettingActivityTextViewStyle"
-        android:drawablePadding="@dimen/button_margin"
-        android:text="@string/search_button_text"
-        android:textColor="?android:textColor"
-        android:textSize="@dimen/button_name_text_size"
-        android:theme="@style/PlaylistMakerActivitySettingHeader" />
+    <Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_activity_button_height"
+        android:title="@string/search_button_text"
+        android:subtitleTextAppearance="@font/ys_display_medium" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -31,6 +30,7 @@
             android:inputType="text"
             android:singleLine="true"
             android:textCursorDrawable="@color/cursor_color"
+            android:textColor="@color/black"
             android:theme="@style/PlaylistMakerActivitySearch"
             app:iconPadding="@dimen/icon_pudding" />
 

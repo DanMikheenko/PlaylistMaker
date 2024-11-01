@@ -2,22 +2,19 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <item name="android:background">@color/black</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnPrimary">@color/icon_color</item>
         <item name="android:statusBarColor">@color/black</item>
     </style>
 
     <style name="PlaylistMakerActivitySetting" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <item name="android:colorPrimary">@color/black</item>
+        <item name="android:colorPrimary">@color/icon_color</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:statusBarColor">@color/black</item>
     </style>
 
-    <style name="PlaylistMakerActivitySettingHeader" parent="PlaylistMakerActivitySetting">
-        <!-- Customize your dark theme here. -->
-        <item name="drawableStartCompat">@drawable/ic_arrow_dark_mode</item>
-    </style>
 
     <style name="PlaylistMakerActivitySearch">
         <!-- Customize your dark theme here. -->
@@ -79,5 +76,6 @@
         <item name="tabIndicatorColor">@color/white</item>
         <item name="tabTextColor">@color/white</item>
     </style>
+
 
 </resources>

@@ -8,14 +8,15 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import com.google.gson.Gson
-import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.ActivitySearchBinding
+import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.player.ui.activity.PlayerActivity
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.OnTrackClickListener
@@ -25,37 +26,33 @@ import com.practicum.playlistmaker.search.ui.view_model.State
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SearchActivity : AppCompatActivity(), OnTrackClickListener {
+class SearchFragment : Fragment(), OnTrackClickListener {
     private val viewModel by viewModel<SearchViewModel>()
-    private lateinit var binding: ActivitySearchBinding
-    private lateinit var state: State
+    private lateinit var binding: FragmentSearchBinding
     private val handler = Handler(Looper.getMainLooper())
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        binding.searchTextView.setOnClickListener {
-            finish()
-        }
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.btnClear.setOnClickListener {
             resetSearchText()
             hideKeyboard()
         }
 
-        val updateBtn = findViewById<View>(R.id.updateRequestBtn)
-        updateBtn.setOnClickListener {
+        binding.connectionErrorPlaceholder.updateRequestBtn.setOnClickListener {
             search()
         }
-        state = State.ShowEmptyTrackHistory
 
-        viewModel.state.observe(this) { _state ->
-            state = _state
-            render(state)
+
+        viewModel.state.observe(viewLifecycleOwner) { _state ->
+            render(_state)
         }
 
         binding.editText.addTextChangedListener(object : TextWatcher {
@@ -102,8 +99,6 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
         binding.searchHistoryLayout.clearHistoryBtn.setOnClickListener {
             viewModel.clearHistory()
         }
-
-
     }
 
     private fun render(state: State) {
@@ -155,8 +150,9 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
     }
 
     private fun hideKeyboard() {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
     private val searchRunnable = Runnable { search() }
@@ -214,16 +210,16 @@ class SearchActivity : AppCompatActivity(), OnTrackClickListener {
 
 
     override fun onTrackClick(track: Track) {
-        val intent = Intent(this, PlayerActivity::class.java)
+        val intent = Intent(requireContext(), PlayerActivity::class.java)
         intent.putExtra("selectedTrack", Gson().toJson(track))
         startActivity(intent)
         viewModel.addTrackToSearchHistory(track)
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        if (state is State.ShowSearchingTrackHistory){
-            viewModel.readSearchHistory()
+    override fun onResume() {
+        super.onResume()
+        viewModel.state.observe(viewLifecycleOwner) { _state ->
+            render(_state)
         }
     }
 
