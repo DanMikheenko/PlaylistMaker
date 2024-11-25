@@ -66,7 +66,7 @@ class PlayerViewModel(
         playbackJob?.cancel()
         playbackJob = viewModelScope.launch {
             while (true) {
-                delay(100)
+                delay(300)
                 _playingTrackPosition.value = getPlayerCurrentPosition()
             }
         }
