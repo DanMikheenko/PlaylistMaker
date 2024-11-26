@@ -13,6 +13,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.player.ui.activity.PlayerActivity
@@ -100,7 +101,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
             is State.LoadingSearchingTracks -> showProgressBar()
             is State.ShowEmptyResult -> showNothingFound()
             is State.ShowSearchResult -> {
-                binding.recyclerView.adapter = TrackAdapter(state.data, this)
+                binding.recyclerView.adapter = TrackAdapter(state.data, this, viewLifecycleOwner.lifecycleScope)
                 showResult()
             }
 
@@ -118,7 +119,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
 
             is State.ShowSearchingTrackHistory -> {
                 binding.searchHistoryLayout.searchHistoryRecyclerView.adapter =
-                    TrackAdapter(state.data, this)
+                    TrackAdapter(state.data, this, viewLifecycleOwner.lifecycleScope)
                 showHistory()
             }
         }

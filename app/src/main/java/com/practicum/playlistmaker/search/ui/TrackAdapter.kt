@@ -1,23 +1,20 @@
 package com.practicum.playlistmaker.search.ui
 
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class TrackAdapter(
     private val tracks: List<Track>,
-    private val listener: OnTrackClickListener
+    private val listener: OnTrackClickListener,
+    private val coroutineScope: CoroutineScope
 ) : RecyclerView.Adapter<TrackViewHolder>() {
-    companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-    }
-
     private var isClickAllowed = true
-    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view =
@@ -43,8 +40,15 @@ class TrackAdapter(
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            coroutineScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
         }
         return current
+    }
+
+    companion object {
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
