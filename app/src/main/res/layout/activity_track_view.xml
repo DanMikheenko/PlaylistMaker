@@ -47,6 +47,7 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
+                android:maxLength="40"
                 android:textSize="@dimen/author_Text_Size"
                 tools:text="Artist name mock data" />
 
