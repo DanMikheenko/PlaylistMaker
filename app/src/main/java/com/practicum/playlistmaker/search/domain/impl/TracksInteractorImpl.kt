@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.search.domain.impl
 
+import com.practicum.playlistmaker.search.domain.api.ErrorTypes
 import com.practicum.playlistmaker.search.domain.api.Resource
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.api.TracksRepository
@@ -9,7 +10,7 @@ import kotlinx.coroutines.flow.map
 
 class TracksInteractorImpl(private val repository: TracksRepository) : TracksInteractor {
 
-    override fun searchTracks(expression: String): Flow<Pair<List<Track>?, String?>> {
+    override fun searchTracks(expression: String): Flow<Pair<List<Track>?, ErrorTypes?>> {
         return repository.searchTracks(expression).map { result ->
             when (result) {
                 is Resource.Success -> {
@@ -17,7 +18,7 @@ class TracksInteractorImpl(private val repository: TracksRepository) : TracksInt
                 }
 
                 is Resource.Error -> {
-                    Pair(null, result.message)
+                    Pair(null, result.errorType)
                 }
             }
         }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.practicum.playlistmaker.search.domain.api.ErrorTypes
 import com.practicum.playlistmaker.search.domain.api.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
@@ -25,17 +26,17 @@ class SearchViewModel(
             viewModelScope.launch {
                 tracksInteractor.searchTracks(query)
                     .collect() { pair ->
-                        if (pair.second.isNullOrEmpty()) {
+                        if (pair.second == null) {
                             if (pair.first?.isEmpty() == true) {
                                 _state.postValue(State.ShowEmptyResult)
                             } else {
                                 _state.postValue(State.ShowSearchResult(pair.first!!))
                             }
                         }
-                        if (pair.second == "Проверьте подключение к интернету") {
+                        if (pair.second == ErrorTypes.InternetConnectionError) {
                             _state.postValue(State.ConnectionError)
                         }
-                        if (pair.second == "Ошибка сервера") {
+                        if (pair.second == ErrorTypes.ServerError) {
                             _state.postValue(State.Error)
                         }
                     }

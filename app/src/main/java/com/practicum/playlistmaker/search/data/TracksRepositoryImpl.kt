@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.search.data
 
 import com.practicum.playlistmaker.search.data.dto.TracksSearchRequest
 import com.practicum.playlistmaker.search.data.dto.TracksSearchResponse
+import com.practicum.playlistmaker.search.domain.api.ErrorTypes
 import com.practicum.playlistmaker.search.domain.api.Resource
 import com.practicum.playlistmaker.search.domain.api.TracksRepository
 import com.practicum.playlistmaker.search.domain.models.Track
@@ -14,7 +15,7 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRep
         val response = networkClient.doRequest(TracksSearchRequest(expression))
         when (response.resultCode) {
             -1 -> {
-                emit(Resource.Error("Проверьте подключение к интернету"))
+                emit(Resource.Error(ErrorTypes.InternetConnectionError))
             }
             200 -> {
                 with(response as TracksSearchResponse){
@@ -36,7 +37,7 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRep
 
             }
             else -> {
-                emit(Resource.Error("Ошибка сервера"))
+                emit(Resource.Error(ErrorTypes.ServerError))
             }
         }
     }
