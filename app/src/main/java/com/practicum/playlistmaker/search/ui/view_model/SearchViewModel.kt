@@ -57,6 +57,10 @@ class SearchViewModel(
         }
     }
 
+    fun stopSearch(){
+        searchJob?.cancel()
+    }
+
     fun readSearchHistory() {
         searchHistoryInteractor.readSearchHistory(object :
             SearchHistoryInteractor.SearchHistoryConsumer {

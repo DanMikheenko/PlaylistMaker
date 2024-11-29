@@ -41,6 +41,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
         binding.btnClear.setOnClickListener {
             resetSearchText()
             hideKeyboard()
+            viewModel.stopSearch()
         }
 
         binding.connectionErrorPlaceholder.updateRequestBtn.setOnClickListener {
@@ -81,6 +82,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
                 actionId == EditorInfo.IME_ACTION_NEXT ||
                 (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
             ) {
+                viewModel.stopSearch()
                 search()
             }
             false
