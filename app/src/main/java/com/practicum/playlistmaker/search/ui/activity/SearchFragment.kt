@@ -3,8 +3,6 @@ package com.practicum.playlistmaker.search.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
@@ -15,6 +13,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.player.ui.activity.PlayerActivity
@@ -29,12 +28,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchFragment : Fragment(), OnTrackClickListener {
     private val viewModel by viewModel<SearchViewModel>()
     private lateinit var binding: FragmentSearchBinding
-    private val handler = Handler(Looper.getMainLooper())
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -44,6 +41,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
         binding.btnClear.setOnClickListener {
             resetSearchText()
             hideKeyboard()
+            viewModel.stopSearch()
         }
 
         binding.connectionErrorPlaceholder.updateRequestBtn.setOnClickListener {
@@ -65,7 +63,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
                 } else {
                     binding.btnClear.isVisible = false
                 }
-                searchDebounce()
+                viewModel.searchDebounce(binding.editText.text.toString())
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -80,18 +78,17 @@ class SearchFragment : Fragment(), OnTrackClickListener {
         }
 
         binding.editText.setOnEditorActionListener { v, actionId, event ->
-            handler.removeCallbacks(searchRunnable)
             if (actionId == EditorInfo.IME_ACTION_DONE ||
                 actionId == EditorInfo.IME_ACTION_NEXT ||
                 (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
             ) {
+                viewModel.stopSearch()
                 search()
             }
             false
         }
         binding.editText.setOnFocusChangeListener { view, hasFocus ->
             if (binding.editText.hasFocus() && binding.editText.text.isEmpty()) {
-                handler.removeCallbacks(searchRunnable)
                 viewModel.readSearchHistory()
             }
         }
@@ -106,7 +103,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
             is State.LoadingSearchingTracks -> showProgressBar()
             is State.ShowEmptyResult -> showNothingFound()
             is State.ShowSearchResult -> {
-                binding.recyclerView.adapter = TrackAdapter(state.data, this)
+                binding.recyclerView.adapter = TrackAdapter(state.data, this, viewLifecycleOwner.lifecycleScope)
                 showResult()
             }
 
@@ -124,7 +121,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
 
             is State.ShowSearchingTrackHistory -> {
                 binding.searchHistoryLayout.searchHistoryRecyclerView.adapter =
-                    TrackAdapter(state.data, this)
+                    TrackAdapter(state.data, this, viewLifecycleOwner.lifecycleScope)
                 showHistory()
             }
         }
@@ -132,7 +129,6 @@ class SearchFragment : Fragment(), OnTrackClickListener {
 
     private fun resetSearchText() {
         binding.editText.text.clear()
-        handler.removeCallbacks(searchRunnable)
         binding.placeholderLayout.root.visibility = View.GONE
         binding.connectionErrorPlaceholder.root.visibility = View.GONE
         binding.searchHistoryLayout.root.visibility = View.VISIBLE
@@ -154,13 +150,6 @@ class SearchFragment : Fragment(), OnTrackClickListener {
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
-
-    private val searchRunnable = Runnable { search() }
-    private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
-    }
-
 
     private fun hideAll() {
         binding.placeholderLayout.root.visibility = View.GONE
@@ -225,6 +214,5 @@ class SearchFragment : Fragment(), OnTrackClickListener {
 
     companion object {
         const val KEY_EDIT_TEXT = "editTextValue"
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
