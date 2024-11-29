@@ -66,7 +66,7 @@ class PlayerViewModel(
         playbackJob?.cancel()
         playbackJob = viewModelScope.launch {
             while (true) {
-                delay(300)
+                delay(CLICK_DEBOUNCE_DELAY)
                 _playingTrackPosition.value = getPlayerCurrentPosition()
             }
         }
@@ -79,5 +79,8 @@ class PlayerViewModel(
     override fun onCleared() {
         super.onCleared()
         stopTrackingPlayingTrackPosition()
+    }
+    companion object{
+        private const val CLICK_DEBOUNCE_DELAY = 300L
     }
 }
