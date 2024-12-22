@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker.search.domain.models
 
 data class Track(
-    var trackId: String,
+    var id: String,
     var trackName: String,
     var previewUrl: String?,
     var artistName: String,
@@ -10,7 +10,8 @@ data class Track(
     var collectionName: String,
     var releaseDate: String?,
     var primaryGenreName: String,
-    var country: String
+    var country: String,
+    var isFavorite: Boolean = false
 ) {
     fun formattedDuration(): String {
         val totalSeconds = trackTimeMillis.toLong() / 1000

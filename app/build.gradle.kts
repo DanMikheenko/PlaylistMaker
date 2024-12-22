@@ -38,10 +38,17 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    configurations.all {
+        resolutionStrategy {
+            force("org.jetbrains:annotations:13.0")
+        }
+        exclude(group = "com.intellij", module = "annotations")
+    }
+
+
 }
 
 dependencies {
-
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.2")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.2")
     implementation("io.insert-koin:koin-android:3.3.0")

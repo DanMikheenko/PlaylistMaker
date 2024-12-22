@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.search.data
 
+import com.practicum.playlistmaker.search.data.db.AppDatabase
 import com.practicum.playlistmaker.search.data.dto.TracksSearchRequest
 import com.practicum.playlistmaker.search.data.dto.TracksSearchResponse
 import com.practicum.playlistmaker.search.domain.api.ErrorTypes
@@ -9,32 +10,34 @@ import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRepository {
+class TracksRepositoryImpl(private val networkClient: NetworkClient, private val appDatabase: AppDatabase) : TracksRepository {
 
     override fun searchTracks(expression: String): Flow<Resource<List<Track>>> = flow {
         val response = networkClient.doRequest(TracksSearchRequest(expression))
+        val favoriteTracksIds = appDatabase.trackDao().getFavoriteTracksIds()
         when (response.resultCode) {
             -1 -> {
                 emit(Resource.Error(ErrorTypes.InternetConnectionError))
             }
             200 -> {
-                with(response as TracksSearchResponse){
-                    val data = results.map {
+                with(response as TracksSearchResponse) {
+                    val data = results.map { result ->
                         Track(
-                            it.id,
-                            it.trackName,
-                            it.previewUrl,
-                            it.artistName,
-                            it.trackTimeMillis,
-                            it.artworkUrl100,
-                            it.collectionName,
-                            it.releaseDate,
-                            it.primaryGenreName,
-                            it.country)
+                            id = result.id,
+                            trackName = result.trackName,
+                            previewUrl = result.previewUrl,
+                            artistName = result.artistName,
+                            trackTimeMillis = result.trackTimeMillis,
+                            artworkUrl100 = result.artworkUrl100,
+                            collectionName = result.collectionName,
+                            releaseDate = result.releaseDate,
+                            primaryGenreName = result.primaryGenreName,
+                            country = result.country,
+                            isFavorite = favoriteTracksIds.contains(result.id)
+                        )
                     }
                     emit(Resource.Success(data))
                 }
-
             }
             else -> {
                 emit(Resource.Error(ErrorTypes.ServerError))

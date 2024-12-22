@@ -2,11 +2,16 @@ package com.practicum.playlistmaker.search.data
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.practicum.playlistmaker.search.data.db.AppDatabase
 import com.practicum.playlistmaker.search.domain.api.SearchHistoryRepository
 import com.practicum.playlistmaker.search.domain.models.Track
 import java.util.LinkedList
 
-class SearchHistoryRepositoryImpl(private val sharedPreferences: SharedPreferences, private val gson: Gson) :
+class SearchHistoryRepositoryImpl(
+    private val sharedPreferences: SharedPreferences,
+    private val gson: Gson,
+    private val appDatabase: AppDatabase
+) :
     SearchHistoryRepository {
     companion object {
         private const val SEARCH_HISTORY = "searchHistory"
@@ -20,15 +25,19 @@ class SearchHistoryRepositoryImpl(private val sharedPreferences: SharedPreferenc
             .apply()
     }
 
-    override fun readSearchHistory(): List<Track> {
+    override suspend fun readSearchHistory(): List<Track> {
+        val favoriteTracksIds = appDatabase.trackDao().getFavoriteTracksIds()
         val jsonTracks = sharedPreferences
             .getString(SEARCH_HISTORY, "")
         if (jsonTracks.isNullOrEmpty()) return LinkedList<Track>()
-        return Gson().fromJson(jsonTracks, Array<Track>::class.java).toCollection(LinkedList())
+        val tracks = Gson().fromJson(jsonTracks, Array<Track>::class.java).toCollection(LinkedList())
+        return tracks.map { track ->
+            track.copy(isFavorite = favoriteTracksIds.contains(track.id))
+        }
 
     }
 
-    override fun addNewTrackToHistory(track: Track) {
+    override suspend fun addNewTrackToHistory(track: Track) {
         val storedTracks = readSearchHistory()
         if (storedTracks.isEmpty()) {
             val tracks = LinkedList<Track>()
@@ -37,7 +46,7 @@ class SearchHistoryRepositoryImpl(private val sharedPreferences: SharedPreferenc
         } else {
             val newLinkedList = LinkedList<Track>()
             for (item in storedTracks) {
-                if (item.trackId != track.trackId) {
+                if (item.id != track.id) {
                     newLinkedList.addLast(item)
                 }
             }
