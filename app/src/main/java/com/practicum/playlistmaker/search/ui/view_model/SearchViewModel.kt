@@ -62,19 +62,17 @@ class SearchViewModel(
     }
 
     fun readSearchHistory() {
-        viewModelScope.launch {
-            searchHistoryInteractor.readSearchHistory(object :
-                SearchHistoryInteractor.SearchHistoryConsumer {
-                override fun consume(trackHistory: List<Track>) {
-                    if (trackHistory.isEmpty()) {
-                        _state.postValue(State.ShowEmptyTrackHistory)
-                    } else {
-                        _state.postValue(State.ShowSearchingTrackHistory(trackHistory))
-                    }
-
+        searchHistoryInteractor.readSearchHistory(object :
+            SearchHistoryInteractor.SearchHistoryConsumer {
+            override fun consume(trackHistory: List<Track>) {
+                if (trackHistory.isEmpty()) {
+                    _state.postValue(State.ShowEmptyTrackHistory)
+                } else {
+                    _state.postValue(State.ShowSearchingTrackHistory(trackHistory))
                 }
-            })
-        }
+
+            }
+        })
     }
 
     fun clearHistory() {

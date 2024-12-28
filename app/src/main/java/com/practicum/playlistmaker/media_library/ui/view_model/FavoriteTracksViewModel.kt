@@ -17,26 +17,28 @@ class FavoriteTracksViewModel(private val favoriteTracksInteractor: FavoriteTrac
         viewModelScope.launch {
             val favoriteTracks = favoriteTracksInteractor.getAllFavoriteTracks()
             favoriteTracks.collect() { tracks ->
-                var resultTracks = emptyList<Track>()
-                for(track in tracks){
-                    resultTracks.plus(Track(
-                        track.trackId,
-                        track.trackName,
-                        track.previewUrl,
-                        track.artistName,
-                        track.trackTimeMillis,
-                        track.artworkUrl100,
-                        track.collectionName,
-                        track.releaseDate,
-                        track.primaryGenreName,
-                        track.country,
-                        isFavorite = true
-                    ))
-                }
                 if (tracks.isEmpty()) _state.postValue(FavoriteTracksState.ShowPlaceholder)
                 else {
-                    _state.postValue(FavoriteTracksState.ShowFavoriteTracks(tracks))
+                    var resultTracks = mutableListOf<Track>()
+                    for(track in tracks){
+                        resultTracks.add(Track(
+                            track.trackId,
+                            track.trackName,
+                            track.previewUrl,
+                            track.artistName,
+                            track.trackTimeMillis,
+                            track.artworkUrl100,
+                            track.collectionName,
+                            track.releaseDate,
+                            track.primaryGenreName,
+                            track.country,
+                            isFavorite = true
+                        ))
+                    }
+                    _state.postValue(FavoriteTracksState.ShowFavoriteTracks(resultTracks.reversed()))
                 }
+
+
             }
         }
     }

@@ -53,9 +53,33 @@ class PlayerActivity : AppCompatActivity() {
         val likeButton = findViewById<ImageView>(R.id.like_button)
         viewModel.isFavoriteTrack.observe(this){_isFavorite->
             if (_isFavorite){
-                likeButton.setBackgroundResource(R.drawable.liked_button)
+                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                    Configuration.UI_MODE_NIGHT_YES -> {
+                        likeButton.setBackgroundResource(R.drawable.button_2)
+                    }
+
+                    Configuration.UI_MODE_NIGHT_NO -> {
+                        likeButton.setBackgroundResource(R.drawable.liked_button)
+                    }
+
+                    Configuration.UI_MODE_NIGHT_UNDEFINED -> {
+                        playButton.setBackgroundResource(R.drawable.liked_button)
+                    }
+                }
             } else{
-                likeButton.setBackgroundResource(R.drawable.like_button)
+                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                    Configuration.UI_MODE_NIGHT_YES -> {
+                        likeButton.setBackgroundResource(R.drawable.like_button)
+                    }
+
+                    Configuration.UI_MODE_NIGHT_NO -> {
+                        likeButton.setBackgroundResource(R.drawable.like_button)
+                    }
+
+                    Configuration.UI_MODE_NIGHT_UNDEFINED -> {
+                        playButton.setBackgroundResource(R.drawable.like_button)
+                    }
+                }
             }
         }
         likeButton.setOnClickListener {

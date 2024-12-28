@@ -25,26 +25,14 @@ class SearchHistoryRepositoryImpl(
             .apply()
     }
 
-    override suspend fun readSearchHistory(): List<Track> {
-        var favoriteTracksIds = emptyList<String>()
-        appDatabase.trackDao().getFavoriteTracksIds().collect(){tracksId->
-            if (tracksId.isNullOrEmpty()){
-                return@collect
-            } else{
-                favoriteTracksIds = tracksId
-            }
-        }
+    override fun readSearchHistory(): List<Track> {
         val jsonTracks = sharedPreferences
             .getString(SEARCH_HISTORY, "")
         if (jsonTracks.isNullOrEmpty()) return LinkedList<Track>()
-        val tracks = Gson().fromJson(jsonTracks, Array<Track>::class.java).toCollection(LinkedList())
-        return tracks.map { track ->
-            track.copy(isFavorite = favoriteTracksIds.contains(track.trackId))
-        }
-
+        return Gson().fromJson(jsonTracks, Array<Track>::class.java).toCollection(LinkedList())
     }
 
-    override suspend fun addNewTrackToHistory(track: Track) {
+    override fun addNewTrackToHistory(track: Track) {
         val storedTracks = readSearchHistory()
         if (storedTracks.isEmpty()) {
             val tracks = LinkedList<Track>()
