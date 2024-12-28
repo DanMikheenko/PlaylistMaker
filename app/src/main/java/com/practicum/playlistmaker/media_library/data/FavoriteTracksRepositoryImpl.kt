@@ -31,6 +31,17 @@ class FavoriteTracksRepositoryImpl(
         }
     }
 
+    override suspend fun getAllFavoriteTracksIds(): Flow<List<String>> = flow {
+        val favoriteTracksIdsFlow = appDatabase.trackDao().getFavoriteTracksIds()
+        favoriteTracksIdsFlow.collect() { ids ->
+            if (ids.isNullOrEmpty()) {
+                emit(emptyList())
+            } else {
+                emit(ids)
+            }
+        }
+    }
+
     private fun convertFromTrackEntity(tracks: List<TrackEntity>): List<Track> {
         return tracks.map { track -> trackDbConvertor.map(track) }
     }

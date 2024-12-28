@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.media_library.domain.api.FavoriteTracksInteractor
+import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.launch
 
 class FavoriteTracksViewModel(private val favoriteTracksInteractor: FavoriteTracksInteractor) :
@@ -16,6 +17,22 @@ class FavoriteTracksViewModel(private val favoriteTracksInteractor: FavoriteTrac
         viewModelScope.launch {
             val favoriteTracks = favoriteTracksInteractor.getAllFavoriteTracks()
             favoriteTracks.collect() { tracks ->
+                var resultTracks = emptyList<Track>()
+                for(track in tracks){
+                    resultTracks.plus(Track(
+                        track.trackId,
+                        track.trackName,
+                        track.previewUrl,
+                        track.artistName,
+                        track.trackTimeMillis,
+                        track.artworkUrl100,
+                        track.collectionName,
+                        track.releaseDate,
+                        track.primaryGenreName,
+                        track.country,
+                        isFavorite = true
+                    ))
+                }
                 if (tracks.isEmpty()) _state.postValue(FavoriteTracksState.ShowPlaceholder)
                 else {
                     _state.postValue(FavoriteTracksState.ShowFavoriteTracks(tracks))

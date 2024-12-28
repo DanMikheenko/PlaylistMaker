@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.media_library.domain.api.FavoriteTracksInteractor
 import com.practicum.playlistmaker.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,12 +26,25 @@ class PlayerViewModel(
     val playingTrackPosition: LiveData<Int> = _playingTrackPosition
 
     private val _isFavoriteTrack = MutableLiveData<Boolean>()
-    val isFavoriteTrack : LiveData<Boolean> = _isFavoriteTrack
+    val isFavoriteTrack: LiveData<Boolean> = _isFavoriteTrack
 
     private var playbackJob: Job? = null
 
     init {
         _state.postValue(PlayerState.Default)
+        viewModelScope.launch {
+            favoriteTracksInteractor.getAllFavoriteTracksIds().collect() { ids ->
+                if (ids.isNullOrEmpty()){
+                    _isFavoriteTrack.postValue(false)
+                } else {
+                    if (ids.contains(track.trackId)){
+                        _isFavoriteTrack.postValue(true)
+                    } else{
+                        _isFavoriteTrack.postValue(false)
+                    }
+                }
+            }
+        }
     }
 
     fun preparePlayer(
@@ -86,22 +100,23 @@ class PlayerViewModel(
         stopTrackingPlayingTrackPosition()
     }
 
-    fun onFavoriteClicked(){
+    fun onFavoriteClicked() {
         if (track.isFavorite) {
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 favoriteTracksInteractor.removeTrackFromFavoriteList(track)
                 track.isFavorite = false
                 _isFavoriteTrack.postValue(false)
             }
-        } else{
-            viewModelScope.launch {
-                favoriteTracksInteractor.addTrackToFavoriteList(track)
+        } else {
+            viewModelScope.launch(Dispatchers.IO) {
                 track.isFavorite = true
+                favoriteTracksInteractor.addTrackToFavoriteList(track)
                 _isFavoriteTrack.postValue(true)
             }
         }
     }
-    companion object{
+
+    companion object {
         private const val CLICK_DEBOUNCE_DELAY = 300L
     }
 }

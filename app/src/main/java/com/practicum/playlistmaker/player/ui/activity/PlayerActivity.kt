@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.player.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
@@ -30,6 +31,7 @@ class PlayerActivity : AppCompatActivity() {
     private var runnable: Runnable? = null
     private lateinit var playerState: PlayerState
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -48,6 +50,17 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         setupUI()
+        val likeButton = findViewById<ImageView>(R.id.like_button)
+        viewModel.isFavoriteTrack.observe(this){_isFavorite->
+            if (_isFavorite){
+                likeButton.setBackgroundResource(R.drawable.liked_button)
+            } else{
+                likeButton.setBackgroundResource(R.drawable.like_button)
+            }
+        }
+        likeButton.setOnClickListener {
+            viewModel.onFavoriteClicked()
+        }
 
         viewModel.state.observe(this) { _state ->
             playerState = _state
