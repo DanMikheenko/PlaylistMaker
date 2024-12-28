@@ -38,14 +38,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    configurations.all {
-        resolutionStrategy {
-            force("org.jetbrains:annotations:13.0")
-        }
-        exclude(group = "com.intellij", module = "annotations")
+    kapt{
+        correctErrorTypes = true
     }
-
-
 }
 
 dependencies {
@@ -65,8 +60,9 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.activity:activity-ktx:1.9.3")
     implementation("androidx.room:room-runtime:2.5.1")
-    implementation("androidx.room:room-compiler:2.5.1")
+    kapt("androidx.room:room-compiler:2.5.1")
     implementation("androidx.room:room-ktx:2.5.1")
+    kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")

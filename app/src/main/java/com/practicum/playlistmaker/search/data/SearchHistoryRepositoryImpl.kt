@@ -26,13 +26,16 @@ class SearchHistoryRepositoryImpl(
     }
 
     override suspend fun readSearchHistory(): List<Track> {
-        val favoriteTracksIds = appDatabase.trackDao().getFavoriteTracksIds()
+        var favoriteTracksIds = emptyList<String>()
+        appDatabase.trackDao().getFavoriteTracksIds().collect(){tracksId->
+            favoriteTracksIds = tracksId
+        }
         val jsonTracks = sharedPreferences
             .getString(SEARCH_HISTORY, "")
         if (jsonTracks.isNullOrEmpty()) return LinkedList<Track>()
         val tracks = Gson().fromJson(jsonTracks, Array<Track>::class.java).toCollection(LinkedList())
         return tracks.map { track ->
-            track.copy(isFavorite = favoriteTracksIds.contains(track.id))
+            track.copy(isFavorite = favoriteTracksIds.contains(track.trackId))
         }
 
     }
@@ -46,7 +49,7 @@ class SearchHistoryRepositoryImpl(
         } else {
             val newLinkedList = LinkedList<Track>()
             for (item in storedTracks) {
-                if (item.id != track.id) {
+                if (item.trackId != track.trackId) {
                     newLinkedList.addLast(item)
                 }
             }

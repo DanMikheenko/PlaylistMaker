@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker.search.domain.models
 
 data class Track(
-    var id: String,
+    var trackId: String,
     var trackName: String,
     var previewUrl: String?,
     var artistName: String,

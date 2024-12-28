@@ -14,7 +14,14 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient, private val
 
     override fun searchTracks(expression: String): Flow<Resource<List<Track>>> = flow {
         val response = networkClient.doRequest(TracksSearchRequest(expression))
-        val favoriteTracksIds = appDatabase.trackDao().getFavoriteTracksIds()
+        var favoriteTracksIds = emptyList<String>()
+//        appDatabase.trackDao().getFavoriteTracksIds().collect(){ids->
+//            if (ids.isNullOrEmpty()){
+//                return@collect
+//            } else{
+//                favoriteTracksIds = ids
+//            }
+//        }
         when (response.resultCode) {
             -1 -> {
                 emit(Resource.Error(ErrorTypes.InternetConnectionError))
@@ -23,7 +30,7 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient, private val
                 with(response as TracksSearchResponse) {
                     val data = results.map { result ->
                         Track(
-                            id = result.id,
+                            trackId = result.trackId,
                             trackName = result.trackName,
                             previewUrl = result.previewUrl,
                             artistName = result.artistName,
@@ -33,7 +40,7 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient, private val
                             releaseDate = result.releaseDate,
                             primaryGenreName = result.primaryGenreName,
                             country = result.country,
-                            isFavorite = favoriteTracksIds.contains(result.id)
+                            isFavorite = favoriteTracksIds.contains(result.trackId)
                         )
                     }
                     emit(Resource.Success(data))

@@ -6,15 +6,15 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "favorite_tracks_table")
 data class TrackEntity (
     @PrimaryKey
-    val id: String,
+    val trackId: String,
     var trackName: String,
     var previewUrl: String?,
     var artistName: String,
     var trackTimeMillis: String,
     var artworkUrl100: String,
-    var collectionName: String,
+    var collectionName: String?,
     var releaseDate: String?,
-    var primaryGenreName: String,
-    var country: String
+    var primaryGenreName: String?,
+    var country: String?
 )
 

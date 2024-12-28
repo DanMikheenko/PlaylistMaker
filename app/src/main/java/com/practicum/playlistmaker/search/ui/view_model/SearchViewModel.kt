@@ -57,22 +57,24 @@ class SearchViewModel(
         }
     }
 
-    fun stopSearch(){
+    fun stopSearch() {
         searchJob?.cancel()
     }
 
     fun readSearchHistory() {
-        searchHistoryInteractor.readSearchHistory(object :
-            SearchHistoryInteractor.SearchHistoryConsumer {
-            override fun consume(trackHistory: List<Track>) {
-                if (trackHistory.isEmpty()) {
-                    _state.postValue(State.ShowEmptyTrackHistory)
-                } else {
-                    _state.postValue(State.ShowSearchingTrackHistory(trackHistory))
-                }
+        viewModelScope.launch {
+            searchHistoryInteractor.readSearchHistory(object :
+                SearchHistoryInteractor.SearchHistoryConsumer {
+                override fun consume(trackHistory: List<Track>) {
+                    if (trackHistory.isEmpty()) {
+                        _state.postValue(State.ShowEmptyTrackHistory)
+                    } else {
+                        _state.postValue(State.ShowSearchingTrackHistory(trackHistory))
+                    }
 
-            }
-        })
+                }
+            })
+        }
     }
 
     fun clearHistory() {
@@ -81,7 +83,9 @@ class SearchViewModel(
     }
 
     fun addTrackToSearchHistory(track: Track) {
-        searchHistoryInteractor.addNewTrackToHistory(track)
+        viewModelScope.launch {
+            searchHistoryInteractor.addNewTrackToHistory(track)
+        }
     }
 
     companion object {

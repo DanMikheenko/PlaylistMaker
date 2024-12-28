@@ -42,6 +42,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
             resetSearchText()
             hideKeyboard()
             viewModel.stopSearch()
+            hideAll()
         }
 
         binding.connectionErrorPlaceholder.updateRequestBtn.setOnClickListener {
@@ -156,6 +157,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
         binding.connectionErrorPlaceholder.root.visibility = View.GONE
         binding.recyclerView.visibility = View.GONE
         binding.searchHistoryLayout.root.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun showHistory() {
@@ -163,6 +165,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
         binding.connectionErrorPlaceholder.root.visibility = View.GONE
         binding.recyclerView.visibility = View.GONE
         binding.searchHistoryLayout.root.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun showProgressBar() {

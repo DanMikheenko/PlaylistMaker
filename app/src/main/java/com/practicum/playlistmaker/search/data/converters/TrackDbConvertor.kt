@@ -7,7 +7,7 @@ import com.practicum.playlistmaker.search.domain.models.Track
 class TrackDbConvertor {
     fun map(track: Track): TrackDto {
         return TrackDto(
-            track.id,
+            track.trackId,
             track.trackName,
             track.previewUrl.toString(),
             track.artistName,
@@ -22,7 +22,7 @@ class TrackDbConvertor {
 
     fun map(track: TrackDto): TrackEntity {
         return TrackEntity(
-            track.id,
+            track.trackId,
             track.trackName,
             track.previewUrl,
             track.artistName,
@@ -37,16 +37,16 @@ class TrackDbConvertor {
 
     fun map(track: TrackEntity): Track {
         return Track(
-            track.id,
+            track.trackId,
             track.trackName,
             track.previewUrl,
             track.artistName,
             track.trackTimeMillis,
             track.artworkUrl100,
-            track.collectionName,
+            track.collectionName.toString(),
             track.releaseDate,
-            track.primaryGenreName,
-            track.country
+            track.primaryGenreName.toString(),
+            track.country.toString()
         )
     }
 }

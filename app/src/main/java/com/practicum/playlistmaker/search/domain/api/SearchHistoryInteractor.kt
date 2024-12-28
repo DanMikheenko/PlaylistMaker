@@ -3,8 +3,8 @@ package com.practicum.playlistmaker.search.domain.api
 import com.practicum.playlistmaker.search.domain.models.Track
 
 interface SearchHistoryInteractor {
-    fun readSearchHistory(consumer: SearchHistoryConsumer)
-    fun addNewTrackToHistory(track: Track)
+    suspend fun readSearchHistory(consumer: SearchHistoryConsumer)
+    suspend fun addNewTrackToHistory(track: Track)
     fun clear()
 
     interface SearchHistoryConsumer{
