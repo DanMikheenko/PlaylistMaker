@@ -64,10 +64,11 @@ class SearchFragment : Fragment(), OnTrackClickListener {
                 } else {
                     binding.btnClear.isVisible = false
                 }
-                viewModel.searchDebounce(binding.editText.text.toString())
+
             }
 
             override fun afterTextChanged(s: Editable?) {
+                viewModel.searchDebounce(binding.editText.text.toString())
             }
         })
 
