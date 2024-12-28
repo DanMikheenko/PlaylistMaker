@@ -28,7 +28,11 @@ class SearchHistoryRepositoryImpl(
     override suspend fun readSearchHistory(): List<Track> {
         var favoriteTracksIds = emptyList<String>()
         appDatabase.trackDao().getFavoriteTracksIds().collect(){tracksId->
-            favoriteTracksIds = tracksId
+            if (tracksId.isNullOrEmpty()){
+                return@collect
+            } else{
+                favoriteTracksIds = tracksId
+            }
         }
         val jsonTracks = sharedPreferences
             .getString(SEARCH_HISTORY, "")

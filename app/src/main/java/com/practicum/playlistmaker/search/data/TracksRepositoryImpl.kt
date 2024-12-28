@@ -14,41 +14,36 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient, private val
 
     override fun searchTracks(expression: String): Flow<Resource<List<Track>>> = flow {
         val response = networkClient.doRequest(TracksSearchRequest(expression))
-        var favoriteTracksIds = emptyList<String>()
-//        appDatabase.trackDao().getFavoriteTracksIds().collect(){ids->
-//            if (ids.isNullOrEmpty()){
-//                return@collect
-//            } else{
-//                favoriteTracksIds = ids
-//            }
-//        }
-        when (response.resultCode) {
-            -1 -> {
-                emit(Resource.Error(ErrorTypes.InternetConnectionError))
-            }
-            200 -> {
-                with(response as TracksSearchResponse) {
-                    val data = results.map { result ->
-                        Track(
-                            trackId = result.trackId,
-                            trackName = result.trackName,
-                            previewUrl = result.previewUrl,
-                            artistName = result.artistName,
-                            trackTimeMillis = result.trackTimeMillis,
-                            artworkUrl100 = result.artworkUrl100,
-                            collectionName = result.collectionName,
-                            releaseDate = result.releaseDate,
-                            primaryGenreName = result.primaryGenreName,
-                            country = result.country,
-                            isFavorite = favoriteTracksIds.contains(result.trackId)
-                        )
+        appDatabase.trackDao().getFavoriteTracksIds().collect(){favoriteTracksIds->
+            when (response.resultCode) {
+                -1 -> {
+                    emit(Resource.Error(ErrorTypes.InternetConnectionError))
+                }
+                200 -> {
+                    with(response as TracksSearchResponse) {
+                        val data = results.map { result ->
+                            Track(
+                                trackId = result.trackId,
+                                trackName = result.trackName,
+                                previewUrl = result.previewUrl,
+                                artistName = result.artistName,
+                                trackTimeMillis = result.trackTimeMillis,
+                                artworkUrl100 = result.artworkUrl100,
+                                collectionName = result.collectionName,
+                                releaseDate = result.releaseDate,
+                                primaryGenreName = result.primaryGenreName,
+                                country = result.country,
+                                isFavorite = favoriteTracksIds?.contains(result.trackId) ?: false
+                            )
+                        }
+                        emit(Resource.Success(data))
                     }
-                    emit(Resource.Success(data))
+                }
+                else -> {
+                    emit(Resource.Error(ErrorTypes.ServerError))
                 }
             }
-            else -> {
-                emit(Resource.Error(ErrorTypes.ServerError))
-            }
         }
+
     }
 }
