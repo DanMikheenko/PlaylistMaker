@@ -41,6 +41,8 @@ class SearchViewModel(
                         }
                     }
             }
+        } else{
+            readSearchHistory()
         }
     }
 
