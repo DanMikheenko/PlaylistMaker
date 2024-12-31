@@ -42,7 +42,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
             resetSearchText()
             hideKeyboard()
             viewModel.stopSearch()
-            hideAll()
+            viewModel.readSearchHistory()
         }
 
         binding.connectionErrorPlaceholder.updateRequestBtn.setOnClickListener {
