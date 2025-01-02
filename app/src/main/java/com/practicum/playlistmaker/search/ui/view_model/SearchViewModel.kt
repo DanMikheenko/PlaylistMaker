@@ -41,6 +41,8 @@ class SearchViewModel(
                         }
                     }
             }
+        } else{
+            readSearchHistory()
         }
     }
 
@@ -48,16 +50,21 @@ class SearchViewModel(
         if (latestSearchText == changedText) {
             return
         }
-
-        latestSearchText = changedText
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            delay(SEARCH_DEBOUNCE_DELAY)
-            search(changedText)
+        if (changedText.isEmpty()){
+            searchJob?.cancel()
+        } else{
+            latestSearchText = changedText
+            searchJob?.cancel()
+            searchJob = viewModelScope.launch {
+                delay(SEARCH_DEBOUNCE_DELAY)
+                search(changedText)
+            }
         }
+
+
     }
 
-    fun stopSearch(){
+    fun stopSearch() {
         searchJob?.cancel()
     }
 
@@ -81,7 +88,9 @@ class SearchViewModel(
     }
 
     fun addTrackToSearchHistory(track: Track) {
-        searchHistoryInteractor.addNewTrackToHistory(track)
+        viewModelScope.launch {
+            searchHistoryInteractor.addNewTrackToHistory(track)
+        }
     }
 
     companion object {

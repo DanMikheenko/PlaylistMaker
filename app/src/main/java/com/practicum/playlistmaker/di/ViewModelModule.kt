@@ -13,7 +13,8 @@ val viewModelModule = module {
     viewModel { (track: Track) ->
         PlayerViewModel(
             playerInteractor = get(),
-            track = track
+            track = track,
+            favoriteTracksInteractor = get()
         )
     }
 
@@ -24,7 +25,7 @@ val viewModelModule = module {
         SettingsViewModel(get(), get())
     }
     viewModel{
-        FavoriteTracksViewModel()
+        FavoriteTracksViewModel(get())
     }
     viewModel{
         PlaylistsViewModel()

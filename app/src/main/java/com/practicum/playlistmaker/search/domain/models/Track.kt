@@ -10,7 +10,8 @@ data class Track(
     var collectionName: String,
     var releaseDate: String?,
     var primaryGenreName: String,
-    var country: String
+    var country: String,
+    var isFavorite: Boolean = false
 ) {
     fun formattedDuration(): String {
         val totalSeconds = trackTimeMillis.toLong() / 1000

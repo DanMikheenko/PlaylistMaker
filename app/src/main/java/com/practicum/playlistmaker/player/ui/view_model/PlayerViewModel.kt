@@ -4,15 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.practicum.playlistmaker.media_library.domain.api.FavoriteTracksInteractor
 import com.practicum.playlistmaker.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
-    private val track: Track
+    private val track: Track,
+    private val favoriteTracksInteractor: FavoriteTracksInteractor
 ) :
     ViewModel() {
 
@@ -22,10 +25,26 @@ class PlayerViewModel(
     private val _playingTrackPosition = MutableLiveData<Int>()
     val playingTrackPosition: LiveData<Int> = _playingTrackPosition
 
+    private val _isFavoriteTrack = MutableLiveData<Boolean>()
+    val isFavoriteTrack: LiveData<Boolean> = _isFavoriteTrack
+
     private var playbackJob: Job? = null
 
     init {
         _state.postValue(PlayerState.Default)
+        viewModelScope.launch {
+            favoriteTracksInteractor.getAllFavoriteTracksIds().collect() { ids ->
+                if (ids.isNullOrEmpty()){
+                    _isFavoriteTrack.postValue(false)
+                } else {
+                    if (ids.contains(track.trackId)){
+                        _isFavoriteTrack.postValue(true)
+                    } else{
+                        _isFavoriteTrack.postValue(false)
+                    }
+                }
+            }
+        }
     }
 
     fun preparePlayer(
@@ -80,7 +99,24 @@ class PlayerViewModel(
         super.onCleared()
         stopTrackingPlayingTrackPosition()
     }
-    companion object{
+
+    fun onFavoriteClicked() {
+        if (track.isFavorite) {
+            viewModelScope.launch(Dispatchers.IO) {
+                favoriteTracksInteractor.removeTrackFromFavoriteList(track)
+                track.isFavorite = false
+                _isFavoriteTrack.postValue(false)
+            }
+        } else {
+            viewModelScope.launch(Dispatchers.IO) {
+                track.isFavorite = true
+                favoriteTracksInteractor.addTrackToFavoriteList(track)
+                _isFavoriteTrack.postValue(true)
+            }
+        }
+    }
+
+    companion object {
         private const val CLICK_DEBOUNCE_DELAY = 300L
     }
 }
