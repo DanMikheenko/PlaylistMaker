@@ -28,4 +28,6 @@
     <string name="new_playlist_button_name">Новый плейлист</string>
     <string name="FavoriteTracksSign">Избранные треки</string>
     <string name="PlaylistSign">Плейлисты</string>
+    <string name="new_playlist_header_text">Новый плейлист</string>
+    <string name="create_playlist_button_name">Создать</string>
 </resources>

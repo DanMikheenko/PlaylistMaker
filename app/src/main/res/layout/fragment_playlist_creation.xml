@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".media_library.ui.activity.PlaylistCreationFragment">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/newPlaylistHeader"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_56dp"
+        android:drawableStart="@drawable/ic_arrow"
+        android:drawablePadding="@dimen/editTextDrawablePadding"
+        android:fontFamily="@font/ys_display_medium"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/editTextDrawablePadding"
+        android:text="@string/new_playlist_header_text"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/editTextDrawablePadding"
+        android:src="@drawable/group_180"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/newPlaylistHeader" />
+
+    <EditText
+        android:id="@+id/playlistNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_56dp"
+        android:layout_marginStart="@dimen/editTextDrawablePadding"
+        android:layout_marginTop="@dimen/editTextDrawablePadding"
+        android:layout_marginEnd="@dimen/editTextDrawablePadding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView"
+        tools:text="Название*" />
+
+    <EditText
+        android:id="@+id/playlistDescriptionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_56dp"
+        android:layout_marginStart="@dimen/editTextDrawablePadding"
+        android:layout_marginTop="@dimen/editTextDrawablePadding"
+        android:layout_marginEnd="@dimen/editTextDrawablePadding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/playlistNameEditText"
+        tools:text="Описание" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/createButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_44dp"
+        android:text="@string/create_playlist_button_name"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/editTextDrawablePadding"
+        android:layout_marginEnd="@dimen/editTextDrawablePadding"
+        android:layout_marginBottom="@dimen/_30dp"
+        android:background="#AEAFB4"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
