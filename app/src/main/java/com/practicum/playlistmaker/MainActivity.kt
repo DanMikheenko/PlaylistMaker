@@ -40,4 +40,20 @@ class MainActivity : AppCompatActivity() {
             insets
         }
     }
+
+    fun hideBottomNav() {
+        findViewById<BottomNavigationView>(R.id.bottom_navigation).animate()
+            .translationY(findViewById<BottomNavigationView>(R.id.bottom_navigation).height.toFloat())
+            .setDuration(300)
+            .start()
+        findViewById<View>(R.id.separator).visibility = View.GONE
+    }
+
+    fun showBottomNav() {
+        findViewById<BottomNavigationView>(R.id.bottom_navigation).animate()
+            .translationY(0f)
+            .setDuration(300)
+            .start()
+        findViewById<View>(R.id.separator).visibility = View.VISIBLE
+    }
 }
