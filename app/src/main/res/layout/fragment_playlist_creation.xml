@@ -6,11 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".media_library.ui.activity.PlaylistCreationFragment">
 
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/newPlaylistHeader"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_56dp"
+        android:textColor="?attr/colorOnSurface"
         android:drawableStart="@drawable/ic_arrow"
+        android:drawableTint="?attr/colorOnSurface"
         android:drawablePadding="@dimen/editTextDrawablePadding"
         android:fontFamily="@font/ys_display_medium"
         android:gravity="center_vertical"
@@ -38,10 +40,12 @@
         android:layout_marginStart="@dimen/editTextDrawablePadding"
         android:layout_marginTop="@dimen/editTextDrawablePadding"
         android:layout_marginEnd="@dimen/editTextDrawablePadding"
+        android:background="@drawable/edittext_background"
         app:layout_constraintEnd_toEndOf="parent"
+        android:hint="Название*"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageView"
-        tools:text="Название*" />
+        />
 
     <EditText
         android:id="@+id/playlistDescriptionEditText"
@@ -50,23 +54,27 @@
         android:layout_marginStart="@dimen/editTextDrawablePadding"
         android:layout_marginTop="@dimen/editTextDrawablePadding"
         android:layout_marginEnd="@dimen/editTextDrawablePadding"
+        android:background="@drawable/edittext_background"
+        android:hint="@string/desc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/playlistNameEditText"
-        tools:text="Описание" />
+        app:layout_constraintTop_toBottomOf="@id/playlistNameEditText" />
 
-    <com.google.android.material.button.MaterialButton
+    <TextView
         android:id="@+id/createButton"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_44dp"
-        android:text="@string/create_playlist_button_name"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="@dimen/editTextDrawablePadding"
         android:layout_marginEnd="@dimen/editTextDrawablePadding"
-        android:layout_marginBottom="@dimen/_30dp"
-        android:background="#AEAFB4"/>
+        android:layout_marginBottom="@dimen/editTextDrawablePadding"
+        android:background="@drawable/rounded_button_background"
+        android:fontFamily="@font/ys_display_medium"
+        android:gravity="center"
+        android:text="@string/create_playlist_button_name"
+        android:textColor="@color/white"
+        android:textSize="@dimen/refresh_button_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

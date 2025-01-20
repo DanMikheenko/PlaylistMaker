@@ -30,4 +30,5 @@
     <string name="PlaylistSign">Плейлисты</string>
     <string name="new_playlist_header_text">Новый плейлист</string>
     <string name="create_playlist_button_name">Создать</string>
+    <string name="desc">Описание</string>
 </resources>
