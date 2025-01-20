@@ -25,12 +25,19 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_marginTop="@dimen/editTextDrawablePadding"
+        android:layout_marginStart="@dimen/editTextDrawablePadding"
+        android:layout_marginEnd="@dimen/editTextDrawablePadding"
+        android:layout_height="0dp"
         android:paddingTop="@dimen/editTextDrawablePadding"
-        android:src="@drawable/group_180"
+        android:src="@drawable/playlist_placeholder"
+        android:adjustViewBounds="true"
+        android:scaleType="center"
+        android:background="@drawable/playlist_image_placeholder_frame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintTop_toBottomOf="@id/newPlaylistHeader" />
 
     <EditText
