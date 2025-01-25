@@ -30,7 +30,7 @@ class PlaylistRepositoryImpl(
         }
     }
 
-    override suspend fun getPlaylistById(id: String): Flow<Playlist?> = flow {
+    override suspend fun getPlaylistById(id: Int): Flow<Playlist?> = flow {
         appDatabase.playlistDao().getPlaylistById(id).collect(){playlist->
             if (playlist == null) {
                 emit(null)

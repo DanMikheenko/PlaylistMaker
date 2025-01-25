@@ -1,17 +1,17 @@
 package com.practicum.playlistmaker.media_library.ui.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.gson.Gson
+import androidx.recyclerview.widget.GridLayoutManager
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlaylistsBinding
+import com.practicum.playlistmaker.media_library.ui.PlaylistAdapter
+import com.practicum.playlistmaker.media_library.ui.view_model.PlaylistsState
 import com.practicum.playlistmaker.media_library.ui.view_model.PlaylistsViewModel
-import com.practicum.playlistmaker.player.ui.activity.PlayerActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -30,10 +30,35 @@ class PlaylistsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.loadData()
         binding.addPlaylistButton.setOnClickListener {
             findNavController().navigate(R.id.action_tabContainerFragment_to_playlistCreationFragment)
         }
+        viewModel.state.observe(viewLifecycleOwner){_state->
+            render(_state)
+        }
     }
+
+    private fun render(playlistState : PlaylistsState){
+        when(playlistState){
+            is PlaylistsState.ShowPlaceholder -> showPlaceholder()
+            is PlaylistsState.ShowResult ->{
+                binding.recyclerView.adapter = PlaylistAdapter(playlistState.data)
+                showPlaylists()
+            }
+        }
+    }
+    private fun showPlaceholder(){
+        binding.noPlaylistsCreated.root.visibility = View.VISIBLE
+        binding.recyclerView.visibility = View.GONE
+    }
+    private fun showPlaylists(){
+        binding.noPlaylistsCreated.root.visibility = View.GONE
+        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.recyclerView.visibility = View.VISIBLE
+    }
+
+
     companion object {
         fun newInstance(): PlaylistsFragment {
             val fragment = PlaylistsFragment()
