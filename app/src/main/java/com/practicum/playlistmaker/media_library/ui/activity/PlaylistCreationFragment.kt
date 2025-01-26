@@ -1,37 +1,37 @@
     package com.practicum.playlistmaker.media_library.ui.activity
 
     import android.graphics.Bitmap
-    import android.graphics.BitmapFactory
-    import android.net.Uri
-    import android.os.Bundle
-    import android.os.Environment
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Bundle
+import android.os.Environment
+    import android.text.Editable
+    import android.text.TextWatcher
     import android.util.Log
-    import android.view.LayoutInflater
-    import android.view.View
-    import android.view.ViewGroup
-    import androidx.activity.result.PickVisualMediaRequest
-    import androidx.activity.result.contract.ActivityResultContracts
-    import androidx.fragment.app.Fragment
-    import androidx.navigation.fragment.findNavController
-    import com.practicum.playlistmaker.MainActivity
-    import com.practicum.playlistmaker.R
-    import com.practicum.playlistmaker.databinding.FragmentPlaylistCreationBinding
-    import com.practicum.playlistmaker.media_library.domain.models.Playlist
-    import com.practicum.playlistmaker.media_library.ui.view_model.PlaylistCreationViewModel
-    import org.koin.androidx.viewmodel.ext.android.viewModel
-    import java.io.File
-    import java.io.FileOutputStream
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.addCallback
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.practicum.playlistmaker.MainActivity
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.databinding.FragmentPlaylistCreationBinding
+import com.practicum.playlistmaker.media_library.domain.models.Playlist
+import com.practicum.playlistmaker.media_library.ui.view_model.PlaylistCreationViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
+import java.io.FileOutputStream
 
 
     class PlaylistCreationFragment : Fragment() {
         private lateinit var binding: FragmentPlaylistCreationBinding
         private val viewModel by viewModel<PlaylistCreationViewModel>()
-        private lateinit var playlistImageUri: Uri
+        private var playlistImageUri: Uri? = null
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-
-        }
 
         override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -47,9 +47,9 @@
             }
             (activity as? MainActivity)?.hideBottomNav()
 
+
             val pickMedia =
                 registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                    //обрабатываем событие выбора пользователем фотографии
                     if (uri != null) {
                         playlistImageUri = uri
                         binding.imageView.setImageURI(uri)
@@ -63,72 +63,108 @@
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
             binding.createButton.setOnClickListener {
-                val filePath = File(
-                    requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                    "selected_images"
-                )
-                if (!filePath.exists()) {
-                    filePath.mkdirs()
+                if (binding.playlistNameEditText.text.isEmpty()) {
+                    binding.playlistNameEditText.error = "Введите название плейлиста"
+                    return@setOnClickListener
                 }
+                val filePath: String? = if (playlistImageUri != null) {
+                    val dirPath = File(
+                        requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                        "selected_images"
+                    )
 
-                val fileName = "image_${System.currentTimeMillis()}.jpg"
-                val file = File(filePath, fileName)
+                    if (!dirPath.exists()) {
+                        dirPath.mkdirs()
+                    }
 
-                // Сохранение изображения в файл
-                val inputStream = requireContext().contentResolver.openInputStream(playlistImageUri)
-                val outputStream = FileOutputStream(file)
-                BitmapFactory.decodeStream(inputStream)
-                    .compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
+                    val fileName = "image_${System.currentTimeMillis()}.jpg"
+                    val file = File(dirPath, fileName)
 
-                inputStream?.close()
-                outputStream.close()
+                    try {
+                        val inputStream = requireContext().contentResolver.openInputStream(playlistImageUri!!)
+                        val outputStream = FileOutputStream(file)
+                        BitmapFactory.decodeStream(inputStream)
+                            .compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
+
+                        inputStream?.close()
+                        outputStream.close()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        Toast.makeText(requireContext(), "Ошибка при сохранении изображения", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+
+                    file.absolutePath
+                } else {
+                    null
+                }
 
                 val playlist = Playlist(
                     playlistId = 0,
                     playlistName = binding.playlistNameEditText.text.toString(),
-                    playlistImagePath = file.absolutePath,
+                    playlistImagePath = filePath ?: "", // Если изображения нет, путь будет пустым
                     description = binding.playlistDescriptionEditText.text.toString(),
                     addedTracksId = "",
                     addedTracksCount = ""
                 )
 
+
                 viewModel.createPlaylist(playlist)
+
+
+                Toast.makeText(requireContext(), "Плейлист успешно создан!", Toast.LENGTH_SHORT).show()
+
+
+                if (parentFragmentManager.backStackEntryCount > 0) {
+                    parentFragmentManager.popBackStack()
+                }
             }
 
+            binding.newPlaylistHeader.setOnClickListener {
+                if (parentFragmentManager.backStackEntryCount > 0) {
+                    parentFragmentManager.popBackStack()
+                }
+            }
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+                if (parentFragmentManager.backStackEntryCount > 0) {
+                    parentFragmentManager.popBackStack()
+                }
+            }
 
+            binding.playlistNameEditText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    binding.createButton.isEnabled = !s.isNullOrBlank()
+                }
+                override fun afterTextChanged(s: Editable?) {}
+            })
         }
 
         private fun saveImageToPrivateStorage(uri: Uri) {
-            //создаём экземпляр класса File, который указывает на нужный каталог
+
             val filePath =
                 File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
-            //создаем каталог, если он не создан
+
             if (!filePath.exists()) {
                 filePath.mkdirs()
             }
-            //создаём экземпляр класса File, который указывает на файл внутри каталога
             val file = File(filePath, "first_cover.jpg")
-            // создаём входящий поток байтов из выбранной картинки
             val inputStream = requireContext().contentResolver.openInputStream(uri)
-            // создаём исходящий поток байтов в созданный выше файл
             val outputStream = FileOutputStream(file)
-            // записываем картинку с помощью BitmapFactory
             BitmapFactory
                 .decodeStream(inputStream)
                 .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
         }
 
         private fun loadImageFromPrivateStorage(): Bitmap? {
-            // Путь к файлу, где сохранена картинка
+
             val filePath = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
             val file = File(filePath, "first_cover.jpg")
 
-            // Проверяем, существует ли файл
             if (file.exists()) {
-                // Загрузка картинки в Bitmap
+
                 return BitmapFactory.decodeFile(file.absolutePath)
             } else {
-                // Файл не найден
                 return null
             }
         }
