@@ -30,6 +30,9 @@ class PlayerViewModel(
     private val _isFavoriteTrack = MutableLiveData<Boolean>()
     val isFavoriteTrack: LiveData<Boolean> = _isFavoriteTrack
 
+    private val _playlistsState = MutableLiveData<PlaylistPlayerState>()
+    val playlistsState: LiveData<PlaylistPlayerState> = _playlistsState
+
     private var playbackJob: Job? = null
 
     init {
@@ -44,6 +47,17 @@ class PlayerViewModel(
                     } else{
                         _isFavoriteTrack.postValue(false)
                     }
+                }
+            }
+        }
+    }
+    fun loadPlaylists(){
+        viewModelScope.launch {
+            playlistInteractor.getAll().collect(){playlists->
+                if (playlists.isNullOrEmpty()){
+                    _playlistsState.postValue(PlaylistPlayerState.ShowNothing)
+                } else {
+                    _playlistsState.postValue(PlaylistPlayerState.ShowResult(playlists))
                 }
             }
         }

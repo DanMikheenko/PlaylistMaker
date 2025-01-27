@@ -10,9 +10,9 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.media_library.domain.models.Playlist
 
 class PlaylistPlayerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val playlistImage : ImageView = itemView.findViewById(R.id.playlistImageView)
-    private val playlistName : TextView = itemView.findViewById(R.id.playlistName)
-    private val tracksCount : TextView = itemView.findViewById(R.id.tracksCount)
+    private val playlistImage : ImageView = itemView.findViewById(R.id.playlistImageViewPlayer)
+    private val playlistName : TextView = itemView.findViewById(R.id.playlistNamePlayer)
+    private val tracksCount : TextView = itemView.findViewById(R.id.tracksCountPlayer)
 
     fun bind(model: Playlist){
         Glide.with(playlistImage)

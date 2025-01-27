@@ -11,13 +11,16 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.player.ui.PlaylistPlayerAdapter
 import com.practicum.playlistmaker.player.ui.view_model.PlayerState
 import com.practicum.playlistmaker.player.ui.view_model.PlayerViewModel
+import com.practicum.playlistmaker.player.ui.view_model.PlaylistPlayerState
 import com.practicum.playlistmaker.search.domain.models.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -109,6 +112,11 @@ class PlayerActivity : AppCompatActivity() {
             val backgroudView = findViewById<View>(R.id.scroll)
             // Устанавливаем прозрачность затемнения вручную
             backgroudView.alpha = 0.1f // 0.0 - 1.0
+
+            viewModel.loadPlaylists()
+            viewModel.playlistsState.observe(this){_state->
+                showPlaylists(_state)
+            }
         }
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -127,6 +135,20 @@ class PlayerActivity : AppCompatActivity() {
 
             }
         })
+    }
+
+    fun showPlaylists(state: PlaylistPlayerState){
+        when(state){
+            is PlaylistPlayerState.ShowNothing->{
+                val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPlaylistPlayer)
+                recyclerView.visibility = View.GONE
+            }
+            is PlaylistPlayerState.ShowResult->{
+                val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPlaylistPlayer)
+                recyclerView.adapter = PlaylistPlayerAdapter(state.data)
+                recyclerView.visibility = View.VISIBLE
+            }
+        }
     }
 
 
