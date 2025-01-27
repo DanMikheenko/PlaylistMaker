@@ -60,6 +60,13 @@
     <style name="PlayerTextViewTheme">
         <item name="android:textColor">@color/icon_color</item>
     </style>
+    <style name="BottomSheetBackgroundStyle">
+        <item name="android:background">@drawable/bottom_sheet_background_light_theme</item>
+
+    </style>
+    <style name="BottomSheetTopPointTheme">
+        <item name="android:drawableTop">@drawable/rectangle_light_theme</item>
+    </style>
 
     <style name="GrayButtonTheme">
 

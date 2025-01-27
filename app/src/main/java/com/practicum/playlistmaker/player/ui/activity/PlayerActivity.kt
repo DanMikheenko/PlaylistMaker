@@ -6,11 +6,14 @@ import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.player.ui.view_model.PlayerState
@@ -97,6 +100,33 @@ class PlayerActivity : AppCompatActivity() {
                 Locale.getDefault()
             ).format(_seconds)
         }
+        val bottomSheetContainer = findViewById<LinearLayout>(R.id.bottomSheet)
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        val addTrackToPlaylist = findViewById<ImageView>(R.id.addTrackToPlaylistButton)
+        addTrackToPlaylist.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+            val backgroudView = findViewById<View>(R.id.scroll)
+            // Устанавливаем прозрачность затемнения вручную
+            backgroudView.alpha = 0.1f // 0.0 - 1.0
+        }
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_HIDDEN){
+                    val backgroudView = findViewById<View>(R.id.scroll)
+                    backgroudView.alpha = 0.1f // 0.0 - 1.0
+                }
+                else{
+                    val backgroudView = findViewById<View>(R.id.scroll)
+                    backgroudView.alpha = 1f // 0.0 - 1.0
+                }
+
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
+        })
     }
 
 
