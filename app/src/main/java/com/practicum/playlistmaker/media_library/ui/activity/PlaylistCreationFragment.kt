@@ -103,7 +103,7 @@ import java.io.FileOutputStream
                     playlistImagePath = filePath ?: "", // Если изображения нет, путь будет пустым
                     description = binding.playlistDescriptionEditText.text.toString(),
                     addedTracksId = "",
-                    addedTracksCount = ""
+                    addedTracksCount = "0"
                 )
 
 

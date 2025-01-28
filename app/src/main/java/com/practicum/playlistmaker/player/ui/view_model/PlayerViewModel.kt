@@ -34,6 +34,9 @@ class PlayerViewModel(
     private val _playlistsState = MutableLiveData<PlaylistPlayerState>()
     val playlistsState: LiveData<PlaylistPlayerState> = _playlistsState
 
+    private val _addingTrackToPlaylistState = MutableLiveData<AddingTrackToPlaylistState>()
+    val addingTrackToPlaylistState: LiveData<AddingTrackToPlaylistState> = _addingTrackToPlaylistState
+
     private var playbackJob: Job? = null
 
     init {
@@ -65,10 +68,24 @@ class PlayerViewModel(
     }
 
     fun addTrackToPlaylist(playlist: Playlist){
-        viewModelScope.launch {
-            playlistInteractor.addTrackToPlaylist(track)
+        viewModelScope.launch(Dispatchers.IO) {
+            if (isTrackInPlaylist(track, playlist)){
+                _addingTrackToPlaylistState.postValue(AddingTrackToPlaylistState.PlaylistContainsTrack)
+            } else{
+                playlistInteractor.addTrackToPlaylist(track, playlist)
+                _addingTrackToPlaylistState.postValue(AddingTrackToPlaylistState.TrackAddedToPlaylist)
+            }
         }
 
+    }
+
+    private fun isTrackInPlaylist(track: Track, playlist: Playlist): Boolean{
+        if (playlist.addedTracksId.isNullOrEmpty()){
+            return false
+        }else{
+            val ids: List<Int> = playlist.addedTracksId.split(" ").map { it.toInt() }
+            return ids.contains(track.trackId.toInt())
+        }
     }
 
     fun preparePlayer(

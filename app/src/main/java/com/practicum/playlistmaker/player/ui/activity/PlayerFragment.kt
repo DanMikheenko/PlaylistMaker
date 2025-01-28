@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +19,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.media_library.domain.models.Playlist
+import com.practicum.playlistmaker.player.ui.OnPlaylistClickListener
 import com.practicum.playlistmaker.player.ui.PlaylistPlayerAdapter
+import com.practicum.playlistmaker.player.ui.view_model.AddingTrackToPlaylistState
 import com.practicum.playlistmaker.player.ui.view_model.PlayerState
 import com.practicum.playlistmaker.player.ui.view_model.PlayerViewModel
 import com.practicum.playlistmaker.player.ui.view_model.PlaylistPlayerState
@@ -27,7 +31,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.Locale
 
-class PlayerFragment : Fragment(R.layout.fragment_player) {
+class PlayerFragment : Fragment(R.layout.fragment_player), OnPlaylistClickListener {
     private lateinit var track: Track
     private val viewModel: PlayerViewModel by viewModel {
         parametersOf(track)
@@ -96,6 +100,10 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             viewModel.playlistsState.observe(viewLifecycleOwner) { _state ->
                 showPlaylists(_state)
             }
+
+            viewModel.addingTrackToPlaylistState.observe(viewLifecycleOwner) {_state ->
+                showMessages(_state)
+            }
         }
 
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
@@ -132,7 +140,18 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerViewPlaylistPlayer)
         recyclerView?.visibility = if (state is PlaylistPlayerState.ShowNothing) View.GONE else View.VISIBLE
         if (state is PlaylistPlayerState.ShowResult) {
-            recyclerView?.adapter = PlaylistPlayerAdapter(state.data)
+            recyclerView?.adapter = PlaylistPlayerAdapter(state.data, this)
+        }
+    }
+
+    private fun showMessages(addingTrackToPlaylistState: AddingTrackToPlaylistState){
+        when(addingTrackToPlaylistState){
+            is AddingTrackToPlaylistState.TrackAddedToPlaylist->{
+                Toast.makeText(requireContext(), "Трек добавлен в плейлист", Toast.LENGTH_SHORT).show()
+            }
+            is AddingTrackToPlaylistState.PlaylistContainsTrack->{
+                Toast.makeText(requireContext(), "Плейлист уже содержит указанный трек", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -245,5 +264,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 runnable?.let { mainThreadHandler?.removeCallbacks(it) }
             }
         }
+    }
+
+    override fun onPlaylistClick(playlist: Playlist) {
+        viewModel.addTrackToPlaylist(playlist)
     }
 }

@@ -23,41 +23,64 @@ class PlaylistRepositoryImpl(
     }
 
     override suspend fun getAll(): Flow<List<Playlist>?> = flow {
-        appDatabase.playlistDao().getAllPlaylists().collect(){playlists->
-            if (playlists.isNullOrEmpty()){
+        appDatabase.playlistDao().getAllPlaylists().collect() { playlists ->
+            if (playlists.isNullOrEmpty()) {
                 emit(emptyList())
-            } else{
+            } else {
                 emit(convert(playlists))
             }
         }
     }
 
     override suspend fun getPlaylistById(id: Int): Flow<Playlist?> = flow {
-        appDatabase.playlistDao().getPlaylistById(id).collect(){playlist->
+        appDatabase.playlistDao().getPlaylistById(id).collect() { playlist ->
             if (playlist == null) {
                 emit(null)
-            } else{
+            } else {
                 emit(playlistDbConvertor.map(playlist))
             }
         }
     }
 
-    override suspend fun addTrackToPlaylist(track: Track) {
-        appDatabase.addedToPlaylistTrackDao().insert(AddedToPlaylistTrackEntity(
-            track.trackId,
-            track.trackName,
-            track.previewUrl,
-            track.artistName,
-            track.trackTimeMillis,
-            track.artworkUrl100,
-            track.collectionName,
-            track.releaseDate,
-            track.primaryGenreName,
-            track.country
-        ))
+    override suspend fun addTrackToPlaylist(track: Track, playlist: Playlist) {
+        appDatabase.addedToPlaylistTrackDao().insert(
+            AddedToPlaylistTrackEntity(
+                track.trackId,
+                track.trackName,
+                track.previewUrl,
+                track.artistName,
+                track.trackTimeMillis,
+                track.artworkUrl100,
+                track.collectionName,
+                track.releaseDate,
+                track.primaryGenreName,
+                track.country
+            )
+        )
+
+        var tracksIds = ""
+        var tracksCount = playlist.addedTracksCount.toInt()
+        if (playlist.addedTracksId.isNullOrEmpty()) {
+            tracksIds = track.trackId
+            tracksCount++
+        } else {
+            tracksIds = playlist.addedTracksId + " " + track.trackId
+            tracksCount++
+        }
+
+        appDatabase.playlistDao().insert(
+            PlaylistEntity(
+                playlist.playlistId,
+                playlist.playlistName,
+                playlist.description,
+                playlist.playlistImagePath,
+                tracksIds,
+                tracksCount.toString()
+            )
+        )
     }
 
-    private fun convert(playlistsEntity: List<PlaylistEntity>): List<Playlist>{
-        return playlistsEntity.map{ playlist -> playlistDbConvertor.map(playlist)}
+    private fun convert(playlistsEntity: List<PlaylistEntity>): List<Playlist> {
+        return playlistsEntity.map { playlist -> playlistDbConvertor.map(playlist) }
     }
 }
