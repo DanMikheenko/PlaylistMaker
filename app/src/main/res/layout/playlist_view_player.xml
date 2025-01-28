@@ -15,6 +15,7 @@
         app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:paddingBottom="@dimen/_8dp"
         tools:src="@drawable/player_image_placeholder" />
 
     <TextView
@@ -23,7 +24,6 @@
         android:paddingTop="4dp"
         app:layout_constraintStart_toEndOf="@id/playlistImageViewPlayer"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:layout_marginStart="@dimen/_20dp"
@@ -33,6 +33,7 @@
         android:id="@+id/tracksCountPlayer"
         android:layout_width="wrap_content"
         android:textSize="12sp"
+        android:theme="@style/TextViewTrackCount"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/playlistImageViewPlayer"
         app:layout_constraintTop_toBottomOf="@id/playlistNamePlayer"

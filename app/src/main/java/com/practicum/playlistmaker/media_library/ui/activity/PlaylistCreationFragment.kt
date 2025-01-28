@@ -129,9 +129,15 @@ import java.io.FileOutputStream
                 }
             }
 
+            binding.createButton.setBackgroundResource(R.drawable.rounded_button_background)
             binding.playlistNameEditText.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (!s.isNullOrEmpty()) {
+                        binding.createButton.setBackgroundResource(R.drawable.rounded_button_background_blue) // Меняем цвет фона на зелёный
+                    } else {
+                        binding.createButton.setBackgroundResource(R.drawable.rounded_button_background) // Сбрасываем цвет фона
+                    }
                     binding.createButton.isEnabled = !s.isNullOrBlank()
                 }
                 override fun afterTextChanged(s: Editable?) {}

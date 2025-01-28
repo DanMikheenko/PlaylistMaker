@@ -74,7 +74,6 @@
         android:layout_marginStart="@dimen/editTextDrawablePadding"
         android:layout_marginEnd="@dimen/editTextDrawablePadding"
         android:layout_marginBottom="@dimen/editTextDrawablePadding"
-        android:background="@drawable/rounded_button_background"
         android:fontFamily="@font/ys_display_medium"
         android:gravity="center"
         android:text="@string/create_playlist_button_name"

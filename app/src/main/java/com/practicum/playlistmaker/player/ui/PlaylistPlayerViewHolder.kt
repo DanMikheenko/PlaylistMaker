@@ -23,6 +23,15 @@ class PlaylistPlayerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVie
             .error(R.drawable.track_placeholder_image)
             .into(playlistImage)
         playlistName.text = model.playlistName
-        tracksCount.text = model.addedTracksCount
+        tracksCount.text = getCorrectCountName(model.addedTracksCount)
+    }
+
+    private fun getCorrectCountName(count: String): String{
+        if (count.toInt()==0){
+            return "Плейлист пуст"
+        }
+        if (count.toInt()<5){
+            return count+ " трека"
+        }else return count+ " треков"
     }
 }
