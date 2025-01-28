@@ -31,7 +31,10 @@ class MainActivity : AppCompatActivity() {
                     bottomNavigationView.visibility = View.GONE
                     hideBottomNav()
                 }
-                else -> bottomNavigationView.visibility = View.VISIBLE
+                else -> {
+                    bottomNavigationView.visibility = View.VISIBLE
+                    showBottomNav()
+                }
             }
         }
 

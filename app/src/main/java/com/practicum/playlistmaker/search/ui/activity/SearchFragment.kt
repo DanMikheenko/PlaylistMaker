@@ -204,6 +204,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
 
     override fun onTrackClick(track: Track) {
         val trackJson = Gson().toJson(track)
+        viewModel.addTrackToSearchHistory(track)
         val bundle = Bundle().apply {
             putString("selectedTrack", trackJson)
         }

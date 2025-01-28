@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -52,6 +53,8 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         playButton.setOnClickListener {
             playClick()
         }
+
+
 
         setupUI()
         val likeButton = view.findViewById<ImageView>(R.id.like_button)
@@ -151,7 +154,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         view?.findViewById<TextView>(R.id.countryTextView)?.text = track.country
 
         view?.findViewById<TextView>(R.id.playerBackButton)?.setOnClickListener {
-            activity?.onBackPressed()
+            findNavController().popBackStack()
         }
     }
 
