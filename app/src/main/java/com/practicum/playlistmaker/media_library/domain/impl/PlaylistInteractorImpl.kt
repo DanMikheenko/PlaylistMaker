@@ -3,6 +3,7 @@ package com.practicum.playlistmaker.media_library.domain.impl
 import com.practicum.playlistmaker.media_library.domain.api.PlaylistInteractor
 import com.practicum.playlistmaker.media_library.domain.api.PlaylistRepository
 import com.practicum.playlistmaker.media_library.domain.models.Playlist
+import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 
 class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository): PlaylistInteractor {
@@ -20,5 +21,9 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
 
     override suspend fun getPlaylistById(id: Int): Flow<Playlist?> {
         return playlistRepository.getPlaylistById(id)
+    }
+
+    override suspend fun addTrackToPlaylist(track: Track) {
+        playlistRepository.addTrackToPlaylist(track)
     }
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.media_library.domain.api.FavoriteTracksInteractor
 import com.practicum.playlistmaker.media_library.domain.api.PlaylistInteractor
+import com.practicum.playlistmaker.media_library.domain.models.Playlist
 import com.practicum.playlistmaker.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Dispatchers
@@ -61,6 +62,13 @@ class PlayerViewModel(
                 }
             }
         }
+    }
+
+    fun addTrackToPlaylist(playlist: Playlist){
+        viewModelScope.launch {
+            playlistInteractor.addTrackToPlaylist(track)
+        }
+
     }
 
     fun preparePlayer(

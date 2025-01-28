@@ -4,7 +4,9 @@ import com.practicum.playlistmaker.media_library.data.converters.PlaylistDbConve
 import com.practicum.playlistmaker.media_library.data.db.entity.PlaylistEntity
 import com.practicum.playlistmaker.media_library.domain.api.PlaylistRepository
 import com.practicum.playlistmaker.media_library.domain.models.Playlist
+import com.practicum.playlistmaker.player.data.db.entity.AddedToPlaylistTrackEntity
 import com.practicum.playlistmaker.search.data.db.AppDatabase
+import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -38,6 +40,21 @@ class PlaylistRepositoryImpl(
                 emit(playlistDbConvertor.map(playlist))
             }
         }
+    }
+
+    override suspend fun addTrackToPlaylist(track: Track) {
+        appDatabase.addedToPlaylistTrackDao().insert(AddedToPlaylistTrackEntity(
+            track.trackId,
+            track.trackName,
+            track.previewUrl,
+            track.artistName,
+            track.trackTimeMillis,
+            track.artworkUrl100,
+            track.collectionName,
+            track.releaseDate,
+            track.primaryGenreName,
+            track.country
+        ))
     }
 
     private fun convert(playlistsEntity: List<PlaylistEntity>): List<Playlist>{
