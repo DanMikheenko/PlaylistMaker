@@ -86,6 +86,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player), OnPlaylistClickListen
             ).format(_seconds)
         }
 
+
         val bottomSheetContainer = view.findViewById<LinearLayout>(R.id.bottomSheet)
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
@@ -95,6 +96,11 @@ class PlayerFragment : Fragment(R.layout.fragment_player), OnPlaylistClickListen
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
             val backgroundView = view.findViewById<View>(R.id.scroll)
             backgroundView.alpha = 0.1f
+
+            val addPlaylistBtn = view.findViewById<TextView>(R.id.addPlaylistButton)
+            addPlaylistBtn.setOnClickListener {
+                findNavController().navigate(R.id.action_playerFragment_to_playlistCreationFragment)
+            }
 
             viewModel.loadPlaylists()
             viewModel.playlistsState.observe(viewLifecycleOwner) { _state ->
