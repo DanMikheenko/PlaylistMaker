@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.player.ui.activity
+package com.practicum.playlistmaker.player.ui.fragment
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
@@ -10,7 +10,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -26,7 +26,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.Locale
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerFragment : Fragment(R.layout.fragment_player) {
     private lateinit var track: Track
     private val viewModel: PlayerViewModel by viewModel {
         parametersOf(track)
@@ -38,16 +38,14 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var playerState: PlayerState
 
     @SuppressLint("MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_player)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val intent = intent
-        val selectedTrackJson = intent.getStringExtra(SELECTED_TRACK)
+        val selectedTrackJson = arguments?.getString(SELECTED_TRACK)
         track = Gson().fromJson(selectedTrackJson, Track::class.java)
 
-        playButton = findViewById(R.id.playButton)
-        secondsLeftTextView = findViewById(R.id.trackTimeMillisTextView)
+        playButton = view.findViewById(R.id.playButton)
+        secondsLeftTextView = view.findViewById(R.id.trackTimeMillisTextView)
 
         preparePlayer()
 
@@ -56,104 +54,87 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         setupUI()
-        val likeButton = findViewById<ImageView>(R.id.like_button)
-        viewModel.isFavoriteTrack.observe(this){_isFavorite->
-            if (_isFavorite){
-                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                    Configuration.UI_MODE_NIGHT_YES -> {
-                        likeButton.setBackgroundResource(R.drawable.button_2)
-                    }
-
-                    Configuration.UI_MODE_NIGHT_NO -> {
-                        likeButton.setBackgroundResource(R.drawable.liked_button)
-                    }
-
-                    Configuration.UI_MODE_NIGHT_UNDEFINED -> {
-                        playButton.setBackgroundResource(R.drawable.liked_button)
-                    }
-                }
-            } else{
-                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                    Configuration.UI_MODE_NIGHT_YES -> {
-                        likeButton.setBackgroundResource(R.drawable.like_button)
-                    }
-
-                    Configuration.UI_MODE_NIGHT_NO -> {
-                        likeButton.setBackgroundResource(R.drawable.like_button)
-                    }
-
-                    Configuration.UI_MODE_NIGHT_UNDEFINED -> {
-                        playButton.setBackgroundResource(R.drawable.like_button)
-                    }
-                }
+        val likeButton = view.findViewById<ImageView>(R.id.like_button)
+        viewModel.isFavoriteTrack.observe(viewLifecycleOwner) { _isFavorite ->
+            if (_isFavorite) {
+                updateLikeButtonForFavorite(true, likeButton)
+            } else {
+                updateLikeButtonForFavorite(false, likeButton)
             }
         }
+
         likeButton.setOnClickListener {
             viewModel.onFavoriteClicked()
         }
 
-        viewModel.state.observe(this) { _state ->
+        viewModel.state.observe(viewLifecycleOwner) { _state ->
             playerState = _state
             render()
         }
 
-        viewModel.playingTrackPosition.observe(this) { _seconds ->
+        viewModel.playingTrackPosition.observe(viewLifecycleOwner) { _seconds ->
             secondsLeftTextView.text = SimpleDateFormat(
                 "mm:ss",
                 Locale.getDefault()
             ).format(_seconds)
         }
-        val bottomSheetContainer = findViewById<LinearLayout>(R.id.bottomSheet)
+
+        val bottomSheetContainer = view.findViewById<LinearLayout>(R.id.bottomSheet)
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-        val addTrackToPlaylist = findViewById<ImageView>(R.id.addTrackToPlaylistButton)
+
+        val addTrackToPlaylist = view.findViewById<ImageView>(R.id.addTrackToPlaylistButton)
         addTrackToPlaylist.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
-            val backgroudView = findViewById<View>(R.id.scroll)
-            // Устанавливаем прозрачность затемнения вручную
-            backgroudView.alpha = 0.1f // 0.0 - 1.0
+            val backgroundView = view.findViewById<View>(R.id.scroll)
+            backgroundView.alpha = 0.1f
 
             viewModel.loadPlaylists()
-            viewModel.playlistsState.observe(this){_state->
+            viewModel.playlistsState.observe(viewLifecycleOwner) { _state ->
                 showPlaylists(_state)
             }
         }
+
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_HIDDEN){
-                    val backgroudView = findViewById<View>(R.id.scroll)
-                    backgroudView.alpha = 0.1f // 0.0 - 1.0
-                }
-                else{
-                    val backgroudView = findViewById<View>(R.id.scroll)
-                    backgroudView.alpha = 1f // 0.0 - 1.0
-                }
-
+                val backgroundView = view.findViewById<View>(R.id.scroll)
+                backgroundView.alpha = if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_HIDDEN) 0.1f else 1f
             }
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-            }
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
     }
 
-    fun showPlaylists(state: PlaylistPlayerState){
-        when(state){
-            is PlaylistPlayerState.ShowNothing->{
-                val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPlaylistPlayer)
-                recyclerView.visibility = View.GONE
+    private fun updateLikeButtonForFavorite(isFavorite: Boolean, likeButton: ImageView) {
+        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                likeButton.setBackgroundResource(
+                    if (isFavorite) R.drawable.button_2 else R.drawable.like_button
+                )
             }
-            is PlaylistPlayerState.ShowResult->{
-                val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPlaylistPlayer)
-                recyclerView.adapter = PlaylistPlayerAdapter(state.data)
-                recyclerView.visibility = View.VISIBLE
+            Configuration.UI_MODE_NIGHT_NO -> {
+                likeButton.setBackgroundResource(
+                    if (isFavorite) R.drawable.liked_button else R.drawable.like_button
+                )
+            }
+            else -> {
+                likeButton.setBackgroundResource(
+                    if (isFavorite) R.drawable.liked_button else R.drawable.like_button
+                )
             }
         }
     }
 
+    fun showPlaylists(state: PlaylistPlayerState) {
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerViewPlaylistPlayer)
+        recyclerView?.visibility = if (state is PlaylistPlayerState.ShowNothing) View.GONE else View.VISIBLE
+        if (state is PlaylistPlayerState.ShowResult) {
+            recyclerView?.adapter = PlaylistPlayerAdapter(state.data)
+        }
+    }
 
     private fun setupUI() {
-        val trackImagePlayer: ImageView = findViewById(R.id.trackImagePlayer)
+        val trackImagePlayer: ImageView = view?.findViewById(R.id.trackImagePlayer)!!
         Glide.with(trackImagePlayer)
             .load(track.getCoverArtwork())
             .transform(RoundedCorners(10))
@@ -161,16 +142,16 @@ class PlayerActivity : AppCompatActivity() {
             .error(R.drawable.player_image_placeholder)
             .into(trackImagePlayer)
 
-        findViewById<TextView>(R.id.trackNamePlayer).text = track.trackName
-        findViewById<TextView>(R.id.trackAuthor).text = track.artistName
-        findViewById<TextView>(R.id.trackDurationTextView).text = track.formattedDuration()
-        findViewById<TextView>(R.id.albNameTextView).text = track.collectionName
-        findViewById<TextView>(R.id.yearTextView).text = track.releaseDate?.substring(0, 4)
-        findViewById<TextView>(R.id.genreTextView).text = track.primaryGenreName
-        findViewById<TextView>(R.id.countryTextView).text = track.country
+        view?.findViewById<TextView>(R.id.trackNamePlayer)?.text = track.trackName
+        view?.findViewById<TextView>(R.id.trackAuthor)?.text = track.artistName
+        view?.findViewById<TextView>(R.id.trackDurationTextView)?.text = track.formattedDuration()
+        view?.findViewById<TextView>(R.id.albNameTextView)?.text = track.collectionName
+        view?.findViewById<TextView>(R.id.yearTextView)?.text = track.releaseDate?.substring(0, 4)
+        view?.findViewById<TextView>(R.id.genreTextView)?.text = track.primaryGenreName
+        view?.findViewById<TextView>(R.id.countryTextView)?.text = track.country
 
-        findViewById<TextView>(R.id.playerBackButton).setOnClickListener {
-            finish()
+        view?.findViewById<TextView>(R.id.playerBackButton)?.setOnClickListener {
+            activity?.onBackPressed()
         }
     }
 
@@ -194,7 +175,6 @@ class PlayerActivity : AppCompatActivity() {
             PlayerState.Prepared, PlayerState.Paused -> startPlayer()
             PlayerState.Default -> startPlayer()
         }
-
     }
 
     private fun updatePlayButtonBackground() {
@@ -202,12 +182,10 @@ class PlayerActivity : AppCompatActivity() {
             Configuration.UI_MODE_NIGHT_YES -> {
                 playButton.setBackgroundResource(R.drawable.play_button_dark)
             }
-
             Configuration.UI_MODE_NIGHT_NO -> {
                 playButton.setBackgroundResource(R.drawable.play_button)
             }
-
-            Configuration.UI_MODE_NIGHT_UNDEFINED -> {
+            else -> {
                 playButton.setBackgroundResource(R.drawable.play_button)
             }
         }
@@ -218,12 +196,10 @@ class PlayerActivity : AppCompatActivity() {
             Configuration.UI_MODE_NIGHT_YES -> {
                 playButton.setBackgroundResource(R.drawable.pause_button_image_dark_theme)
             }
-
             Configuration.UI_MODE_NIGHT_NO -> {
                 playButton.setBackgroundResource(R.drawable.pause_button_image_light_theme)
             }
-
-            Configuration.UI_MODE_NIGHT_UNDEFINED -> {
+            else -> {
                 playButton.setBackgroundResource(R.drawable.pause_button_image_light_theme)
             }
         }
@@ -241,7 +217,15 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val SELECTED_TRACK = "selectedTrack"
+        const val SELECTED_TRACK = "selectedTrack"
+
+        fun newInstance(track: Track): PlayerFragment {
+            return PlayerFragment().apply {
+                arguments = Bundle().apply {
+                    putString(SELECTED_TRACK, Gson().toJson(track))
+                }
+            }
+        }
     }
 
     private fun render() {

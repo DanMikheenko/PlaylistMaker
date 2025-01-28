@@ -5,9 +5,9 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-    import android.text.Editable
-    import android.text.TextWatcher
-    import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +17,6 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.practicum.playlistmaker.MainActivity
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlaylistCreationBinding
 import com.practicum.playlistmaker.media_library.domain.models.Playlist
@@ -45,7 +44,6 @@ import java.io.FileOutputStream
             binding.newPlaylistHeader.setOnClickListener {
                 findNavController().navigate(R.id.action_playlistCreationFragment_to_tabContainerFragment)
             }
-            (activity as? MainActivity)?.hideBottomNav()
 
 
             val pickMedia =
@@ -167,14 +165,5 @@ import java.io.FileOutputStream
             } else {
                 return null
             }
-        }
-        override fun onPause() {
-            super.onPause()
-            (activity as? MainActivity)?.showBottomNav()
-        }
-
-        override fun onResume() {
-            super.onResume()
-            (activity as? MainActivity)?.hideBottomNav()
         }
     }

@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.search.ui.activity
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,9 +13,10 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
-import com.practicum.playlistmaker.player.ui.activity.PlayerActivity
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.OnTrackClickListener
 import com.practicum.playlistmaker.search.ui.TrackAdapter
@@ -203,10 +203,11 @@ class SearchFragment : Fragment(), OnTrackClickListener {
 
 
     override fun onTrackClick(track: Track) {
-        val intent = Intent(requireContext(), PlayerActivity::class.java)
-        intent.putExtra("selectedTrack", Gson().toJson(track))
-        startActivity(intent)
-        viewModel.addTrackToSearchHistory(track)
+        val trackJson = Gson().toJson(track)
+        val bundle = Bundle().apply {
+            putString("selectedTrack", trackJson)
+        }
+        findNavController().navigate(R.id.searchFragment_to_playerFragment, bundle)
     }
 
     override fun onResume() {

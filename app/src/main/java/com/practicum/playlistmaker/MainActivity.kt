@@ -27,7 +27,10 @@ class MainActivity : AppCompatActivity() {
         // Слушатель для изменения видимости BottomNavigationView
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.playlistCreationFragment -> bottomNavigationView.visibility = View.GONE
+                R.id.playlistCreationFragment, R.id.playerFragment -> {
+                    bottomNavigationView.visibility = View.GONE
+                    hideBottomNav()
+                }
                 else -> bottomNavigationView.visibility = View.VISIBLE
             }
         }

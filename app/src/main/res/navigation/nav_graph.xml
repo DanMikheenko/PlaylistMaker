@@ -16,11 +16,18 @@
         <action
             android:id="@+id/action_tabContainerFragment_to_playlistCreationFragment"
             app:destination="@id/playlistCreationFragment" />
+        <action
+            android:id="@+id/tabContainerFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.practicum.playlistmaker.search.ui.activity.SearchFragment"
-        android:label="SearchFragment" />
+        android:label="SearchFragment">
+        <action
+            android:id="@+id/searchFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/playlistCreationFragment"
         android:name="com.practicum.playlistmaker.media_library.ui.activity.PlaylistCreationFragment"
@@ -28,6 +35,15 @@
         <action
             android:id="@+id/action_playlistCreationFragment_to_tabContainerFragment"
             app:destination="@+id/tabContainerFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.practicum.playlistmaker.player.ui.fragment.PlayerFragment"
+        tools:layout="@layout/fragment_player" >
+        <argument
+            android:name="selectedTrack"
+            app:argType="string" />
     </fragment>
 
 </navigation>
