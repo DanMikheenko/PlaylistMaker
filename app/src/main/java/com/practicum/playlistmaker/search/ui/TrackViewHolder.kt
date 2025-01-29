@@ -27,5 +27,4 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         artistName.text = model.artistName
         trackTime.text = model.formattedDuration()
     }
-
 }

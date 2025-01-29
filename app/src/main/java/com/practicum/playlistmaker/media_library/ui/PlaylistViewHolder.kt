@@ -17,8 +17,8 @@ class PlaylistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(model: Playlist){
         Glide.with(playlistImage)
             .load(model.playlistImagePath)
-            .centerCrop()
-            .transform(RoundedCorners(2))
+            //.centerCrop()
+            .transform(RoundedCorners(8))
             .placeholder(R.drawable.track_placeholder_image)
             .error(R.drawable.track_placeholder_image)
             .into(playlistImage)
@@ -29,8 +29,11 @@ class PlaylistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         if (count.toInt()==0){
             return "Плейлист пуст"
         }
+        if (count.toInt()==1){
+            return count+ " трек"
+        }
         if (count.toInt()<5){
             return count+ " трека"
-        }else return count+ " треков"
+        } else return count+ " треков"
     }
 }

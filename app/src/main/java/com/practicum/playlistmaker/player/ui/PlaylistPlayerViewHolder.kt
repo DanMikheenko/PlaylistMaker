@@ -30,6 +30,9 @@ class PlaylistPlayerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVie
         if (count.toInt()==0){
             return "Плейлист пуст"
         }
+        if (count.toInt()==1){
+            return count+ " трек"
+        }
         if (count.toInt()<5){
             return count+ " трека"
         }else return count+ " треков"
