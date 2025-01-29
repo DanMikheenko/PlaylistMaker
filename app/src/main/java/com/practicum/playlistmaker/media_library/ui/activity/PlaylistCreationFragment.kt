@@ -1,6 +1,7 @@
-    package com.practicum.playlistmaker.media_library.ui.activity
+package com.practicum.playlistmaker.media_library.ui.activity
 
-    import android.graphics.Bitmap
+import android.app.AlertDialog
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -25,151 +26,158 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 
+class PlaylistCreationFragment : Fragment() {
+    private lateinit var binding: FragmentPlaylistCreationBinding
+    private val viewModel by viewModel<PlaylistCreationViewModel>()
+    private var playlistImageUri: Uri? = null
+    private var isDataEntered = false
 
-    class PlaylistCreationFragment : Fragment() {
-        private lateinit var binding: FragmentPlaylistCreationBinding
-        private val viewModel by viewModel<PlaylistCreationViewModel>()
-        private var playlistImageUri: Uri? = null
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentPlaylistCreationBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-        ): View? {
-            binding = FragmentPlaylistCreationBinding.inflate(inflater, container, false)
-            return binding.root
+        val pickMedia =
+            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                if (uri != null) {
+                    playlistImageUri = uri
+                    binding.imageView.setImageURI(uri)
+                    saveImageToPrivateStorage(uri)
+                    isDataEntered = true // Устанавливаем флаг, так как выбрано изображение
+                } else {
+                    Log.d("PhotoPicker", "No media selected")
+                }
+            }
+
+        binding.imageView.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
-            binding.newPlaylistHeader.setOnClickListener {
-                findNavController().navigate(R.id.action_playlistCreationFragment_to_tabContainerFragment)
+        binding.createButton.setOnClickListener {
+            if (binding.playlistNameEditText.text.isEmpty()) {
+                binding.playlistNameEditText.error = "Введите название плейлиста"
+                return@setOnClickListener
             }
 
-
-            val pickMedia =
-                registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                    if (uri != null) {
-                        playlistImageUri = uri
-                        binding.imageView.setImageURI(uri)
-                        saveImageToPrivateStorage(uri)
-                    } else {
-                        Log.d("PhotoPicker", "No media selected")
-                    }
-                }
-
-            binding.imageView.setOnClickListener {
-                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            }
-            binding.createButton.setOnClickListener {
-                if (binding.playlistNameEditText.text.isEmpty()) {
-                    binding.playlistNameEditText.error = "Введите название плейлиста"
-                    return@setOnClickListener
-                }
-                val filePath: String? = if (playlistImageUri != null) {
-                    val dirPath = File(
-                        requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                        "selected_images"
-                    )
-
-                    if (!dirPath.exists()) {
-                        dirPath.mkdirs()
-                    }
-
-                    val fileName = "image_${System.currentTimeMillis()}.jpg"
-                    val file = File(dirPath, fileName)
-
-                    try {
-                        val inputStream = requireContext().contentResolver.openInputStream(playlistImageUri!!)
-                        val outputStream = FileOutputStream(file)
-                        BitmapFactory.decodeStream(inputStream)
-                            .compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
-
-                        inputStream?.close()
-                        outputStream.close()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        Toast.makeText(requireContext(), "Ошибка при сохранении изображения", Toast.LENGTH_SHORT).show()
-                        return@setOnClickListener
-                    }
-
-                    file.absolutePath
-                } else {
-                    null
-                }
-
-                val playlist = Playlist(
-                    playlistId = 0,
-                    playlistName = binding.playlistNameEditText.text.toString(),
-                    playlistImagePath = filePath ?: "", // Если изображения нет, путь будет пустым
-                    description = binding.playlistDescriptionEditText.text.toString(),
-                    addedTracksId = "",
-                    addedTracksCount = "0"
+            val filePath: String? = if (playlistImageUri != null) {
+                val dirPath = File(
+                    requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                    "selected_images"
                 )
 
-
-                viewModel.createPlaylist(playlist)
-
-
-                Toast.makeText(requireContext(), "Плейлист успешно создан!", Toast.LENGTH_SHORT).show()
-
-
-                if (parentFragmentManager.backStackEntryCount > 0) {
-                    parentFragmentManager.popBackStack()
+                if (!dirPath.exists()) {
+                    dirPath.mkdirs()
                 }
-            }
 
-            binding.newPlaylistHeader.setOnClickListener {
-                if (parentFragmentManager.backStackEntryCount > 0) {
-                    parentFragmentManager.popBackStack()
+                val fileName = "image_${System.currentTimeMillis()}.jpg"
+                val file = File(dirPath, fileName)
+
+                try {
+                    val inputStream =
+                        requireContext().contentResolver.openInputStream(playlistImageUri!!)
+                    val outputStream = FileOutputStream(file)
+                    BitmapFactory.decodeStream(inputStream)
+                        .compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
+
+                    inputStream?.close()
+                    outputStream.close()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Toast.makeText(
+                        requireContext(),
+                        "Ошибка при сохранении изображения",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
                 }
-            }
-            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-                if (parentFragmentManager.backStackEntryCount > 0) {
-                    parentFragmentManager.popBackStack()
-                }
-            }
 
-            binding.createButton.setBackgroundResource(R.drawable.rounded_button_background)
-            binding.playlistNameEditText.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (!s.isNullOrEmpty()) {
-                        binding.createButton.setBackgroundResource(R.drawable.rounded_button_background_blue) // Меняем цвет фона на зелёный
-                    } else {
-                        binding.createButton.setBackgroundResource(R.drawable.rounded_button_background) // Сбрасываем цвет фона
-                    }
-                    binding.createButton.isEnabled = !s.isNullOrBlank()
-                }
-                override fun afterTextChanged(s: Editable?) {}
-            })
-        }
-
-        private fun saveImageToPrivateStorage(uri: Uri) {
-
-            val filePath =
-                File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
-
-            if (!filePath.exists()) {
-                filePath.mkdirs()
-            }
-            val file = File(filePath, "first_cover.jpg")
-            val inputStream = requireContext().contentResolver.openInputStream(uri)
-            val outputStream = FileOutputStream(file)
-            BitmapFactory
-                .decodeStream(inputStream)
-                .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
-        }
-
-        private fun loadImageFromPrivateStorage(): Bitmap? {
-
-            val filePath = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
-            val file = File(filePath, "first_cover.jpg")
-
-            if (file.exists()) {
-
-                return BitmapFactory.decodeFile(file.absolutePath)
+                file.absolutePath
             } else {
-                return null
+                null
             }
+
+            val playlist = Playlist(
+                playlistId = 0,
+                playlistName = binding.playlistNameEditText.text.toString(),
+                playlistImagePath = filePath ?: "",
+                description = binding.playlistDescriptionEditText.text.toString(),
+                addedTracksId = "",
+                addedTracksCount = "0"
+            )
+
+            viewModel.createPlaylist(playlist)
+            Toast.makeText(requireContext(), "Плейлист успешно создан!", Toast.LENGTH_SHORT).show()
+            findNavController().popBackStack()
+        }
+
+        binding.playlistNameEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                isDataEntered = !s.isNullOrEmpty()
+                updateCreateButtonState(s)
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            handleBackPress()
+        }
+
+        binding.newPlaylistHeader.setOnClickListener {
+            handleBackPress()
         }
     }
+
+    private fun updateCreateButtonState(s: CharSequence?) {
+        if (!s.isNullOrEmpty()) {
+            binding.createButton.setBackgroundResource(R.drawable.rounded_button_background_blue)
+        } else {
+            binding.createButton.setBackgroundResource(R.drawable.rounded_button_background)
+        }
+        binding.createButton.isEnabled = !s.isNullOrBlank()
+    }
+
+    private fun handleBackPress() {
+        if (isDataEntered) {
+            showExitConfirmationDialog()
+        } else {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun showExitConfirmationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Завершить создание плейлиста?")
+            .setMessage("Все несохраненные данные будут потеряны")
+            .setPositiveButton("Завершить") { _, _ ->
+                findNavController().popBackStack()
+            }
+            .setNegativeButton("Отмена", null)
+            .show()
+    }
+
+    private fun saveImageToPrivateStorage(uri: Uri) {
+        val filePath = File(
+            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum"
+        )
+
+        if (!filePath.exists()) {
+            filePath.mkdirs()
+        }
+        val file = File(filePath, "first_cover.jpg")
+        val inputStream = requireContext().contentResolver.openInputStream(uri)
+        val outputStream = FileOutputStream(file)
+        BitmapFactory.decodeStream(inputStream).compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
+    }
+
+    private fun loadImageFromPrivateStorage(): Bitmap? {
+        val filePath = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
+        val file = File(filePath, "first_cover.jpg")
+        return if (file.exists()) BitmapFactory.decodeFile(file.absolutePath) else null
+    }
+}

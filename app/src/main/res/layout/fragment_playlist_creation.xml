@@ -77,6 +77,7 @@
         android:fontFamily="@font/ys_display_medium"
         android:gravity="center"
         android:text="@string/create_playlist_button_name"
+        android:background="@drawable/rounded_button_background"
         android:textColor="@color/white"
         android:textSize="@dimen/refresh_button_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
