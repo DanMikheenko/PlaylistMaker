@@ -24,6 +24,20 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.setupWithNavController(navController)
 
+        // Слушатель для изменения видимости BottomNavigationView
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.playlistCreationFragment, R.id.playerFragment -> {
+                    bottomNavigationView.visibility = View.GONE
+                    hideBottomNav()
+                }
+                else -> {
+                    bottomNavigationView.visibility = View.VISIBLE
+                    showBottomNav()
+                }
+            }
+        }
+
 
         val rootView = findViewById<View>(android.R.id.content)
         ViewCompat.setOnApplyWindowInsetsListener(rootView) { _, insets ->
@@ -31,5 +45,21 @@ class MainActivity : AppCompatActivity() {
             bottomNavigationView.visibility = if (imeVisible) View.GONE else View.VISIBLE
             insets
         }
+    }
+
+    fun hideBottomNav() {
+        findViewById<BottomNavigationView>(R.id.bottom_navigation).animate()
+            .translationY(findViewById<BottomNavigationView>(R.id.bottom_navigation).height.toFloat())
+            .setDuration(300)
+            .start()
+        findViewById<View>(R.id.separator).visibility = View.GONE
+    }
+
+    fun showBottomNav() {
+        findViewById<BottomNavigationView>(R.id.bottom_navigation).animate()
+            .translationY(0f)
+            .setDuration(300)
+            .start()
+        findViewById<View>(R.id.separator).visibility = View.VISIBLE
     }
 }

@@ -1,7 +1,10 @@
 package com.practicum.playlistmaker.di
 
+import com.practicum.playlistmaker.media_library.data.converters.PlaylistDbConvertor
 import com.practicum.playlistmaker.media_library.domain.api.FavoriteTracksInteractor
+import com.practicum.playlistmaker.media_library.domain.api.PlaylistInteractor
 import com.practicum.playlistmaker.media_library.domain.impl.FavoriteTracksInteractorImpl
+import com.practicum.playlistmaker.media_library.domain.impl.PlaylistInteractorImpl
 import com.practicum.playlistmaker.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker.player.domain.impl.PlayerInteractorImpl
 import com.practicum.playlistmaker.search.data.converters.TrackDbConvertor
@@ -36,5 +39,10 @@ val interactorModule = module {
 
     factory<FavoriteTracksInteractor> {
         FavoriteTracksInteractorImpl(get())
+    }
+    factory<PlaylistDbConvertor> { PlaylistDbConvertor() }
+
+    factory<PlaylistInteractor> {
+        PlaylistInteractorImpl(get())
     }
 }

@@ -5,7 +5,9 @@ import android.media.MediaPlayer
 import androidx.room.Room
 import com.google.gson.Gson
 import com.practicum.playlistmaker.media_library.data.FavoriteTracksRepositoryImpl
+import com.practicum.playlistmaker.media_library.data.PlaylistRepositoryImpl
 import com.practicum.playlistmaker.media_library.domain.api.FavoriteTracksRepository
+import com.practicum.playlistmaker.media_library.domain.api.PlaylistRepository
 import com.practicum.playlistmaker.player.data.PlayerRepositoryImpl
 import com.practicum.playlistmaker.player.domain.api.PlayerRepository
 import com.practicum.playlistmaker.search.data.NetworkClient
@@ -71,5 +73,9 @@ val dataModule = module {
     }
     single<FavoriteTracksRepository>{
         FavoriteTracksRepositoryImpl(get(), get())
+    }
+
+    single<PlaylistRepository> {
+        PlaylistRepositoryImpl(get(), get())
     }
 }

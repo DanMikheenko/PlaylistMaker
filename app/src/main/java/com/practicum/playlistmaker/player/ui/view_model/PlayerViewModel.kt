@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.media_library.domain.api.FavoriteTracksInteractor
+import com.practicum.playlistmaker.media_library.domain.api.PlaylistInteractor
+import com.practicum.playlistmaker.media_library.domain.models.Playlist
 import com.practicum.playlistmaker.player.domain.api.PlayerInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +17,8 @@ import kotlinx.coroutines.launch
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
     private val track: Track,
-    private val favoriteTracksInteractor: FavoriteTracksInteractor
+    private val favoriteTracksInteractor: FavoriteTracksInteractor,
+    private val playlistInteractor: PlaylistInteractor
 ) :
     ViewModel() {
 
@@ -27,6 +30,12 @@ class PlayerViewModel(
 
     private val _isFavoriteTrack = MutableLiveData<Boolean>()
     val isFavoriteTrack: LiveData<Boolean> = _isFavoriteTrack
+
+    private val _playlistsState = MutableLiveData<PlaylistPlayerState>()
+    val playlistsState: LiveData<PlaylistPlayerState> = _playlistsState
+
+    private val _addingTrackToPlaylistState = MutableLiveData<AddingTrackToPlaylistState>()
+    val addingTrackToPlaylistState: LiveData<AddingTrackToPlaylistState> = _addingTrackToPlaylistState
 
     private var playbackJob: Job? = null
 
@@ -44,6 +53,38 @@ class PlayerViewModel(
                     }
                 }
             }
+        }
+    }
+    fun loadPlaylists(){
+        viewModelScope.launch {
+            playlistInteractor.getAll().collect(){playlists->
+                if (playlists.isNullOrEmpty()){
+                    _playlistsState.postValue(PlaylistPlayerState.ShowNothing)
+                } else {
+                    _playlistsState.postValue(PlaylistPlayerState.ShowResult(playlists))
+                }
+            }
+        }
+    }
+
+    fun addTrackToPlaylist(playlist: Playlist){
+        viewModelScope.launch(Dispatchers.IO) {
+            if (isTrackInPlaylist(track, playlist)){
+                _addingTrackToPlaylistState.postValue(AddingTrackToPlaylistState.PlaylistContainsTrack)
+            } else{
+                playlistInteractor.addTrackToPlaylist(track, playlist)
+                _addingTrackToPlaylistState.postValue(AddingTrackToPlaylistState.TrackAddedToPlaylist)
+            }
+        }
+
+    }
+
+    private fun isTrackInPlaylist(track: Track, playlist: Playlist): Boolean{
+        if (playlist.addedTracksId.isNullOrEmpty()){
+            return false
+        }else{
+            val ids: List<Int> = playlist.addedTracksId.split(" ").map { it.toInt() }
+            return ids.contains(track.trackId.toInt())
         }
     }
 

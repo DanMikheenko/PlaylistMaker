@@ -1,17 +1,17 @@
 package com.practicum.playlistmaker.media_library.ui.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentFavoriteTracksBinding
 import com.practicum.playlistmaker.media_library.ui.view_model.FavoriteTracksState
 import com.practicum.playlistmaker.media_library.ui.view_model.FavoriteTracksViewModel
-import com.practicum.playlistmaker.player.ui.activity.PlayerActivity
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.OnTrackClickListener
 import com.practicum.playlistmaker.search.ui.TrackAdapter
@@ -69,9 +69,11 @@ class FavoriteTracksFragment : Fragment(), OnTrackClickListener {
     }
 
     override fun onTrackClick(track: Track) {
-        val intent = Intent(requireContext(), PlayerActivity::class.java)
-        intent.putExtra("selectedTrack", Gson().toJson(track))
-        startActivity(intent)
+        val trackJson = Gson().toJson(track)
+        val bundle = Bundle().apply {
+            putString("selectedTrack", trackJson)
+        }
+        findNavController().navigate(R.id.tabContainerFragment_to_playerFragment, bundle)
     }
 
     companion object {

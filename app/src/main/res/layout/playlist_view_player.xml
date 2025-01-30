@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/playlistImageViewPlayer"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="@dimen/_20dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingBottom="@dimen/_8dp"
+        tools:src="@drawable/player_image_placeholder" />
+
+    <TextView
+        android:id="@+id/playlistNamePlayer"
+        android:layout_width="wrap_content"
+        android:paddingTop="4dp"
+        app:layout_constraintStart_toEndOf="@id/playlistImageViewPlayer"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginStart="@dimen/_20dp"
+        tools:text="Лучшие треки" />
+
+    <TextView
+        android:id="@+id/tracksCountPlayer"
+        android:layout_width="wrap_content"
+        android:textSize="12sp"
+        android:theme="@style/TextViewTrackCount"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/playlistImageViewPlayer"
+        app:layout_constraintTop_toBottomOf="@id/playlistNamePlayer"
+        android:layout_marginStart="@dimen/_20dp"
+        tools:text="98 треков" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
