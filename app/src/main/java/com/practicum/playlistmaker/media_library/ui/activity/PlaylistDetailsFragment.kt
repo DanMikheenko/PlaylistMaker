@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -45,13 +46,24 @@ class PlaylistDetailsFragment : Fragment(), OnTrackClickListener {
 
         val bottomSheetContainer = view.findViewById<LinearLayout>(R.id.bottomSheetPlaylistDetails)
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
 
-        viewModel.tracks.observe(viewLifecycleOwner){tracks->
+        binding.playlistImage.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                binding.playlistImage.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                val width = binding.playlistImage.width
+
+
+                binding.playlistImage.layoutParams.height = width
+                binding.playlistImage.requestLayout()
+            }
+        })
+
+        viewModel.tracks.observe(viewLifecycleOwner) { tracks ->
             binding.recyclerViewPlaylistTracks.adapter = TrackAdapter(tracks, this, viewLifecycleOwner.lifecycleScope)
         }
-
 
         viewModel.playlistDuration.observe(viewLifecycleOwner) { duration ->
             val durationInMinutes = duration / 60000
@@ -94,6 +106,7 @@ class PlaylistDetailsFragment : Fragment(), OnTrackClickListener {
 
                 Glide.with(binding.playlistImage)
                     .load(state.data.playlistImagePath)
+                    .centerCrop()
                     .transform(RoundedCorners(10))
                     .placeholder(R.drawable.player_image_placeholder)
                     .error(R.drawable.player_image_placeholder)
