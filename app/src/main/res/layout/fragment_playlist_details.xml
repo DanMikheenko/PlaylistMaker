@@ -127,7 +127,7 @@
         android:layout_gravity="bottom"
         android:orientation="vertical"
         android:theme="@style/BottomSheetBackgroundStyle"
-        app:behavior_hideable="false"
+        app:behavior_hideable="true"
         app:behavior_peekHeight="240dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 

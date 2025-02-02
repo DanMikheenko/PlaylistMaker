@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.media_library.ui.activity
 
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.practicum.playlistmaker.databinding.FragmentPlaylistDetailsBinding
 import com.practicum.playlistmaker.media_library.ui.view_model.PlaylistDetailsViewModel
 import com.practicum.playlistmaker.media_library.ui.view_model.PlaylistsDetailsState
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Locale
 
 class PlaylistDetailsFragment : Fragment() {
     private val viewModel by viewModel<PlaylistDetailsViewModel>()
@@ -34,38 +36,43 @@ class PlaylistDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loadData(arguments?.getString(SELECTED_PLAYLIST_ID)!!)
-
-
+        val playlistId = arguments?.getString(SELECTED_PLAYLIST_ID) ?: return
+        loadData(playlistId)
 
         val bottomSheetContainer = view.findViewById<LinearLayout>(R.id.bottomSheetPlaylistDetails)
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
-    }
-
-    private fun loadData(selectedPlaylistId: String){
-        if (selectedPlaylistId != null) {
-            viewModel.loadData(selectedPlaylistId)
-        }
-        viewModel.state.observe(viewLifecycleOwner){_state->
-            render(_state)
+        viewModel.playlistDuration.observe(viewLifecycleOwner) { duration ->
+            binding.playlistPlayingTime.text =
+                SimpleDateFormat("mm", Locale.getDefault()).format(duration)
         }
     }
 
-    private fun render(state: PlaylistsDetailsState){
-        when(state){
-            is PlaylistsDetailsState.Error->{}
-            is PlaylistsDetailsState.Result->{
+    private fun loadData(selectedPlaylistId: String) {
+        viewModel.loadData(selectedPlaylistId)
+
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            render(state)
+        }
+    }
+
+    private fun render(state: PlaylistsDetailsState) {
+        when (state) {
+            is PlaylistsDetailsState.Error -> {}
+
+            is PlaylistsDetailsState.Result -> {
+                viewModel.calculatePlaylistDuration(state.data)
+
                 Glide.with(binding.playlistImage)
                     .load(state.data.playlistImagePath)
                     .transform(RoundedCorners(10))
                     .placeholder(R.drawable.player_image_placeholder)
                     .error(R.drawable.player_image_placeholder)
                     .into(binding.playlistImage)
+
                 binding.playlistName.text = state.data.playlistName
                 binding.playlistDescription.text = state.data.description
-                //binding.playlistPlayingTime.text = state.data.
-                binding.tracksCount.text = state.data.addedTracksId.count().toString()
+                binding.tracksCount.text = state.data.addedTracksCount
             }
         }
     }
