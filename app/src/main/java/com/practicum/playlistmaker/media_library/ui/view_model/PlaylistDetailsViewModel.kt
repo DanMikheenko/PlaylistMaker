@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.media_library.domain.api.PlaylistInteractor
 import com.practicum.playlistmaker.media_library.domain.models.Playlist
+import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
@@ -19,6 +20,9 @@ class PlaylistDetailsViewModel(
 
     private val _playlistDuration = MutableLiveData<Int>()
     val playlistDuration: LiveData<Int> get() = _playlistDuration
+
+    private val _tracks = MutableLiveData<List<Track>>()
+    val tracks: LiveData<List<Track>> get() = _tracks
 
     fun loadData(playlistId: String) {
         val id = playlistId.toIntOrNull() ?: return
@@ -49,6 +53,23 @@ class PlaylistDetailsViewModel(
             tracksDuration = durations.sum()
 
             _playlistDuration.postValue(tracksDuration)
+        }
+    }
+
+    fun loadPlaylistTracks(playlist: Playlist) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val tracksIds = playlist.addedTracksId.split(" ").filter { it.isNotBlank() }
+            val tracks = tracksIds.mapNotNull { id ->
+                val trackId = id.toIntOrNull() ?: return@mapNotNull null
+                playlistInteractor.getTrackById(trackId)
+            }.map { flow ->
+                flow.firstOrNull()
+            }
+            if (tracks.isNullOrEmpty()){
+                _tracks.postValue(emptyList())
+            } else{
+                _tracks.postValue(tracks as List<Track>?)
+            }
         }
     }
 }

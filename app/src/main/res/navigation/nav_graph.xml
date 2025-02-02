@@ -62,6 +62,9 @@
         <action
             android:id="@+id/action_playlistDetailsFragment_to_tabContainerFragment"
             app:destination="@id/tabContainerFragment" />
+        <action
+            android:id="@+id/action_playlistDetailsFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
 
 </navigation>

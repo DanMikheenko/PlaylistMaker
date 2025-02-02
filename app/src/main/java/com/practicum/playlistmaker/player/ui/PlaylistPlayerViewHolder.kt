@@ -23,18 +23,14 @@ class PlaylistPlayerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVie
             .error(R.drawable.track_placeholder_image)
             .into(playlistImage)
         playlistName.text = model.playlistName
-        tracksCount.text = getCorrectCountName(model.addedTracksCount)
+        tracksCount.text = getTracksCountFormatted(model.addedTracksCount.toInt())
     }
 
-    private fun getCorrectCountName(count: String): String{
-        if (count.toInt()==0){
-            return "Плейлист пуст"
+    private fun getTracksCountFormatted(counts: Int): String {
+        return when {
+            counts % 10 == 1 && counts % 100 != 11 -> "$counts трек"
+            counts % 10 in 2..4 && counts % 100 !in 12..14 -> "$counts трека"
+            else -> "$counts треков"
         }
-        if (count.toInt()==1){
-            return count+ " трек"
-        }
-        if (count.toInt()<5){
-            return count+ " трека"
-        }else return count+ " треков"
     }
 }

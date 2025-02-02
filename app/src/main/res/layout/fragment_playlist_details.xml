@@ -60,7 +60,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/editTextDrawablePadding"
             android:layout_marginTop="@dimen/_8dp"
-            android:layout_marginEnd="@dimen/editTextDrawablePadding">
+            android:layout_marginEnd="@dimen/editTextDrawablePadding"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/playlistPlayingTime"
@@ -78,7 +79,7 @@
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="24dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginHorizontal="@dimen/Margin_separator"
                 android:src="@drawable/ic_point_separator_light" />
@@ -88,10 +89,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:ellipsize="end"
+                android:fontFamily="@font/ys_display_regular"
                 android:gravity="center_vertical"
+                android:maxLength="40"
+                android:maxLines="1"
                 android:textSize="@dimen/_18sp"
                 android:theme="@style/PlayerTextViewTheme"
-                tools:text="98 треков" />
+                tools:text="3 трека" />
         </LinearLayout>
 
         <LinearLayout
