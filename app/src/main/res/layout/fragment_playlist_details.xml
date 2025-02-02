@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlaylistDetailsFragment">
+    tools:context=".media_library.ui.activity.PlaylistDetailsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
             tools:text="Playlist Name" />
 
         <TextView
-            android:id="@+id/playlistCreationYear"
+            android:id="@+id/playlistDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/editTextDrawablePadding"
@@ -53,7 +53,7 @@
             android:maxLines="1"
             android:textSize="@dimen/_18sp"
             android:theme="@style/PlayerTextViewTheme"
-            tools:text="Playlist Year" />
+            tools:text="Playlist Description" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,7 +121,7 @@
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/bottomSheet"
+        android:id="@+id/bottomSheetPlaylistDetails"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
