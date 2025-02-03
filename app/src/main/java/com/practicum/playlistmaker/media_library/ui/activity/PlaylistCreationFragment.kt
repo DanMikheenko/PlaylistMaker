@@ -26,7 +26,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 
-class PlaylistCreationFragment : Fragment() {
+open class PlaylistCreationFragment : Fragment() {
     private lateinit var binding: FragmentPlaylistCreationBinding
     private val viewModel by viewModel<PlaylistCreationViewModel>()
     private var playlistImageUri: Uri? = null

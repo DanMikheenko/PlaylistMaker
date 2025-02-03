@@ -82,6 +82,10 @@ class PlaylistDetailsFragment : Fragment(), OnTrackClickListener, OnTrackLongCli
             binding.deletePlaylist.setOnClickListener {
                 showDeleteConfirmationDialog()
             }
+
+            binding.editPlaylist.setOnClickListener {
+                onEditPlaylistClick(playlistId)
+            }
         }
 
 
@@ -223,6 +227,13 @@ class PlaylistDetailsFragment : Fragment(), OnTrackClickListener, OnTrackLongCli
             putString("selectedTrack", trackJson)
         }
         findNavController().navigate(R.id.action_playlistDetailsFragment_to_playerFragment, bundle)
+    }
+
+    private fun onEditPlaylistClick(playlistId: String){
+        val bundle = Bundle().apply {
+            putString("selectedPlaylist", playlistId)
+        }
+        findNavController().navigate(R.id.action_playlistDetailsFragment_to_playlistEditingFragment, bundle)
     }
 
     override fun onTrackLongClick(track: Track) {
