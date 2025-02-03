@@ -1,12 +1,14 @@
 package com.practicum.playlistmaker.media_library.ui.activity
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -16,6 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlaylistDetailsBinding
+import com.practicum.playlistmaker.media_library.domain.models.Playlist
 import com.practicum.playlistmaker.media_library.ui.OnTrackLongClickListener
 import com.practicum.playlistmaker.media_library.ui.view_model.PlaylistDetailsViewModel
 import com.practicum.playlistmaker.media_library.ui.view_model.PlaylistsDetailsState
@@ -50,6 +53,10 @@ class PlaylistDetailsFragment : Fragment(), OnTrackClickListener, OnTrackLongCli
         val bottomSheetContainer = view.findViewById<LinearLayout>(R.id.bottomSheetPlaylistDetails)
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+        binding.sharePlaylist.setOnClickListener {
+            sharePlaylist()
+        }
 
 
         binding.playlistImage.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -97,6 +104,48 @@ class PlaylistDetailsFragment : Fragment(), OnTrackClickListener, OnTrackLongCli
         viewModel.state.observe(viewLifecycleOwner) { state ->
             render(state)
         }
+    }
+    private fun sharePlaylist() {
+        val state = viewModel.state.value
+        if (state is PlaylistsDetailsState.Result) {
+            val playlist = state.data
+
+            if (playlist.addedTracksCount.toInt() == 0) {
+                Toast.makeText(requireContext(), "В этом плейлисте нет списка треков, которым можно поделиться", Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.getTracksForPlaylist(playlist.playlistId) { tracks ->
+                    val shareText = buildShareText(playlist, tracks)
+                    shareText(shareText)
+                }
+            }
+        }
+    }
+
+    private fun buildShareText(playlist: Playlist, tracks: List<Track>): String {
+        val builder = StringBuilder()
+        builder.appendLine(playlist.playlistName)
+        builder.appendLine(playlist.description)
+        builder.appendLine(getTracksCountFormatted(tracks.size))
+
+        tracks.forEachIndexed { index, track ->
+            val duration = track.trackTimeMillis?.toLongOrNull()?.let {
+                val minutes = (it / 1000) / 60
+                val seconds = (it / 1000) % 60
+                String.format("%02d:%02d", minutes, seconds)
+            } ?: "00:00"
+
+            builder.appendLine("${index + 1}. ${track.artistName} - ${track.trackName} ($duration)")
+        }
+
+        return builder.toString()
+    }
+
+    private fun shareText(text: String) {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, text)
+        }
+        startActivity(Intent.createChooser(intent, "Поделиться плейлистом"))
     }
 
     private fun render(state: PlaylistsDetailsState) {

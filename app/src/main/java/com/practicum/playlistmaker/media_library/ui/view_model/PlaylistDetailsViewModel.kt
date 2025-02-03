@@ -8,8 +8,10 @@ import com.practicum.playlistmaker.media_library.domain.api.PlaylistInteractor
 import com.practicum.playlistmaker.media_library.domain.models.Playlist
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PlaylistDetailsViewModel(
     private val playlistInteractor: PlaylistInteractor
@@ -76,6 +78,19 @@ class PlaylistDetailsViewModel(
     fun deleteTrackFromPlaylist(trackId: String, playlistId: String){
         viewModelScope.launch(Dispatchers.IO) {
             playlistInteractor.removeTrackById(trackId.toInt(), playlistId.toInt())
+        }
+    }
+
+    fun getTracksForPlaylist(playlistId: Int, callback: (List<Track>) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val playlist = playlistInteractor.getPlaylistById(playlistId).first()
+            val tracks = playlist?.addedTracksId?.split(" ")?.mapNotNull { id ->
+                playlistInteractor.getTrackById(id.toInt()).first()
+            } ?: emptyList()
+
+            withContext(Dispatchers.Main) {
+                callback(tracks)
+            }
         }
     }
 }
