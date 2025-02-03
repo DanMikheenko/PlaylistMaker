@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.player.data.db.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -15,4 +16,7 @@ interface AddedToPlaylistTrackDao {
 
     @Query("SELECT * FROM added_to_playlist_tracks_table WHERE trackId = :trackId")
     fun getTrackById(trackId: Int): Flow<TrackEntity?>
+
+    @Delete(entity = TrackEntity::class)
+    fun removeTrackFromPlaylist(track: TrackEntity)
 }

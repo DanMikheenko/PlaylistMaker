@@ -72,4 +72,10 @@ class PlaylistDetailsViewModel(
             }
         }
     }
+
+    fun deleteTrackFromPlaylist(trackId: String, playlistId: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            playlistInteractor.removeTrackById(trackId.toInt(), playlistId.toInt())
+        }
+    }
 }

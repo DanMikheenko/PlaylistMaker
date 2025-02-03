@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.media_library.ui.activity
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlaylistDetailsBinding
+import com.practicum.playlistmaker.media_library.ui.OnTrackLongClickListener
 import com.practicum.playlistmaker.media_library.ui.view_model.PlaylistDetailsViewModel
 import com.practicum.playlistmaker.media_library.ui.view_model.PlaylistsDetailsState
 import com.practicum.playlistmaker.search.domain.models.Track
@@ -22,9 +24,10 @@ import com.practicum.playlistmaker.search.ui.OnTrackClickListener
 import com.practicum.playlistmaker.search.ui.TrackAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlaylistDetailsFragment : Fragment(), OnTrackClickListener {
+class PlaylistDetailsFragment : Fragment(), OnTrackClickListener, OnTrackLongClickListener {
     private val viewModel by viewModel<PlaylistDetailsViewModel>()
     private lateinit var binding: FragmentPlaylistDetailsBinding
+    private lateinit var playlistId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +44,7 @@ class PlaylistDetailsFragment : Fragment(), OnTrackClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val playlistId = arguments?.getString(SELECTED_PLAYLIST_ID) ?: return
+        playlistId = arguments?.getString(SELECTED_PLAYLIST_ID) ?: return
         loadData(playlistId)
 
         val bottomSheetContainer = view.findViewById<LinearLayout>(R.id.bottomSheetPlaylistDetails)
@@ -62,7 +65,7 @@ class PlaylistDetailsFragment : Fragment(), OnTrackClickListener {
         })
 
         viewModel.tracks.observe(viewLifecycleOwner) { tracks ->
-            binding.recyclerViewPlaylistTracks.adapter = TrackAdapter(tracks, this, viewLifecycleOwner.lifecycleScope)
+            binding.recyclerViewPlaylistTracks.adapter = TrackAdapter(tracks, this, viewLifecycleOwner.lifecycleScope, this)
         }
 
         viewModel.playlistDuration.observe(viewLifecycleOwner) { duration ->
@@ -133,5 +136,26 @@ class PlaylistDetailsFragment : Fragment(), OnTrackClickListener {
             putString("selectedTrack", trackJson)
         }
         findNavController().navigate(R.id.action_playlistDetailsFragment_to_playerFragment, bundle)
+    }
+
+    override fun onTrackLongClick(track: Track) {
+        showDeleteDialog(track)
+    }
+
+    private fun showDeleteDialog(track: Track) {
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setTitle("Удалить трек")
+            .setMessage("Вы уверены, что хотите удалить трек из плейлиста?")
+            .setPositiveButton("Удалить") { dialog, _ ->
+                // Удаляем трек из плейлиста
+                viewModel.deleteTrackFromPlaylist(track.trackId,  playlistId)
+                dialog.dismiss()
+            }
+            .setNegativeButton("Отмена") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+
+        alertDialog.show()
     }
 }

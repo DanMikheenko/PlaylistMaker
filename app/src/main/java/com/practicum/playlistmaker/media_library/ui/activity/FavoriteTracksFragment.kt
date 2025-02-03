@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentFavoriteTracksBinding
+import com.practicum.playlistmaker.media_library.ui.OnTrackLongClickListener
 import com.practicum.playlistmaker.media_library.ui.view_model.FavoriteTracksState
 import com.practicum.playlistmaker.media_library.ui.view_model.FavoriteTracksViewModel
 import com.practicum.playlistmaker.search.domain.models.Track
@@ -17,7 +18,7 @@ import com.practicum.playlistmaker.search.ui.OnTrackClickListener
 import com.practicum.playlistmaker.search.ui.TrackAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FavoriteTracksFragment : Fragment(), OnTrackClickListener {
+class FavoriteTracksFragment : Fragment(), OnTrackClickListener, OnTrackLongClickListener {
     private val viewModel by viewModel<FavoriteTracksViewModel>()
     private lateinit var binding: FragmentFavoriteTracksBinding
 
@@ -52,7 +53,7 @@ class FavoriteTracksFragment : Fragment(), OnTrackClickListener {
         when (state) {
             is FavoriteTracksState.ShowFavoriteTracks -> {
                 binding.recyclerView.adapter =
-                    TrackAdapter(state.data, this, viewLifecycleOwner.lifecycleScope)
+                    TrackAdapter(state.data, this, viewLifecycleOwner.lifecycleScope, this)
                 showFavoriteTracks()
             }
 
@@ -81,5 +82,8 @@ class FavoriteTracksFragment : Fragment(), OnTrackClickListener {
             val fragment = FavoriteTracksFragment()
             return fragment
         }
+    }
+
+    override fun onTrackLongClick(track: Track) {
     }
 }

@@ -9,6 +9,7 @@ import com.practicum.playlistmaker.search.data.converters.TrackDbConvertor
 import com.practicum.playlistmaker.search.data.db.AppDatabase
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 
 class PlaylistRepositoryImpl(
@@ -89,6 +90,46 @@ class PlaylistRepositoryImpl(
             } else {
                 emit(trackDbConvertor.map(track))
             }
+        }
+    }
+
+    override suspend fun removeTrackById(trackId: Int, playlistId: Int) {
+
+        val playlist = appDatabase.playlistDao().getPlaylistById(playlistId).first()
+
+        val updatedTrackIds = playlist?.addedTracksId?.split(" ")?.toMutableList()?.apply {
+            remove(trackId.toString())
+        }
+        val updatedTracksCount = updatedTrackIds?.size ?: 0
+
+
+        if (playlist != null && updatedTrackIds != null) {
+            appDatabase.playlistDao().updatePlaylist(
+                playlist.copy(
+                    addedTracksId = updatedTrackIds.joinToString(" "),
+                    addedTracksCount = updatedTracksCount.toString()
+                )
+            )
+        }
+
+        cleanUpOrphanTracks(trackId.toString())
+    }
+
+    private suspend fun cleanUpOrphanTracks(trackId: String) {
+
+        val allPlaylists = appDatabase.playlistDao().getAllPlaylists().first()
+
+        val isTrackUsed = allPlaylists?.any { playlist ->
+            playlist.addedTracksId.split(" ").contains(trackId)
+        }
+
+        if (!isTrackUsed!!) {
+            getTrackById(trackId.toInt()).collect(){track->
+                if (track!= null){
+                    appDatabase.addedToPlaylistTrackDao().removeTrackFromPlaylist(trackDbConvertor.map(trackDbConvertor.map(track)))
+                }
+            }
+
         }
     }
 

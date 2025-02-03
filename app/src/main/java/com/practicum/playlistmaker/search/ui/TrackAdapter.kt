@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.media_library.ui.OnTrackLongClickListener
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 class TrackAdapter(
     private val tracks: List<Track>,
     private val listener: OnTrackClickListener,
-    private val coroutineScope: CoroutineScope
+    private val coroutineScope: CoroutineScope,
+    private val onTrackLongClickListener: OnTrackLongClickListener
 ) : RecyclerView.Adapter<TrackViewHolder>() {
     private var isClickAllowed = true
 
@@ -33,6 +35,10 @@ class TrackAdapter(
             if (clickDebounce()) {
                 listener.onTrackClick(tracks[position])
             }
+        }
+        holder.itemView.setOnLongClickListener {
+            onTrackLongClickListener.onTrackLongClick(tracks[position])
+            true
         }
     }
 
