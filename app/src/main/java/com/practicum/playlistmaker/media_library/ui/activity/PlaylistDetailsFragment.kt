@@ -58,6 +58,32 @@ class PlaylistDetailsFragment : Fragment(), OnTrackClickListener, OnTrackLongCli
             sharePlaylist()
         }
 
+        binding.playlistOption.setOnClickListener {
+            val bottomSheetContainer = view.findViewById<LinearLayout>(R.id.bottomSheetOptions)
+            bottomSheetContainer.visibility = View.VISIBLE
+            val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+
+            Glide.with(binding.playlistImageViewPlayer)
+                .load(binding.playlistImage.drawable)
+                .centerCrop()
+                .transform(RoundedCorners(2))
+                .placeholder(R.drawable.player_image_placeholder)
+                .error(R.drawable.player_image_placeholder)
+                .into(binding.playlistImageViewPlayer)
+
+            binding.playlistNamePlayer.text = binding.playlistName.text
+            binding.tracksCountPlayer.text = binding.tracksCount.text
+
+            binding.shareButton.setOnClickListener {
+                sharePlaylist()
+            }
+
+            binding.deletePlaylist.setOnClickListener {
+                showDeleteConfirmationDialog()
+            }
+        }
+
 
         binding.playlistImage.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
@@ -148,6 +174,18 @@ class PlaylistDetailsFragment : Fragment(), OnTrackClickListener, OnTrackLongCli
         startActivity(Intent.createChooser(intent, "Поделиться плейлистом"))
     }
 
+    private fun showDeleteConfirmationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Удалить плейлист")
+            .setMessage("Хотите удалить плейлист?")
+            .setPositiveButton("Да") { _, _ ->
+                viewModel.deletePlaylist(playlistId.toInt())
+                findNavController().navigate(R.id.action_playlistDetailsFragment_to_tabContainerFragment)
+                Toast.makeText(requireContext(), "Плейлист успешно удален!", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Нет", null)
+            .show()
+    }
     private fun render(state: PlaylistsDetailsState) {
         when (state) {
             is PlaylistsDetailsState.Error -> {}

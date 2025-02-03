@@ -93,4 +93,14 @@ class PlaylistDetailsViewModel(
             }
         }
     }
+
+    fun deletePlaylist(playlistId: Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            val playlist = playlistInteractor.getPlaylistById(playlistId).first()
+            if (playlist != null) {
+                playlistInteractor.remove(playlist)
+            }
+        }
+
+    }
 }

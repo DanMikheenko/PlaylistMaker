@@ -32,4 +32,7 @@
     <string name="create_playlist_button_name">Создать</string>
     <string name="desc">Описание</string>
     <string name="add_to_playlist">Добавить в плейлист</string>
+    <string name="sharePlaylist">Поделиться</string>
+    <string name="editPlailistButtonText">Редактировать информацию</string>
+    <string name="deletePlaylist">Удалить плейлист</string>
 </resources>

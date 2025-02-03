@@ -169,4 +169,92 @@
             android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomSheetOptions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:theme="@style/BottomSheetBackgroundStyle"
+        app:behavior_hideable="true"
+        android:visibility="gone"
+        app:behavior_peekHeight="240dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/BottomSheetTopPointTheme"
+            android:paddingTop="12dp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/playlistImageViewPlayer"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="@dimen/_20dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="H,1:1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingBottom="@dimen/_8dp"
+                tools:src="@drawable/player_image_placeholder" />
+
+            <TextView
+                android:id="@+id/playlistNamePlayer"
+                android:layout_width="wrap_content"
+                android:paddingTop="4dp"
+                app:layout_constraintStart_toEndOf="@id/playlistImageViewPlayer"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginStart="@dimen/_20dp"
+                tools:text="Лучшие треки" />
+
+            <TextView
+                android:id="@+id/tracksCountPlayer"
+                android:layout_width="wrap_content"
+                android:textSize="12sp"
+                android:theme="@style/TextViewTrackCount"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/playlistImageViewPlayer"
+                app:layout_constraintTop_toBottomOf="@id/playlistNamePlayer"
+                android:layout_marginStart="@dimen/_20dp"
+                tools:text="98 треков" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/shareButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/setting_activity_button_height"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_20dp"
+            android:textSize="16sp"
+            android:text="@string/sharePlaylist"
+            android:theme="@style/PlayerTextViewTheme" />
+
+        <TextView
+            android:id="@+id/editPlaylist"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/setting_activity_button_height"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_20dp"
+            android:textSize="16sp"
+            android:text="@string/editPlailistButtonText"
+            android:theme="@style/PlayerTextViewTheme" />
+
+        <TextView
+            android:id="@+id/deletePlaylist"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/setting_activity_button_height"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_20dp"
+            android:textSize="16sp"
+            android:text="@string/deletePlaylist"
+            android:theme="@style/PlayerTextViewTheme" />
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
