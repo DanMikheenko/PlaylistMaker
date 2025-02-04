@@ -142,7 +142,7 @@ open class PlaylistCreationFragment : Fragment() {
         binding.createButton.isEnabled = !s.isNullOrBlank()
     }
 
-    private fun handleBackPress() {
+    open fun handleBackPress() {
         if (isDataEntered) {
             showExitConfirmationDialog()
         } else {

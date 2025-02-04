@@ -30,28 +30,22 @@ class PlaylistEditingFragment : PlaylistCreationFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentPlaylistCreationBinding.bind(view)
-
-        // Изменяем текст кнопки и заголовка
         binding.createButton.text = getString(R.string.save)
         binding.newPlaylistHeader.text = getString(R.string.edit_playlist)
 
-        // Получаем ID плейлиста из аргументов
         val playlistId = arguments?.getString("selectedPlaylist") ?: return
         viewModel.loadData(playlistId)
 
-        // Наблюдаем за данными плейлиста
         viewModel.playlist.observe(viewLifecycleOwner) { _playlist ->
             if (_playlist != null) {
                 playlist = _playlist
                 renderPlaylistData(_playlist)
-                // Устанавливаем текущий путь к изображению
                 if (_playlist.playlistImagePath.isNotEmpty()) {
                     playlistImageUri = Uri.fromFile(File(_playlist.playlistImagePath))
                 }
             }
         }
 
-        // Логика выбора изображения
         val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
                 playlistImageUri = uri
@@ -71,18 +65,15 @@ class PlaylistEditingFragment : PlaylistCreationFragment() {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
-        // Обработка нажатия на кнопку "Сохранить"
         binding.createButton.setOnClickListener {
             savePlaylistChanges()
         }
     }
 
     private fun renderPlaylistData(playlist: Playlist) {
-        // Заполняем поля данными плейлиста
         binding.playlistNameEditText.setText(playlist.playlistName)
         binding.playlistDescriptionEditText.setText(playlist.description)
 
-        // Загружаем изображение, если оно есть
         if (playlist.playlistImagePath.isNotEmpty()) {
             Glide.with(binding.imageView)
                 .load(File(playlist.playlistImagePath))
@@ -101,12 +92,9 @@ class PlaylistEditingFragment : PlaylistCreationFragment() {
         val playlistName = binding.playlistNameEditText.text.toString()
         val playlistDescription = binding.playlistDescriptionEditText.text.toString()
 
-        // Если новое изображение не выбрано, используем текущий путь
         val playlistImagePath = if (playlistImageUri != null) {
-            // Сохраняем новое изображение и получаем путь
             saveImageToPrivateStor(playlistImageUri!!)
         } else {
-            // Используем текущий путь к изображению
             viewModel.playlist.value?.playlistImagePath ?: ""
         }
 
@@ -119,7 +107,6 @@ class PlaylistEditingFragment : PlaylistCreationFragment() {
             addedTracksCount = playlist.addedTracksCount
         )
 
-        // Обновляем плейлист
         viewModel.createPlaylist(updatedPlaylist)
         Toast.makeText(requireContext(), "Плейлист успешно обновлён!", Toast.LENGTH_SHORT).show()
         findNavController().popBackStack()
@@ -136,18 +123,15 @@ class PlaylistEditingFragment : PlaylistCreationFragment() {
         val file = File(filePath, fileName)
 
         try {
-            // Используем ContentResolver для открытия InputStream из Uri
             val inputStream = requireContext().contentResolver.openInputStream(uri)
             val outputStream = FileOutputStream(file)
 
-            // Копируем данные из InputStream в FileOutputStream
             inputStream?.use { input ->
                 outputStream.use { output ->
                     input.copyTo(output)
                 }
             }
 
-            // Возвращаем абсолютный путь к сохранённому файлу
             return file.absolutePath
         } catch (e: Exception) {
             e.printStackTrace()
@@ -158,5 +142,9 @@ class PlaylistEditingFragment : PlaylistCreationFragment() {
             ).show()
             return ""
         }
+    }
+
+    override fun handleBackPress() {
+        findNavController().popBackStack()
     }
 }
