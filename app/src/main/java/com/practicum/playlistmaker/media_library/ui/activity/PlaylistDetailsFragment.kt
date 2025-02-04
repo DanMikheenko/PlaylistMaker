@@ -59,6 +59,10 @@ class PlaylistDetailsFragment : Fragment(), OnTrackClickListener, OnTrackLongCli
             sharePlaylist()
         }
 
+        binding.playlistDetailsHeader.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         binding.playlistOption.setOnClickListener {
             val bottomSheetContainer = view.findViewById<LinearLayout>(R.id.bottomSheetOptions)
             bottomSheetContainer.visibility = View.VISIBLE
