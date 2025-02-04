@@ -54,6 +54,7 @@ class PlaylistDetailsFragment : Fragment(), OnTrackClickListener, OnTrackLongCli
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
+
         binding.sharePlaylist.setOnClickListener {
             sharePlaylist()
         }

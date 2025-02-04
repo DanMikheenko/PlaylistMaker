@@ -1,9 +1,11 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootElement"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".media_library.ui.activity.PlaylistDetailsFragment">
+    tools:context=".media_library.ui.activity.PlaylistDetailsFragment"
+    android:background="@color/text_edit_background">
 
     <!-- AppBarLayout для управления заголовком и изображением -->
     <com.google.android.material.appbar.AppBarLayout
@@ -33,20 +35,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:paddingStart="@dimen/editTextDrawablePadding"
-                android:theme="@style/backButtonPlayerTheme"
+                android:drawableStart="@drawable/ic_arrow"
                 app:layout_collapseMode="pin" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Основной контент (остальная часть макета) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Остальные элементы макета -->
         <TextView
             android:id="@+id/playlistName"
             android:layout_width="match_parent"
@@ -58,7 +58,7 @@
             android:fontFamily="@font/ys_display_bold"
             android:maxLines="1"
             android:textSize="@dimen/_24sp"
-            android:theme="@style/PlayerTextViewTheme"
+            android:textColor="@color/icon_color"
             tools:text="Playlist Name" />
 
         <TextView
@@ -72,7 +72,7 @@
             android:fontFamily="@font/ys_display_regular"
             android:maxLines="1"
             android:textSize="@dimen/_18sp"
-            android:theme="@style/PlayerTextViewTheme"
+            android:textColor="@color/icon_color"
             tools:text="Playlist Description" />
 
         <LinearLayout
@@ -94,7 +94,7 @@
                 android:maxLength="40"
                 android:maxLines="1"
                 android:textSize="@dimen/_18sp"
-                android:theme="@style/PlayerTextViewTheme"
+                android:textColor="@color/icon_color"
                 tools:text="300 минут" />
 
             <ImageView
@@ -115,7 +115,7 @@
                 android:maxLength="40"
                 android:maxLines="1"
                 android:textSize="@dimen/_18sp"
-                android:theme="@style/PlayerTextViewTheme"
+                android:textColor="@color/icon_color"
                 tools:text="3 трека" />
         </LinearLayout>
 
@@ -153,7 +153,7 @@
         android:orientation="vertical"
         android:theme="@style/BottomSheetBackgroundStyle"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="220dp"
+        app:behavior_peekHeight="200dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <TextView
