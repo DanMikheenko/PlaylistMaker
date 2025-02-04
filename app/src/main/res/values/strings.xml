@@ -35,4 +35,6 @@
     <string name="sharePlaylist">Поделиться</string>
     <string name="editPlailistButtonText">Редактировать информацию</string>
     <string name="deletePlaylist">Удалить плейлист</string>
+    <string name="save">Сохранить</string>
+    <string name="edit_playlist">Редактировать</string>
 </resources>

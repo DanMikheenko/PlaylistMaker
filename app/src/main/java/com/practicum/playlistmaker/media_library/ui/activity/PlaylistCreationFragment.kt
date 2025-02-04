@@ -29,7 +29,7 @@ import java.io.FileOutputStream
 open class PlaylistCreationFragment : Fragment() {
     private lateinit var binding: FragmentPlaylistCreationBinding
     private val viewModel by viewModel<PlaylistCreationViewModel>()
-    private var playlistImageUri: Uri? = null
+    var playlistImageUri: Uri? = null
     private var isDataEntered = false
 
     override fun onCreateView(
@@ -161,7 +161,7 @@ open class PlaylistCreationFragment : Fragment() {
             .show()
     }
 
-    private fun saveImageToPrivateStorage(uri: Uri) {
+    fun saveImageToPrivateStorage(uri: Uri) {
         val filePath = File(
             requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum"
         )
