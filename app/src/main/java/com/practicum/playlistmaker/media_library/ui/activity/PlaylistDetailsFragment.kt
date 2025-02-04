@@ -107,7 +107,15 @@ class PlaylistDetailsFragment : Fragment(), OnTrackClickListener, OnTrackLongCli
         })
 
         viewModel.tracks.observe(viewLifecycleOwner) { tracks ->
-            binding.recyclerViewPlaylistTracks.adapter = TrackAdapter(tracks.reversed(), this, viewLifecycleOwner.lifecycleScope, this)
+            if (tracks.isEmpty()){
+                binding.noTracksPlaceholder.root.visibility = View.VISIBLE
+                binding.recyclerViewPlaylistTracks.visibility = View.GONE
+            } else{
+                binding.noTracksPlaceholder.root.visibility = View.GONE
+                binding.recyclerViewPlaylistTracks.visibility = View.VISIBLE
+                binding.recyclerViewPlaylistTracks.adapter = TrackAdapter(tracks.reversed(), this, viewLifecycleOwner.lifecycleScope, this)
+            }
+
         }
 
         viewModel.playlistDuration.observe(viewLifecycleOwner) { duration ->

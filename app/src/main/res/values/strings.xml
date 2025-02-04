@@ -37,4 +37,5 @@
     <string name="deletePlaylist">Удалить плейлист</string>
     <string name="save">Сохранить</string>
     <string name="edit_playlist">Редактировать</string>
+    <string name="no_tracks">В этом плейлисте нет треков</string>
 </resources>
