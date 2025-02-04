@@ -243,14 +243,13 @@ class PlaylistDetailsFragment : Fragment(), OnTrackClickListener, OnTrackLongCli
 
     private fun showDeleteDialog(track: Track) {
         val alertDialog = AlertDialog.Builder(requireContext())
-            .setTitle("Удалить трек")
-            .setMessage("Вы уверены, что хотите удалить трек из плейлиста?")
-            .setPositiveButton("Удалить") { dialog, _ ->
+            .setMessage("Хотите удалить трек?")
+            .setPositiveButton("Да") { dialog, _ ->
                 // Удаляем трек из плейлиста
                 viewModel.deleteTrackFromPlaylist(track.trackId,  playlistId)
                 dialog.dismiss()
             }
-            .setNegativeButton("Отмена") { dialog, _ ->
+            .setNegativeButton("Нет") { dialog, _ ->
                 dialog.dismiss()
             }
             .create()
