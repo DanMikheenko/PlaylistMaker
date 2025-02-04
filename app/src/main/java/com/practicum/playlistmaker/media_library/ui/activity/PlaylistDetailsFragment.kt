@@ -107,7 +107,7 @@ class PlaylistDetailsFragment : Fragment(), OnTrackClickListener, OnTrackLongCli
         })
 
         viewModel.tracks.observe(viewLifecycleOwner) { tracks ->
-            binding.recyclerViewPlaylistTracks.adapter = TrackAdapter(tracks, this, viewLifecycleOwner.lifecycleScope, this)
+            binding.recyclerViewPlaylistTracks.adapter = TrackAdapter(tracks.reversed(), this, viewLifecycleOwner.lifecycleScope, this)
         }
 
         viewModel.playlistDuration.observe(viewLifecycleOwner) { duration ->
