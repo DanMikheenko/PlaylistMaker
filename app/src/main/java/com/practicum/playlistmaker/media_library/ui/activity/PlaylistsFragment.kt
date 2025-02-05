@@ -9,13 +9,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlaylistsBinding
+import com.practicum.playlistmaker.media_library.ui.OnPlaylistClickListener
 import com.practicum.playlistmaker.media_library.ui.PlaylistAdapter
 import com.practicum.playlistmaker.media_library.ui.view_model.PlaylistsState
 import com.practicum.playlistmaker.media_library.ui.view_model.PlaylistsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PlaylistsFragment : Fragment() {
+class PlaylistsFragment : Fragment(), OnPlaylistClickListener{
     private val viewModel by viewModel<PlaylistsViewModel>()
     private lateinit var binding: FragmentPlaylistsBinding
 
@@ -43,7 +44,7 @@ class PlaylistsFragment : Fragment() {
         when(playlistState){
             is PlaylistsState.ShowPlaceholder -> showPlaceholder()
             is PlaylistsState.ShowResult ->{
-                binding.recyclerView.adapter = PlaylistAdapter(playlistState.data)
+                binding.recyclerView.adapter = PlaylistAdapter(playlistState.data, this)
                 showPlaylists()
             }
         }
@@ -58,6 +59,12 @@ class PlaylistsFragment : Fragment() {
         binding.recyclerView.visibility = View.VISIBLE
     }
 
+    override fun onPlaylistClick(playlistId: String) {
+        val bundle = Bundle().apply {
+            putString("selectedPlaylistId", playlistId)
+        }
+        findNavController().navigate(R.id.tabContainerFragment_to_playlistDetailsFragment, bundle)
+    }
 
     companion object {
         fun newInstance(): PlaylistsFragment {
@@ -65,5 +72,4 @@ class PlaylistsFragment : Fragment() {
             return fragment
         }
     }
-
 }

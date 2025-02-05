@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
+import com.practicum.playlistmaker.media_library.ui.OnTrackLongClickListener
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.OnTrackClickListener
 import com.practicum.playlistmaker.search.ui.TrackAdapter
@@ -25,7 +26,7 @@ import com.practicum.playlistmaker.search.ui.view_model.State
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SearchFragment : Fragment(), OnTrackClickListener {
+class SearchFragment : Fragment(), OnTrackClickListener, OnTrackLongClickListener {
     private val viewModel by viewModel<SearchViewModel>()
     private lateinit var binding: FragmentSearchBinding
     override fun onCreateView(
@@ -105,7 +106,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
             is State.LoadingSearchingTracks -> showProgressBar()
             is State.ShowEmptyResult -> showNothingFound()
             is State.ShowSearchResult -> {
-                binding.recyclerView.adapter = TrackAdapter(state.data, this, viewLifecycleOwner.lifecycleScope)
+                binding.recyclerView.adapter = TrackAdapter(state.data, this, viewLifecycleOwner.lifecycleScope, this)
                 showResult()
             }
 
@@ -123,7 +124,7 @@ class SearchFragment : Fragment(), OnTrackClickListener {
 
             is State.ShowSearchingTrackHistory -> {
                 binding.searchHistoryLayout.searchHistoryRecyclerView.adapter =
-                    TrackAdapter(state.data, this, viewLifecycleOwner.lifecycleScope)
+                    TrackAdapter(state.data, this, viewLifecycleOwner.lifecycleScope, this)
                 showHistory()
             }
         }
@@ -220,5 +221,8 @@ class SearchFragment : Fragment(), OnTrackClickListener {
 
     companion object {
         const val KEY_EDIT_TEXT = "editTextValue"
+    }
+
+    override fun onTrackLongClick(track: Track) {
     }
 }

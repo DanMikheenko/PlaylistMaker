@@ -20,7 +20,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.media_library.domain.models.Playlist
-import com.practicum.playlistmaker.player.ui.OnPlaylistClickListener
+import com.practicum.playlistmaker.player.ui.OnPlaylistPlayerClickListener
 import com.practicum.playlistmaker.player.ui.PlaylistPlayerAdapter
 import com.practicum.playlistmaker.player.ui.view_model.AddingTrackToPlaylistState
 import com.practicum.playlistmaker.player.ui.view_model.PlayerState
@@ -31,7 +31,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.Locale
 
-class PlayerFragment : Fragment(R.layout.fragment_player), OnPlaylistClickListener {
+class PlayerFragment : Fragment(R.layout.fragment_player), OnPlaylistPlayerClickListener {
     private lateinit var track: Track
     private val viewModel: PlayerViewModel by viewModel {
         parametersOf(track)
@@ -272,7 +272,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player), OnPlaylistClickListen
         }
     }
 
-    override fun onPlaylistClick(playlist: Playlist) {
+    override fun onPlaylistPlayerClick(playlist: Playlist) {
         viewModel.addTrackToPlaylist(playlist)
     }
 }

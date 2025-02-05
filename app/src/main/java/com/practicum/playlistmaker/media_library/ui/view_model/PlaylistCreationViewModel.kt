@@ -7,7 +7,7 @@ import com.practicum.playlistmaker.media_library.domain.models.Playlist
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class PlaylistCreationViewModel(private val playlistInteractor: PlaylistInteractor): ViewModel() {
+open class PlaylistCreationViewModel(private val playlistInteractor: PlaylistInteractor): ViewModel() {
 
     fun createPlaylist(playlist: Playlist){
         viewModelScope.launch(Dispatchers.IO) {

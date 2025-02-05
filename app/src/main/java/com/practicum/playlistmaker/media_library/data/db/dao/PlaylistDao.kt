@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.practicum.playlistmaker.media_library.data.db.entity.PlaylistEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -15,6 +16,9 @@ interface PlaylistDao {
 
     @Delete(entity = PlaylistEntity::class)
     fun delete(playlist: PlaylistEntity)
+
+    @Update
+    fun updatePlaylist(playlist: PlaylistEntity)
 
     @Query("SELECT * FROM playlists_table")
     fun getAllPlaylists(): Flow<List<PlaylistEntity>?>

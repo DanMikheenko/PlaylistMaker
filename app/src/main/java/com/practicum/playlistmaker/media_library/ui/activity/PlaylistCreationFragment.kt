@@ -26,10 +26,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 
-class PlaylistCreationFragment : Fragment() {
+open class PlaylistCreationFragment : Fragment() {
     private lateinit var binding: FragmentPlaylistCreationBinding
     private val viewModel by viewModel<PlaylistCreationViewModel>()
-    private var playlistImageUri: Uri? = null
+    var playlistImageUri: Uri? = null
     private var isDataEntered = false
 
     override fun onCreateView(
@@ -142,7 +142,7 @@ class PlaylistCreationFragment : Fragment() {
         binding.createButton.isEnabled = !s.isNullOrBlank()
     }
 
-    private fun handleBackPress() {
+    open fun handleBackPress() {
         if (isDataEntered) {
             showExitConfirmationDialog()
         } else {
@@ -161,7 +161,7 @@ class PlaylistCreationFragment : Fragment() {
             .show()
     }
 
-    private fun saveImageToPrivateStorage(uri: Uri) {
+    fun saveImageToPrivateStorage(uri: Uri) {
         val filePath = File(
             requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum"
         )

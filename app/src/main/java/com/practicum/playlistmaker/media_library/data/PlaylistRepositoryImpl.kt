@@ -5,14 +5,17 @@ import com.practicum.playlistmaker.media_library.data.db.entity.PlaylistEntity
 import com.practicum.playlistmaker.media_library.domain.api.PlaylistRepository
 import com.practicum.playlistmaker.media_library.domain.models.Playlist
 import com.practicum.playlistmaker.player.data.db.entity.AddedToPlaylistTrackEntity
+import com.practicum.playlistmaker.search.data.converters.TrackDbConvertor
 import com.practicum.playlistmaker.search.data.db.AppDatabase
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 
 class PlaylistRepositoryImpl(
     private val appDatabase: AppDatabase,
-    private val playlistDbConvertor: PlaylistDbConvertor
+    private val playlistDbConvertor: PlaylistDbConvertor,
+    private val trackDbConvertor: TrackDbConvertor
 ) : PlaylistRepository {
     override suspend fun add(playlist: Playlist) {
         appDatabase.playlistDao().insert(playlistDbConvertor.map(playlist))
@@ -78,6 +81,56 @@ class PlaylistRepositoryImpl(
                 tracksCount.toString()
             )
         )
+    }
+
+    override suspend fun getTrackById(trackId: Int): Flow<Track?> = flow {
+        appDatabase.addedToPlaylistTrackDao().getTrackById(trackId).collect() { track ->
+            if (track == null) {
+                emit(null)
+            } else {
+                emit(trackDbConvertor.map(track))
+            }
+        }
+    }
+
+    override suspend fun removeTrackById(trackId: Int, playlistId: Int) {
+
+        val playlist = appDatabase.playlistDao().getPlaylistById(playlistId).first()
+
+        val updatedTrackIds = playlist?.addedTracksId?.split(" ")?.toMutableList()?.apply {
+            remove(trackId.toString())
+        }
+        val updatedTracksCount = updatedTrackIds?.size ?: 0
+
+
+        if (playlist != null && updatedTrackIds != null) {
+            appDatabase.playlistDao().updatePlaylist(
+                playlist.copy(
+                    addedTracksId = updatedTrackIds.joinToString(" "),
+                    addedTracksCount = updatedTracksCount.toString()
+                )
+            )
+        }
+
+        cleanUpOrphanTracks(trackId.toString())
+    }
+
+    private suspend fun cleanUpOrphanTracks(trackId: String) {
+
+        val allPlaylists = appDatabase.playlistDao().getAllPlaylists().first()
+
+        val isTrackUsed = allPlaylists?.any { playlist ->
+            playlist.addedTracksId.split(" ").contains(trackId)
+        }
+
+        if (!isTrackUsed!!) {
+            getTrackById(trackId.toInt()).collect(){track->
+                if (track!= null){
+                    appDatabase.addedToPlaylistTrackDao().removeTrackFromPlaylist(trackDbConvertor.map(trackDbConvertor.map(track)))
+                }
+            }
+
+        }
     }
 
     private fun convert(playlistsEntity: List<PlaylistEntity>): List<Playlist> {
